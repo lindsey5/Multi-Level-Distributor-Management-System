@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  /* Mapping Colors */
+  --color-main: var(--bg-main);
+  --color-panel: var(--bg-panel);
+  
+  /* Effects */
+  --shadow-panel: var(--shadow-panel);
+  --border-panel: var(--border-panel);
+}
+
+@layer base {
+  :root {
+    --bg-main: #d3d3d3;
+    --bg-panel: #ffffff; 
+    --border-ui: #a0a0a0;
+    --shadow-panel: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --border-panel: #c9c8c8;
+  }
+}
+
+body {
+   @apply bg-main transition-all duration-500 ease-in-out;
+}
