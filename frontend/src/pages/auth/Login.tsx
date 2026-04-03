@@ -9,7 +9,7 @@ import { useAdminLogin } from "../../hooks/auth/use-admin-login.hook";
 export default function Login() {
     const [user, setUser] = useState<"Admin" | "Distributor">("Distributor");
     const adminLoginMutation = useAdminLogin();
-    const { register, handleSubmit, formState: { errors }, watch } = useForm<LoginFormData>({
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginSchema),
     });
 
