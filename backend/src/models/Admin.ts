@@ -1,12 +1,14 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from 'bcrypt';
+import { hashPassword } from "../utils/auth";
 
 export interface AdminAttributes extends Document {
-  email: string;
-  password: string;
-  firstname: string;
-  lastname: string;
-  wallet_balance: number;
+    email: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+    wallet_balance: number;
+    matchPassword(plainPassword: string): Promise<boolean>;
 }
 
 const AdminSchema: Schema<AdminAttributes> = new Schema(
@@ -52,8 +54,7 @@ AdminSchema.pre("save", async function (next) {
 
     if (!Admin.isModified("password")) return next();
 
-    const salt = await bcrypt.genSalt(10);
-    Admin.password = await bcrypt.hash(Admin.password, salt);
+    Admin.password = await hashPassword(this.password);
 
     next();
 });

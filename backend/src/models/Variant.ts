@@ -69,16 +69,6 @@ const VariantSchema: Schema<VariantAttributes> = new Schema(
     { timestamps: true } 
 );
 
-VariantSchema.virtual("product", {
-    ref: "Product",          
-    localField: "product_id", 
-    foreignField: "_id",      
-    match: { status: 'active' },
-    justOne: true,           
-});
-
-VariantSchema.set("toObject", { virtuals: true });
-VariantSchema.set("toJSON", { virtuals: true });
 
 const Variant: Model<VariantAttributes> = mongoose.model(
     "Variant",

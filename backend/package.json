@@ -1,28 +1,35 @@
 {
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "mongoose": "^8.23.0"
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.23.0",
+    "morgan": "^1.10.1",
+    "sib-api-v3-sdk": "^8.5.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^25.5.0",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
-    "tsx": "^4.21.0",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^6.0.2"
   },
   "name": "backend",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/server.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --watch . --exec tsx src/server.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src --exec ts-node --files src/server.ts",
     "build": "tsc",
-    "start": "cross-env NODE_ENV=production node dist/src/server.js"
+    "start": "cross-env NODE_ENV=production node dist/src/server.js",
+    "create-admin": "ts-node src/scripts/create-admin.ts"
   },
-  "type": "module",
   "author": "",
   "license": "ISC",
   "description": ""

@@ -4,6 +4,7 @@
   /* Mapping Colors */
   --color-main: var(--bg-main);
   --color-panel: var(--bg-panel);
+  --color-gold: var(--accent-gold);
   
   /* Effects */
   --shadow-panel: var(--shadow-panel);
@@ -12,14 +13,15 @@
 
 @layer base {
   :root {
-    --bg-main: #d3d3d3;
+    --bg-main: #e2e2e2;
     --bg-panel: #ffffff; 
     --border-ui: #a0a0a0;
     --shadow-panel: 0 4px 12px rgba(0, 0, 0, 0.3);
     --border-panel: #c9c8c8;
+    --accent-gold: #d4af37;
   }
 }
 
 body {
-   @apply bg-main transition-all duration-500 ease-in-out;
+   @apply transition-all duration-500 ease-in-out;
 }

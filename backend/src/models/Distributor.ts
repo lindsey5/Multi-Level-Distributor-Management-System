@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
+import { hashPassword } from "../utils/auth";
 
 export interface DistributorAttributes extends Document {
-    parent_distributor_id?: number | null;
-    creator?: number | null;
+    parent_distributor_id: mongoose.Types.ObjectId | null;
     distributor_name: string;
     commission_rate: number;
     wallet_balance: number;
@@ -17,20 +17,16 @@ export interface DistributorAttributes extends Document {
 const DistributorSchema: Schema<DistributorAttributes> = new Schema(
     {
         parent_distributor_id: {
-            type: Number,
-            required: false
-        },
-
-        creator: {
-            type: Number,
+            type: Schema.Types.ObjectId,
+            ref: 'Distributor',
             required: false
         },
 
         distributor_name: {
             type: String,
-            required: [true, "agent name is required."],
-            minlength: [1, "agent name must be between 1 and 100 characters."],
-            maxlength: [100, "agent name must be between 1 and 100 characters."],
+            required: [true, "Distributor name is required."],
+            minlength: [1, "Distributor name must be between 1 and 100 characters."],
+            maxlength: [100, "Distributor name must be between 1 and 100 characters."],
             trim: true,
         },
 
@@ -76,13 +72,28 @@ const DistributorSchema: Schema<DistributorAttributes> = new Schema(
     }
 );
 
+DistributorSchema.virtual("stocks", {
+    ref: "DistributorStock",          
+    localField: "_id", 
+    foreignField: "distributor_id",       
+});
+
+DistributorSchema.virtual("parent_distributor", {
+    ref: "Distributor",          
+    localField: "_id", 
+    foreignField: "parent_distributor_id",   
+    justOne: true    
+});
+
+DistributorSchema.set("toObject", { virtuals: true });
+DistributorSchema.set("toJSON", { virtuals: true });
+
 DistributorSchema.pre("save", async function (next) {
     const distributor = this;
 
     if (!distributor.isModified("password")) return next();
 
-    const salt = await bcrypt.genSalt(10);
-    distributor.password = await bcrypt.hash(distributor.password, salt);
+    distributor.password = await hashPassword(this.password);
 
     next();
 });
