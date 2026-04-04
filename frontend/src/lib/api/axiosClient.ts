@@ -35,7 +35,8 @@ axiosClient.interceptors.response.use(
 
                 store.dispatch(setDistributor(data.distributor))
 
-                originalRequest.headers.Authorization = `Bearer ${data.token.accessToken}`;
+                axiosClient.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
                 return axiosClient(originalRequest);
             } catch (err) {

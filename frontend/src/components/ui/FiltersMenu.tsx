@@ -31,7 +31,7 @@ export default function FiltersMenu({
 
         <Card
             className={cn(
-            "absolute right-0 mt-2 w-56 z-50 transition-all duration-200 ease-in",
+            "absolute right-0 mt-2 w-56 z-20 transition-all duration-200 ease-in",
             show ? "opacity-100 visible" : "opacity-0 invisible",
             containerStyle
             )}

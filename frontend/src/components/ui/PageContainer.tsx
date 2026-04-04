@@ -20,10 +20,10 @@ export default function PageContainer ({
 
     return (
         <div className={cn(
-            "relative w-full",
+            "relative w-full pt-25 lg:pt-0",
             className
         )}>
-            <header className="relative py-7 px-5 pb-5 border-b border-[var(--border-panel)] shadow-panel shadow-md">
+            <header className="z-50 bg-white fixed top-0 inset-x-0 lg:relative py-7 px-5 pb-5 border-b border-[var(--border-panel)] shadow-panel shadow-md">
                 <h1 className="text-2xl font-semibold text-gold mb-1">{title}</h1>
                 {description && <p className="text-sm text-gray-500">{description}</p>}
                 <DistributorHeaderMenu />

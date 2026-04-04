@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LogOut, Menu, User, X } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import type { MenuItem } from "../../types/menu.type";
 import Card from "./Card";
 import { cn } from "../../utils/helpers";
