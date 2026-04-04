@@ -1,4 +1,3 @@
-import type { PaginationResponse } from "./pagination.type";
 
 export interface Distributor {
     _id: string;
@@ -12,21 +11,4 @@ export interface Distributor {
     status: "active" | "deleted";
     total_stocks?: number;
     createdAt: Date;
-}
-
-export interface CreatDistributorDTO {
-    distributor_name: string;
-    email: string;
-}
-
-export interface GetDistributorsParams{
-    page: number;
-    limit: number;
-    search?: string;
-    sortBy?: string;
-    order?: "asc" | "desc"
-}
-
-export interface GetDistributorsResponse extends PaginationResponse {
-    distributors: Distributor[]
 }

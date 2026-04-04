@@ -1,22 +1,18 @@
-import { useState } from "react";
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Card from "../../components/ui/Card";
 import TextField from "../../components/ui/Textfield";
 import { LoginSchema, type LoginFormData } from "../../schemas/authSchema";
-import { useAdminLogin } from "../../hooks/auth/use-admin-login.hook";
+import { useLogin } from "../../hooks/auth/use-login.hook";
 
 export default function Login() {
-    const [user, setUser] = useState<"Admin" | "Distributor">("Distributor");
-    const adminLoginMutation = useAdminLogin();
+    const loginMutation = useLogin();
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginSchema),
     });
 
-    const onSubmit: SubmitHandler<LoginFormData> = (data) => {
-        adminLoginMutation.mutate(data);
-    };
-    
+    const onSubmit: SubmitHandler<LoginFormData> = (data) => loginMutation.mutate(data);
+
     return (
         <form 
             onSubmit={handleSubmit(onSubmit)}
@@ -27,44 +23,13 @@ export default function Login() {
                     <div className="w-18 h-18 rounded-full p-2 bg-gray-800 flex items-center justify-center">
                         <img src="/logo.png" alt="logo" />
                     </div>
-                    <span className="w-50 text-xl font-medium text-gray-900">
-                        Zhiyuan Enterprice Group Inc.
+                    <span className="w-50 text-2xl font-medium text-gray-900">
+                        Distributor Login
                     </span>
                 </div>
 
-                <div className="w-full h-[1px] bg-gray-400 mb-8"></div>
-
-                <h1 className="text-2xl font-semibold text-gray-900 mb-6">Welcome back</h1>
-
-                {/* Selection */}
-                <div className="flex gap-3 mb-6">
-                    <button
-                        type="button"
-                        onClick={() => setUser("Distributor")}
-                        className={`flex-1 h-11 rounded-lg text-sm font-medium border transition-colors
-                        ${
-                            user === "Distributor"
-                            ? "bg-gray-900 text-white border-gray-900"
-                            : "bg-white text-gray-900 border-gray-300 hover:bg-gray-100"
-                        }`}
-                    >
-                        Distributor
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => setUser("Admin")}
-                        className={`flex-1 h-11 rounded-lg text-sm font-medium border transition-colors
-                        ${
-                            user === "Admin"
-                            ? "bg-gray-900 text-white border-gray-900"
-                            : "bg-white text-gray-900 border-gray-300 hover:bg-gray-100"
-                        }`}
-                    >
-                        Admin
-                    </button>
-                </div>
-
+                <div className="w-full h-[1px] bg-gray-400 mb-4"></div>
+                {loginMutation.error?.message && <span className='text-red-500 text-sm my-3'>{loginMutation.error?.message}</span>}
                 <TextField
                     label="Email"
                     placeholder="you@example.com"
@@ -88,7 +53,7 @@ export default function Login() {
                     type="submit"
                     className="py-3 px-5 rounded-lg text-sm font-medium border transition-colors bg-gray-900 text-white border-gray-900 hover:opacity-70"
                 >
-                    Login as {user}
+                    Login
                 </button>
             </Card>
         </form>

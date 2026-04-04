@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "../pages/auth/Login";
-import AdminLayout from "../pages/admin/AdminLayout";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import Distributors from "../pages/admin/Dashboard/Distributors";
 import PageContainer from "../components/ui/PageContainer";
+import DistributorLayout from "../pages/DistributorLayout";
+import Inventory from "../pages/Dashboard/Inventory";
 
 const router = createBrowserRouter([ 
     {
@@ -11,10 +11,10 @@ const router = createBrowserRouter([
         Component: () => <Login />
     },
     {
-        path: '/admin',
+        path: '/distributor',
         Component: () => (
-            <ProtectedRoute requireAuthentication="Admin">
-                <AdminLayout />
+            <ProtectedRoute requireAuthentication>
+                <DistributorLayout />
             </ProtectedRoute>
         ),
         children: [
@@ -27,10 +27,10 @@ const router = createBrowserRouter([
                 )
             },
             {
-                path: 'distributors',
+                path: 'inventory',
                 Component: () => (
-                    <PageContainer title="Distributors" className="max-h-screen">
-                        <Distributors />
+                    <PageContainer title="Inventory" description="Monitor your current stock levels">
+                        <Inventory />
                     </PageContainer>
                 )
             }

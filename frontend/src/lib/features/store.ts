@@ -10,12 +10,12 @@ import {
   REGISTER,
 } from "redux-persist";
 import createWebStorage from "redux-persist/es/storage/createWebStorage";
-import adminAuthReducer from "./adminAuth/adminAuthSlice";
+import authReducer from "./auth/authSlice";
 
 const storage = createWebStorage("local");
 
 const rootReducer = combineReducers({
-    adminAuth: adminAuthReducer,
+    auth: authReducer,
 });
 
 const persistConfig = {

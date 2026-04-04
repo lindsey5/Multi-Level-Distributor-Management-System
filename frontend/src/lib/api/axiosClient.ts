@@ -1,38 +1,45 @@
 import axios from 'axios';
 import { authService } from '../../services/authService';
 import { store } from '../features/store';
-import { adminLogout, setAdmin, setAdminAuth } from '../features/adminAuth/adminAuthSlice';
+import { logout, setAuth, setDistributor } from '../features/auth/authSlice';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const adminAxiosClient = axios.create({
+const axiosClient = axios.create({
     baseURL: `${API_URL}/api/`,
     timeout: 10000,
 });
 
-adminAxiosClient.interceptors.response.use(
+axiosClient.interceptors.request.use((config) => {
+    const auth = store.getState().auth;
+    const accessToken = auth.accessToken;
+    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+    return config;
+});
+
+axiosClient.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
         const status = error.response?.status;
         const state = store.getState();
-        const refreshToken = state.adminAuth.refreshToken;
+        const refreshToken = state.auth.refreshToken;
         if (status === 401 && !originalRequest._retry && refreshToken) {
             originalRequest._retry = true;
 
             try {
-                const data = await authService.adminRefreshAccessToken(refreshToken);
+                const data = await authService.refreshAccessToken(refreshToken);
                 const { accessToken: newAccessToken, refreshToken: newRefreshToken } = data.token;
                 
-                store.dispatch(setAdminAuth({ accessToken: newAccessToken, refreshToken: newRefreshToken }))
+                store.dispatch(setAuth({ accessToken: newAccessToken, refreshToken: newRefreshToken }))
 
-                store.dispatch(setAdmin(data.admin))
+                store.dispatch(setDistributor(data.distributor))
 
                 originalRequest.headers.Authorization = `Bearer ${data.token.accessToken}`;
 
-                return adminAxiosClient(originalRequest);
+                return axiosClient(originalRequest);
             } catch (err) {
-                store.dispatch(adminLogout())
+                store.dispatch(logout())
                 return Promise.reject(err);
             }
         }
@@ -41,4 +48,4 @@ adminAxiosClient.interceptors.response.use(
     }
 );
 
-export default adminAxiosClient;
+export default axiosClient;

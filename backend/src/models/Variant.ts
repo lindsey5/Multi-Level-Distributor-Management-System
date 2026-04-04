@@ -69,7 +69,6 @@ const VariantSchema: Schema<VariantAttributes> = new Schema(
     { timestamps: true } 
 );
 
-
 const Variant: Model<VariantAttributes> = mongoose.model(
     "Variant",
     VariantSchema

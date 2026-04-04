@@ -1,19 +1,15 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface StockTransferAttributes extends Document {
-    transfer_id: number;
     sender_id?: mongoose.Types.ObjectId | null;
     receiver_id: mongoose.Types.ObjectId;
-
-    quantity: number;
-    variant_id: mongoose.Types.ObjectId;
-    price: number;
 }
 
 const StockTransferSchema: Schema<StockTransferAttributes> = new Schema(
     {
-        transfer_id: {
-            type: Number,
+        sender_id: {
+            type: Schema.Types.ObjectId,
+            ref: "Admin",
             required: true,
         },
 
@@ -22,22 +18,20 @@ const StockTransferSchema: Schema<StockTransferAttributes> = new Schema(
             ref: "Distributor",
             required: true,
         },
-
-        quantity: {
-            type: Number,
-            required: true,
-        },
-
-        variant_id: {
-            type: Schema.Types.ObjectId,
-            ref: "Variant",
-            required: true,
-        },
     },
     {
         timestamps: true,
     }
 );
+
+StockTransferSchema.virtual("items", {
+    ref: "StockTransferItem",          
+    localField: "_id", 
+    foreignField: "transfer_id",       
+});
+
+StockTransferSchema.set("toObject", { virtuals: true });
+StockTransferSchema.set("toJSON", { virtuals: true });
 
 const StockTransfer: Model<StockTransferAttributes> = mongoose.model(
     "StockTransfer",

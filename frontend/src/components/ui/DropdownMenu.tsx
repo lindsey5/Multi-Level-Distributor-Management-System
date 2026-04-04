@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, User, X } from "lucide-react";
 import type { MenuItem } from "../../types/menu.type";
 import Card from "./Card";
 import { cn } from "../../utils/helpers";
@@ -21,9 +21,11 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ menuItems, logout }) => {
       {/* Hamburger button */}
       <button
         onClick={toggleMenu}
-        className="cursor-pointer p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gold"
+        className="cursor-pointer p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
       >
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
+        <div className="w-10 h-10 rounded-full bg-black flex items-center text-white justify-center font-semibold overflow-hidden">
+            <User size={20}/>
+        </div>
       </button>
 
       {/* Dropdown menu */}
@@ -38,7 +40,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ menuItems, logout }) => {
                 onClick={() => setIsOpen(false)}
                 className={cn(
                   'flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium transition-colors',
-                  isActive ? "bg-gray-200 text-gold" : "text-gray-900 hover:bg-gray-200"
+                  isActive ? "bg-gray-300" : "text-gray-900 hover:bg-gray-200"
                 )}
               >
                 {item.icon}

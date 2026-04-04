@@ -1,6 +1,5 @@
 export const generateRandomPassword = (length: number = 12) => {
-  const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     let password = "";
 

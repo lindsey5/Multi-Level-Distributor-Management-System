@@ -1,6 +1,7 @@
-import type { Admin } from "./admin.type"
+import type { Distributor } from "./distributor.type"
 
 export interface AuthResponse { 
+    distributor: Distributor,
     token: {
         accessToken: string
         refreshToken: string
@@ -10,8 +11,4 @@ export interface AuthResponse {
 export interface LoginPayload {
   email: string;
   password: string;
-}
-
-export interface AdminAuthResponse extends AuthResponse {
-    admin: Admin
 }

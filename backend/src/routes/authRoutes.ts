@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { adminLogin, adminRefreshAccessToken } from "../controllers/authController";
+import { login, refreshAccessToken } from "../controllers/authController";
 const router = Router();
 
-router.post('/admin/login', adminLogin);
-router.post('/admin/refreshToken', adminRefreshAccessToken);
+router.post('/login', login);
+router.post('/refreshToken', refreshAccessToken);
 
 const authRoutes = router;
 

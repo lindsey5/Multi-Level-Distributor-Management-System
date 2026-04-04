@@ -1,27 +1,27 @@
 import { useDispatch } from "react-redux";
-import { AdminMenuItems } from "../../pages/admin/AdminLayout";
 import Sidebar from "../ui/Sidebar";
-import { adminLogout } from "../../lib/features/adminAuth/adminAuthSlice";
 import type { AppDispatch } from "../../lib/features/store";
+import { MenuItems } from "../../pages/DistributorLayout";
+import { logout } from "../../lib/features/auth/authSlice";
 
-interface AdminSidebarProps {
+interface DistributorSidebarProps {
     collapsed: boolean;
     setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function AdminSidebar({ collapsed, setCollapsed } : AdminSidebarProps) {
+export default function DistributorSidebar({ collapsed, setCollapsed } : DistributorSidebarProps) {
     const dispatch = useDispatch<AppDispatch>();
 
-    const logout = () => {
-        dispatch(adminLogout());
+    const distributorLogout = () => {
+        dispatch(logout());
     }
 
     return (
         <Sidebar 
-            items={AdminMenuItems} 
+            items={MenuItems} 
             collapsed={collapsed}
             setCollapsed={setCollapsed}
-            logout={logout}
+            logout={distributorLogout}
         />
     );
 }

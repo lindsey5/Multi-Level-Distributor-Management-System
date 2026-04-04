@@ -1,6 +1,7 @@
 
 import { cn } from "../../utils/helpers";
 import type { MenuItem } from "../../types/menu.type";
+import DistributorHeaderMenu from "../distributor/DistributorHeaderMenu";
 
 interface PageContainerProps {
     title: string;
@@ -19,17 +20,16 @@ export default function PageContainer ({
 
     return (
         <div className={cn(
-            "relative w-full px-5 pb-5 pt-25",
+            "relative w-full",
             className
         )}>
-            <header className="top-0 absolute inset-x-0 py-7 px-5 flex items-center justify-between mb-5 pb-5 border-b border-[var(--border-panel)] shadow-panel shadow-md">
-                <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
+            <header className="relative py-7 px-5 pb-5 border-b border-[var(--border-panel)] shadow-panel shadow-md">
+                <h1 className="text-2xl font-semibold text-gold mb-1">{title}</h1>
                 {description && <p className="text-sm text-gray-500">{description}</p>}
+                <DistributorHeaderMenu />
             </header>
 
-            <main>
-                {children}
-            </main>
+            {children}
         </div>
     )
 }

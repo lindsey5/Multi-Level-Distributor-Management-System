@@ -64,9 +64,9 @@ export const TableSkeleton = ({ columns, rows = 10 }: TableSkeletonProps) => (
                     {Array.from({ length: columns }).map((_, cIdx) => (
                         <td
                             key={cIdx}
-                            className="py-3 px-4 border-b border-gray-300"
+                            className="py-3 px-4 border-b border-gray-400"
                         >
-                        <div className="h-4 w-full rounded bg-gray-300"></div>
+                        <div className="h-4 w-full rounded bg-gray-400"></div>
                         </td>
                     ))}
                     </tr>
@@ -115,7 +115,7 @@ const CustomTable = <T,>({
     const cols = table.getAllColumns().length;
 
     return (
-        <div className="flex flex-col flex-grow min-h-0">
+        <div className="flex flex-col max-h-full">
             {isLoading ? (
                 <TableSkeleton columns={cols} />
             ) : rows.length < 1 ? (

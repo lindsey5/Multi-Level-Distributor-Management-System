@@ -31,6 +31,16 @@ const DistributorStockSchema: Schema<DistributorStockAttributes> = new Schema(
     }
 );
 
+DistributorStockSchema.virtual("variant", {
+    ref: "Variant",          
+    localField: "variant_id", 
+    foreignField: "_id",   
+    justOne: true    
+});
+
+DistributorStockSchema.set("toObject", { virtuals: true });
+DistributorStockSchema.set("toJSON", { virtuals: true });
+
 const DistributorStock: Model<DistributorStockAttributes> = mongoose.model(
     "DistributorStock",
     DistributorStockSchema
