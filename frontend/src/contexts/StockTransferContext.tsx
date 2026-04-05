@@ -31,11 +31,7 @@ const StockTransferSocketContextProvider: React.FC<StockTransferSocketContextPro
                 newSocket.on("connect", () => {
                     console.log("Connected to Socket");
                 });
-
-                newSocket.on("stockTransfer", (data) => {
-                    console.log(data)
-                })
-
+                
                 setSocket(newSocket);
             } catch (error : any) {
                 console.error("Error connecting to socket:", error.message);
