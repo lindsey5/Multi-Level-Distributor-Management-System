@@ -10,7 +10,7 @@ export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
     const { socket } = useContext(StockTransferSocketContext);
 
-    const limit = 1;
+    const limit = 50;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);
     const [unread, setUnread] = useState(0);
