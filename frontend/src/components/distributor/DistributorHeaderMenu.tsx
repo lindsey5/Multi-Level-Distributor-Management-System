@@ -17,7 +17,7 @@ export default function DistributorHeaderMenu () {
     }
 
     return (
-        <div className="px-3 absolute top-1/2 right-0 transform -translate-y-1/2 flex items-center gap-3 z-30">
+        <div className="px-3 flex items-center gap-3">
             <div className="hidden lg:flex flex-col text-right p-3">
                 <span className="text-sm font-medium text-gray-900">{distributor_name}</span>
                 <span className="text-xs text-gray-500">{email}</span>

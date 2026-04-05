@@ -5,9 +5,6 @@ export const useReadNotification = () => {
 
     return useMutation({
         mutationFn: ({ id }: { id: string}) =>
-            notificationService.readNotification(id),
-        onSuccess: () => {
-            window.location.href = '/distributor/inventory'
-        },
+            notificationService.readNotification(id)
     });
 };

@@ -1,22 +1,76 @@
-import { Bell } from "lucide-react";
+import { Bell, X } from "lucide-react";
 import { useGetNotifications } from "../../hooks/notification/use-get-notifications.hook";
 import { useState, useEffect, useContext } from "react";
-import { cn, minutesAgo } from "../../utils/helpers";
+import { cn, formatToPeso, minutesAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
 import { StockTransferSocketContext } from "../../contexts/StockTransferContext";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
+import Modal from "./Modal";
+import Card from "./Card";
+import type { StockTransferItem } from "../../types/stock-transfer.type";
+import Button from "./Button";
+import { useNavigate } from "react-router-dom";
+
+interface ItemsModal {
+    items: StockTransferItem[] | null;
+    open: boolean;
+    close: () => void;
+}
+
+const ItemsModal = ({ items, open, close } : ItemsModal) => {
+    const navigate = useNavigate();
+
+    const handleView = () => {
+        navigate('/distributor/inventory');
+        close();
+    }
+
+    return (
+        <Modal
+            open={open}
+            onClose={close}
+        >
+            <Card className="flex flex-col gap-3">
+                <div className="flex justify-between mb-2">
+                    <h1 className="font-bold">Received Items</h1>
+                    <button className="cursor-pointer" onClick={close}>
+                        <X size={20}/>
+                    </button>
+                </div>
+                <div className="max-h-[50vh] overflow-y-auto">
+                {items?.map(item => (
+                    <div key={item._id} className="flex gap-3 py-2 border-b border-gray-300">
+                        <img className="w-15 h-15 md:w-20 md:h-20" src={item.variant.image_url} alt="item-image"/>
+                        <div className="space-y-1">
+                            <p className="font-semibold">{item.variant.variant_name}</p>
+                            <p className="text-sm">Quantity: {item.quantity}</p>
+                            <p className="text-sm">Price: {formatToPeso(item.variant.price)}</p>
+                        </div>
+                    </div>
+                ))}
+                </div>
+                <div className="flex justify-end">
+                    <Button
+                        className="text-sm py-3"
+                        onClick={handleView}
+                    >Go to Inventory</Button>
+                </div>
+            </Card>
+        </Modal>
+    )
+}
 
 export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
-    const { socket } = useContext(StockTransferSocketContext);
-
+    const [showModal, setShowModal] = useState(false);
+    const [items, setItems] = useState<StockTransferItem[] | null>(null);
+    const { socket } = useContext(StockTransferSocketContext); 
     const limit = 50;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);
     const [unread, setUnread] = useState(0);
 
     const readNotificationMutation = useReadNotification();
-
     const { data, isFetching } = useGetNotifications({
         page,
         limit,
@@ -56,12 +110,28 @@ export default function NotificationBell() {
         }
     }, [socket])
 
-    const readNotification = (id: string) => {
-        readNotificationMutation.mutate({ id })
-        setUnread(prev => prev -1)
+    const readNotification = (notification : DistributorNotification) => {
+        setShowModal(true);
+        setItems(notification.stockTransfer.items);
+        
+        if(notification.status === 'unread'){
+            readNotificationMutation.mutate({ id: notification._id })
+            setUnread(prev => prev -1)
+        }
+    }
+
+    const handleClose = () => {
+        setShowModal(false)
+        setItems(null)
     }
 
     return (
+        <>
+        <ItemsModal 
+            open={showModal}
+            close={handleClose}
+            items={items}
+        />
         <div className="relative" id="notification-bell">
             {/* Bell Button */}
             <button
@@ -87,7 +157,7 @@ export default function NotificationBell() {
                                 "cursor-pointer hover:bg-gray-100 border-b border-gray-300 py-2",
                                 notification.status === 'read' && 'opacity-60'
                             )}
-                            onClick={() => readNotification(notification._id)}
+                            onClick={() => readNotification(notification)}
                         >
                             <div className="flex gap-3 items-center px-2 relative">
                                 <div className="relative">
@@ -120,5 +190,6 @@ export default function NotificationBell() {
                 </div>
             )}
         </div>
+        </>
     );
 }
