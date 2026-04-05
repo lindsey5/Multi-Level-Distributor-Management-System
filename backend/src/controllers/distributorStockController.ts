@@ -34,10 +34,10 @@ export const getDistributorStocks = async (
             },
             {
                 $lookup: {
-                from: "variants",
-                localField: "variant_id",
-                foreignField: "_id",
-                as: "variant",
+                    from: "variants",
+                    localField: "variant_id",
+                    foreignField: "_id",
+                    as: "variant",
                 },
             },
             { $unwind: "$variant" },
@@ -46,11 +46,11 @@ export const getDistributorStocks = async (
         if (search) {
             basePipeline.push({
                 $match: {
-                $or: [
-                    { "variant.variant_name": { $regex: search, $options: "i" } },
-                    { "variant.sku": { $regex: search, $options: "i" } },
-                    { "variant.product.product_name": { $regex: search, $options: "i" } },
-                ],
+                "variant.status" : 'active',
+                    $or: [
+                        { "variant.variant_name": { $regex: search, $options: "i" } },
+                        { "variant.sku": { $regex: search, $options: "i" } },
+                    ],
                 },
             });
         }

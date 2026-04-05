@@ -29,6 +29,19 @@ const StockTransferItemSchema: Schema<StockTransferItemAttributes> = new Schema(
     }
 );
 
+StockTransferItemSchema.index({ transfer_id: 1, variant_id: 1 });
+
+StockTransferItemSchema.virtual("variant", {
+    ref: "Variant",
+    localField: "variant_id",
+    foreignField: "_id",
+    justOne: true
+});
+
+StockTransferItemSchema.set("toObject", { virtuals: true });
+StockTransferItemSchema.set("toJSON", { virtuals: true });
+
+
 const StockTransferItem: Model<StockTransferItemAttributes> = mongoose.model(
     "StockTransferItem",
     StockTransferItemSchema

@@ -40,7 +40,7 @@ const TableColumns = <T,>({ table }: { table: Table<T> }) => (
                 return (
                     <th
                         key={header.id}
-                        className="py-3 px-4 text-left font-semibold text-white text-sm"
+                        className="py-3 px-4 text-left font-semibold text-white"
                         style={{ textAlign: align }}
                     >
                     {flexRender(header.column.columnDef.header, header.getContext())}
@@ -125,7 +125,7 @@ const CustomTable = <T,>({
             ) : (
                 <>
                     <div className="overflow-auto flex-grow border-x border-gray-300">
-                        <table className="w-full text-sm border-collapse">
+                        <table className="w-full text-xs xl:text-sm border-collapse">
                             <TableColumns table={table} />
                             <TableRows table={table} />
                         </table>

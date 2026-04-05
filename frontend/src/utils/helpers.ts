@@ -33,3 +33,22 @@ export function formatToPeso (num : number) {
 
     return `₱ ${formatted}`;
 }
+
+export function minutesAgo(date: Date | string): string {
+    const now = new Date().getTime();
+    const past = new Date(date).getTime();
+
+    const diffMs = now - past; // difference in milliseconds
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+
+    if (diffMins <= 1) return `${diffMins} minute ago`;
+    if (diffMins < 60) return `${diffMins} minutes ago`;
+
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours === 1) return "1 hour ago";
+    if (diffHours < 24) return `${diffHours} hours ago`;
+
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffDays === 1) return "1 day ago";
+    return `${diffDays} days ago`;
+}

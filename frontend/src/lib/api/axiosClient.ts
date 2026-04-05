@@ -30,7 +30,7 @@ axiosClient.interceptors.response.use(
             try {
                 const data = await authService.refreshAccessToken(refreshToken);
                 const { accessToken: newAccessToken, refreshToken: newRefreshToken } = data.token;
-                
+
                 store.dispatch(setAuth({ accessToken: newAccessToken, refreshToken: newRefreshToken }))
 
                 store.dispatch(setDistributor(data.distributor))

@@ -29,7 +29,7 @@ export default function TextField({
 }: InputProps) {
     return (
         <div className={cn("w-full flex flex-col gap-1", className)}>
-            {label && <label className="text-sm font-medium">{label}</label>}
+            {label && <label className="text-xs xl:text-sm font-medium">{label}</label>}
 
             <div className="relative w-full">
                 {icon && iconPosition === "left" && (
@@ -46,7 +46,7 @@ export default function TextField({
                     placeholder={placeholder}
                     value={value}
                     className={cn(
-                        "w-full p-3 border rounded-sm transition-all outline-none text-sm",
+                        "w-full p-3 border rounded-sm transition-all outline-none text-xs xl:text-sm",
                         icon ? (iconPosition === "left" ? "pl-10" : "pr-10") : "",
                         error
                         ? "border-red-500 focus:border-red-500"

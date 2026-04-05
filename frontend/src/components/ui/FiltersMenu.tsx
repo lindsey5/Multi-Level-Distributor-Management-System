@@ -1,7 +1,7 @@
 import type React from "react";
 import { Filter } from "lucide-react";
 import Card from "./Card";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "../../utils/helpers";
 
 interface FiltersMenuProps {
@@ -16,12 +16,21 @@ export default function FiltersMenu({
     containerStyle
 }: FiltersMenuProps) {
     const [show, setShow] = useState(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setShow(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
-        <div className={cn(
-            "relative",
-            className
-        )}>
+        <div ref={menuRef} className={cn("relative", className)}>
         <button
             className="p-2 rounded-md"
             onClick={() => setShow((prev) => !prev)}

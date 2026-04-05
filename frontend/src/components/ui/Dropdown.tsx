@@ -25,8 +25,8 @@ export default function Dropdown({
     className,
 }: DropdownProps) {
     return (
-        <div className={cn("text-sm flex flex-col gap-1 w-full", className)}>
-            {label && <label className="text-sm font-medium">{label}</label>}
+        <div className={cn("text-xs xl:text-sm flex flex-col gap-1 w-full", className)}>
+            {label && <label className="text-xs xl:text-sm font-medium">{label}</label>}
 
             <select
                 disabled={disabled}

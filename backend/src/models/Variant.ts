@@ -69,6 +69,8 @@ const VariantSchema: Schema<VariantAttributes> = new Schema(
     { timestamps: true } 
 );
 
+VariantSchema.index({ status: 1, variant_name: 1, sku: 1})
+
 const Variant: Model<VariantAttributes> = mongoose.model(
     "Variant",
     VariantSchema

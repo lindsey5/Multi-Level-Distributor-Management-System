@@ -71,10 +71,10 @@ export const PaginationControls = <T,>({ table, total }: PaginationControlsProps
         <div className="flex flex-col md:flex-row items-end md:items-center justify-between gap-4 mt-6">
 
             <div className="flex items-center gap-5">
-                <div className="text-sm text-gray-600">
+                <div className="text-xs xl:text-sm text-gray-600">
                     Showing {startRow} - {endRow} of {total}
                 </div>
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-2 text-xs xl:text-sm">
                     <span>Rows per page:</span>
                     <select
                         value={pageSize}
@@ -113,7 +113,7 @@ export const PaginationControls = <T,>({ table, total }: PaginationControlsProps
                             key={idx}
                             onClick={() => table.setPageIndex(p)}
                             className={cn(
-                                "w-8 h-8 flex items-center justify-center rounded-full transition-colors",
+                                "text-xs xl:text-sm w-7 h-7 xl:w-8 xl:h-8 flex items-center justify-center rounded-full transition-colors",
                                 p === pageIndex
                                 ? "bg-black text-white font-semibold"
                                 : "text-gray-800 hover:bg-gray-100"

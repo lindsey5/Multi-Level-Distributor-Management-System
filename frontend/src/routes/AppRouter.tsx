@@ -4,6 +4,7 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
 import PageContainer from "../components/ui/PageContainer";
 import DistributorLayout from "../pages/DistributorLayout";
 import Inventory from "../pages/Dashboard/Inventory";
+import StockTransferSocketContextProvider from "../contexts/StockTransferContext";
 
 const router = createBrowserRouter([ 
     {
@@ -13,9 +14,11 @@ const router = createBrowserRouter([
     {
         path: '/distributor',
         Component: () => (
-            <ProtectedRoute requireAuthentication>
-                <DistributorLayout />
-            </ProtectedRoute>
+            <StockTransferSocketContextProvider>
+                <ProtectedRoute requireAuthentication>
+                    <DistributorLayout />
+                </ProtectedRoute>
+            </StockTransferSocketContextProvider>
         ),
         children: [
             {
