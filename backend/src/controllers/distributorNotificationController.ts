@@ -1,7 +1,9 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../types/types";
 import DistributorNotification from "../models/DistributorNotification";
-
+import '../models/StockTransfer'
+import '../models/StockTransferItem'
+import '../models/Variant'
 
 export const getDistributorNotifications = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
@@ -11,7 +13,17 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
 
         const notifications = await DistributorNotification.find({
             distributor_id: req.user._id
-        }).skip(skip).limit(limit).sort({ createdAt: -1 });
+        })
+        .populate({
+            path: 'stockTransfer',
+            populate: {
+                path: 'items',
+                populate: 'variant'
+            }
+        })
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 });
         const total = await DistributorNotification.countDocuments({ distributor_id: req.user._id })
         const unread = await DistributorNotification.countDocuments({ distributor_id: req.user._id, status: 'unread' });
 

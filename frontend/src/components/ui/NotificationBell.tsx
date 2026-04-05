@@ -10,14 +10,14 @@ export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
     const { socket } = useContext(StockTransferSocketContext);
 
-    const limit = 50;
+    const limit = 1;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);
     const [unread, setUnread] = useState(0);
 
     const readNotificationMutation = useReadNotification();
 
-    const { data } = useGetNotifications({
+    const { data, isFetching } = useGetNotifications({
         page,
         limit,
     });
@@ -25,7 +25,9 @@ export default function NotificationBell() {
     useEffect(() => {
         if(data?.notifications) {
             setUnread(data.unread);
-            setNotifications(data.notifications);
+            setNotifications(prev =>
+                page === 1 ? data.notifications : [...prev, ...data.notifications]
+            );
         }
 
         const handleClickOutside = (e: MouseEvent) => {
@@ -80,6 +82,7 @@ export default function NotificationBell() {
                     <div className="max-h-[40vh] md:max-h-[30vh] overflow-y-auto">
                     {notifications.map(notification => (
                         <div 
+                            key={notification._id}
                             className={cn(
                                 "cursor-pointer hover:bg-gray-100 border-b border-gray-300 py-2",
                                 notification.status === 'read' && 'opacity-60'
@@ -107,11 +110,12 @@ export default function NotificationBell() {
                         </div>
                     ))}
                     </div>
-                    {page !== data?.pagination.totalPages && <div className="flex justify-center mt-2">
+                    {!(page >= (data?.pagination.totalPages || 1)) && <div className="flex justify-center mt-2">
                         <button
-                            className="bg-black text-white px-3 py-1 text-xs rounded-md"
+                            disabled={isFetching}
+                            className="disabled:cursor-not-allowed cursor-pointer bg-black text-white px-3 py-1 text-xs rounded-md"
                             onClick={() => setPage(prev => prev + 1)}
-                        >See more</button>
+                        >{isFetching ? 'Loading...' : 'See more'}</button>
                     </div>}
                 </div>
             )}
