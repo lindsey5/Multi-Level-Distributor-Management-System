@@ -32,7 +32,7 @@ export default function EnterQuantity({ setItems, open, close, variant }: EnterQ
         : "";
 
     const handleSell = () => {
-        const isConfirmed = confirm(`Add ${quantity} item(s) of "${variant?.variant_name}" to the sales cart?`);
+        const isConfirmed = confirm(`Sell ${quantity} item(s) of ${variant?.variant_name}?`);
         if (!isConfirmed) return;
 
         close();

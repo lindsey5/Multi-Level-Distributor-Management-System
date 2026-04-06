@@ -42,9 +42,13 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
             return item;
         }));
     };
+
+    const handleRemove = (id: string) => {
+        setItems(prev => prev.filter(item => item._id !== id));
+    }
     
     return (
-        <Modal open={open} onClose={close}>
+        <Modal className="max-w-[90vw] md:max-w-[50vw]" open={open} onClose={close}>
             <Card className="flex flex-col gap-3">
                 <div className="flex justify-between mb-2">
                     <h1 className="font-bold">Items to Sell</h1>
@@ -54,35 +58,41 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                 </div>
                 <div className="max-h-[50vh] overflow-y-auto">
                 {items?.map(item => (
-                    <div key={item._id} className="flex justify-between items-start gap-3 py-2 border-b border-gray-300">
-                        <div className="flex gap-3">
+                    <div key={item._id} className="flex flex-col md:flex-row justify-between items-start gap-3 py-2 border-b border-gray-300">
+                        <div className="flex flex-col md:flex-row gap-3">
                             <img className="w-15 h-15 md:w-18 md:h-18" src={item.image_url} alt="item-image"/>
                             <div className="space-y-1">
                                 <p className="font-semibold">{item.variant_name}</p>
                                 <p className="text-sm">Available Stock: {item.stock}</p>
+                                <div className="flex items-center gap-3 mt-2">
+                                    <button
+                                        onClick={() => updateQuantity(item._id, -1)}
+                                        disabled={item.quantity <= 1}
+                                        className="disabled:cursor-not-allowed cursor-pointer"
+                                    >
+                                        <Minus size={18}/>
+                                    </button>
+                                    <div className="bg-white border border-gray-300 px-2 text-md rounded-sm shadow-md">
+                                        {item.quantity}
+                                    </div>
+                                    <button
+                                        onClick={() => updateQuantity(item._id, 1)}
+                                        disabled={item.quantity >= item.stock}
+                                        className="disabled:cursor-not-allowed cursor-pointer"
+                                    >
+                                        <Plus size={18}/>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div className="flex flex-col items-center">
                             <p className="text-sm font-semibold">{formatToPeso(item.price * item.quantity)}</p>
-                            <div className="flex items-center gap-3 mt-2">
-                                <button
-                                    onClick={() => updateQuantity(item._id, -1)}
-                                    disabled={item.quantity <= 1}
-                                    className="disabled:cursor-not-allowed cursor-pointer"
-                                >
-                                    <Minus size={15}/>
-                                </button>
-                                <div className="bg-white border border-gray-300 px-2 text-sm">
-                                    {item.quantity}
-                                </div>
-                                <button
-                                    onClick={() => updateQuantity(item._id, 1)}
-                                    disabled={item.quantity >= item.stock}
-                                    className="disabled:cursor-not-allowed cursor-pointer"
-                                >
-                                    <Plus size={15}/>
-                                </button>
-                            </div>
+                            <button
+                                className="shadow-md shadow-gray-400 cursor-pointer text-sm bg-red-500 px-3 py-1 mt-2 text-white rounded-md"
+                                onClick={() => handleRemove(item._id)}
+                            >
+                                Remove
+                            </button>
                         </div>
                     </div>
                 ))}
@@ -91,7 +101,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                 <div className="flex justify-end">
                     <Button
                         disabled={items.length === 0 || createSalesMutation.isPending}
-                        className="text-sm py-3"
+                        className="text-sm py-2 md:py-3 px-2 md:px-4"
                         onClick={handleSellItems}
                     >Sell Items</Button>
                 </div>
