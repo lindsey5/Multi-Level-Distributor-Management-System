@@ -25,9 +25,9 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ menuItems, logout }) => {
       {/* Hamburger button */}
       <button
         onClick={toggleMenu}
-        className="cursor-pointer p-2 rounded-full hover:bg-gray-100 hover:bg-gray-200 transition-colors"
+        className="p-2 cursor-pointer rounded-full hover:bg-gray-100 hover:bg-gray-200 transition-colors"
       >
-        <div className="w-10 h-10 rounded-full flex items-center text-gray-600 justify-center font-semibold overflow-hidden">
+        <div className="rounded-full flex items-center text-gray-600 justify-center font-semibold">
             <Menu size={24}/>
         </div>
       </button>

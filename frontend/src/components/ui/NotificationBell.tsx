@@ -147,7 +147,7 @@ export default function NotificationBell() {
             )}
             {showDropdown && (
                 <div className="w-[80vw] md:w-70 border border-gray-300 shadow-md absolute pb-5 -right-10 md:right-5 top-12 rounded-md bg-white">
-                    <h1 className="sticky top-1 bg-white text-md xl:text-lg font-bold border-b border-gray-300 px-2 py-5">Notifications</h1>
+                    <h1 className="bg-white text-md xl:text-lg font-bold border-b border-gray-300 px-2 py-5">Notifications</h1>
                     {notifications.length === 0 && <p className="text-center mt-5 text-sm xl:text-md">No notifications yet</p>}
                     <div className="max-h-[40vh] md:max-h-[30vh] overflow-y-auto">
                     {notifications.map(notification => (

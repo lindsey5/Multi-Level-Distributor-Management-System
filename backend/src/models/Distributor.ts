@@ -56,8 +56,6 @@ const DistributorSchema: Schema<DistributorAttributes> = new Schema(
         password: {
             type: String,
             required: [true, "password is required"],
-            minlength: [6, "password must be between 6 to 50 characters."],
-            maxlength: [50, "password must be between 6 to 50 characters."],
         },
 
         status: {
@@ -89,12 +87,9 @@ DistributorSchema.set("toObject", { virtuals: true });
 DistributorSchema.set("toJSON", { virtuals: true });
 
 DistributorSchema.pre("save", async function (next) {
-    const distributor = this;
-
-    if (!distributor.isModified("password")) return next();
-
-    distributor.password = await hashPassword(this.password);
-
+    if (this.isModified("password")) {
+        this.password = await hashPassword(this.password);
+    }
     next();
 });
 

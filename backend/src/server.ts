@@ -6,6 +6,7 @@ import cors from 'cors';
 import authRoutes from "./routes/authRoutes";
 import distributorStockRoutes from "./routes/distributorStockRoutes";
 import distributorNotificationRoutes from "./routes/distributorNotificationRoutes";
+import distributorSaleRoutes from "./routes/distributorSaleRoute";
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(express.urlencoded());
 app.use('/api/auth', authRoutes);
 app.use('/api/stocks', distributorStockRoutes);
 app.use('/api/distributor-notifications', distributorNotificationRoutes);
+app.use('/api/distributor-sales', distributorSaleRoutes);
 
 connectDB();
 

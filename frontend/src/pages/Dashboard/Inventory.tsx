@@ -7,8 +7,19 @@ import type { SortOption } from "../../types/types.type";
 import { useDebounce } from "../../hooks/useDebounce";
 import CustomTable from "../../components/ui/Table";
 import InventoryControls from "../../components/inventory/InventoryControls";
+import ItemsToSell from "../../components/inventory/ItemsToSell";
+import type { Variant } from "../../types/variant.type";
+import Button from "../../components/ui/Button";
+import EnterQuantity from "../../components/inventory/EnterQuantity";
+
+export interface VariantWithQuantity extends Variant{
+    quantity: number
+}
 
 export default function Inventory () {
+    const [showModal, setShowModal] = useState(false);
+    const [variant, setVariant] = useState<Variant | null>(null);
+    const [items, setItems] = useState<VariantWithQuantity[]>([]);
     const [sorting, setSorting] = useState<SortOption>({
         order: 'desc',
         sortBy: 'updatedAt'
@@ -61,15 +72,51 @@ export default function Inventory () {
             accessorKey: 'updatedAt',
             cell: ({ row }) => formatDate(row.original.updatedAt),
             meta: { align: 'center' }
+        },
+        {
+            header: 'Action',
+            cell: ({ row }) => (
+                <Button 
+                    className="py-1 text-xs"
+                    onClick={() => setVariant({ ...row.original.variant, stock: row.original.quantity })}
+                >Sell</Button>
+            )
         }
     ];
 
+    const handleClose = () => setShowModal(false);
+
     return (
         <div className="h-screen flex flex-col gap-5 m-5">
+            <div className="relative flex justify-end">
+                <Button 
+                    className="py-2 px-4 relative"
+                    onClick={() => setShowModal(true)}
+                >
+                    Sales Cart
+                    {items.length > 0 && (
+                        <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                            {items.length}
+                        </span>
+                    )}
+                </Button>
+            </div>
             <InventoryControls 
                 setSearch={setSearch}
                 setSorting={setSorting}
                 sorting={sorting}
+            />
+            <EnterQuantity 
+                open={variant !== null}
+                close={() => setVariant(null)}
+                setItems={setItems}
+                variant={variant}
+            />
+            <ItemsToSell 
+                open={showModal}
+                close={handleClose}
+                items={items}
+                setItems={setItems}
             />
             <CustomTable
                 isLoading={isFetching}
