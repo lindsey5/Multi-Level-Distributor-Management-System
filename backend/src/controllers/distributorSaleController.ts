@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import Distributor from "../models/Distributor";
 import CommissionLog from "../models/CommissionLog";
 import DistributorStock from "../models/DistributorStock";
+import { match } from "node:assert";
 
 export const createBulkDistributorSale = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
@@ -110,3 +111,71 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
         next(err);
     }
 };
+
+export const getDistributorSales = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 10;
+        const skip = (page - 1) * limit;
+        const sortBy = (req.query.sortBy as string) || "createdAt";
+        const order = req.query.order && String(req.query.order).toUpperCase() === "ASC" ? 1 : -1;
+        const search = req.query.search?.toString() || "";
+
+        const startDate = req.query.startDate ? new Date(req.query.startDate as string) : null;
+        const endDate = req.query.endDate ? new Date(req.query.endDate as string) : null;
+
+        const filter: any = { seller_id: req.user._id };
+
+        if(search){
+            filter.$or = [
+                { "variant.variant_name" : { $regex: search, $options: "i" } },
+                { "variant.sku" : { $regex: search, $options: "i" } }
+            ]
+        }
+
+        if (startDate || endDate) {
+            filter.createdAt = {};
+            if (startDate) filter.createdAt.$gte = startDate;
+            if (endDate) filter.createdAt.$lte = endDate;
+        }
+
+        const [distributorSales, total, totalSalesResult] = await Promise.all([
+            DistributorSale.aggregate([
+                {
+                    $lookup: {
+                        from: "variants",
+                        localField: "variant_id",
+                        foreignField: "_id",
+                        as: "variant"
+                    }
+                },
+                { $unwind: "$variant" },
+                { $match: filter },
+                { $sort: { [sortBy]: order } },
+                { $skip: skip },
+                { $limit: limit }
+            ]),
+            DistributorSale.countDocuments(filter),
+            DistributorSale.aggregate([
+                { $match: { seller_id: req.user._id } },
+                { $group: { _id: null, totalSales: { $sum: "$total_amount" } } }
+            ])
+        ]);
+
+        const totalSales = totalSalesResult[0]?.totalSales || 0;
+
+        res.status(200).json({
+            distributorSales,
+            totalSales,
+            pagination: {
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit),
+                total
+            }
+        });
+
+    } catch (err) {
+        next(err);
+    }
+}

@@ -39,7 +39,6 @@ export default function Inventory () {
     const columns: ColumnDef<DistributorStock>[] = [
         {
             header: "Variant",
-            accessorKey: "createdAt",
             cell: ({ row }) => (
                 <div className="min-w-30 flex gap-3 items-center">
                     <img 
@@ -83,7 +82,7 @@ export default function Inventory () {
             )
         }
     ];
-
+    console.log(data)
     const handleClose = () => setShowModal(false);
 
     return (

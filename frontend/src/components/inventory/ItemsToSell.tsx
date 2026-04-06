@@ -5,7 +5,7 @@ import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
 import { Minus, Plus, X } from "lucide-react";
 import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
-import { useCreateSales } from "../../hooks/sale/use-create-sales";
+import { useCreateSales } from "../../hooks/sale/use-create-sales.hook";
 import { promiseToast } from "../../utils/sileo";
 
 interface ItemsToSellProps{

@@ -1,8 +1,14 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
-import { createBulkDistributorSale } from "../controllers/distributorSaleController";
+import { createBulkDistributorSale, getDistributorSales } from "../controllers/distributorSaleController";
 
 const router = Router();
+
+router.get(
+    '/',
+    requireAuth,
+    getDistributorSales
+)
 
 router.post(
     '/',

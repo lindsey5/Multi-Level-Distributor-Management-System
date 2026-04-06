@@ -5,6 +5,7 @@ import PageContainer from "../components/ui/PageContainer";
 import DistributorLayout from "../pages/DistributorLayout";
 import Inventory from "../pages/Dashboard/Inventory";
 import StockTransferSocketContextProvider from "../contexts/StockTransferContext";
+import Sales from "../pages/Dashboard/Sales";
 
 const router = createBrowserRouter([ 
     {
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
                 Component: () => (
                     <PageContainer title="Inventory" description="Monitor your current stock levels">
                         <Inventory />
+                    </PageContainer>
+                )
+            },
+            {
+                path: 'sales',
+                Component: () => (
+                    <PageContainer title="Sales" description="Overview of all sales">
+                        <Sales />
                     </PageContainer>
                 )
             }

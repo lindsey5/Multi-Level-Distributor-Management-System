@@ -6,7 +6,7 @@ import cors from 'cors';
 import authRoutes from "./routes/authRoutes";
 import distributorStockRoutes from "./routes/distributorStockRoutes";
 import distributorNotificationRoutes from "./routes/distributorNotificationRoutes";
-import distributorSaleRoutes from "./routes/distributorSaleRoute";
+import distributorSaleRoutes from "./routes/distributorSaleRoutes";
 dotenv.config();
 
 const app = express();

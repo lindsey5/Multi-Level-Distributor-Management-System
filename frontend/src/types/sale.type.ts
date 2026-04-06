@@ -1,10 +1,12 @@
-import type { Variant } from "framer-motion";
+
+import type { PaginationParams, PaginationResponse } from "./pagination.type";
+import type { Variant } from "./variant.type";
 
 export interface DistributorSale {
     _id: string;
     seller_id: string; 
     variant_id: string;
-    variant?: Variant;
+    variant: Variant;
     quantity: number;
     total_amount: number;
     createdAt: string;
@@ -21,4 +23,17 @@ export interface CreateDistributorSaleResponse {
     total_amount: number;
     distributorCommission: number;
     sales: DistributorSale[]
+}
+
+export interface GetDistributorSalesParams extends PaginationParams {
+    sortBy?: string;
+    order?: 'asc' | 'desc',
+    startDate?: string;
+    endDate?: string;
+    search?: string;
+}
+
+export interface GetDistributorSalesResponse extends PaginationResponse {
+    distributorSales: DistributorSale[];
+    totalSales: number;
 }

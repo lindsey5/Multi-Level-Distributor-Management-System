@@ -1,5 +1,5 @@
 import { apiAxios, HttpMethod } from "../lib/api/apiAxios";
-import type { CreateDistributorSalePayload, CreateDistributorSaleResponse } from "../types/sale.type";
+import type { GetDistributorSalesResponse, CreateDistributorSalePayload, CreateDistributorSaleResponse, GetDistributorSalesParams } from "../types/sale.type";
 
 export const saleService = {
     createDistributorSales: (data: CreateDistributorSalePayload[]): Promise<CreateDistributorSaleResponse> =>
@@ -7,4 +7,11 @@ export const saleService = {
             method: HttpMethod.POST,
             data,
         }),
+
+    getDistributorSales: (params : GetDistributorSalesParams): Promise<GetDistributorSalesResponse> => (
+        apiAxios<GetDistributorSalesResponse>("distributor-sales", {
+            method: HttpMethod.GET,
+            params
+        })
+    )
 };

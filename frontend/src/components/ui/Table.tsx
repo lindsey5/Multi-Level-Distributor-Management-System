@@ -55,22 +55,37 @@ const TableColumns = <T,>({ table }: { table: Table<T> }) => (
 type TableSkeletonProps = { columns: number; rows?: number };
 
 export const TableSkeleton = ({ columns, rows = 10 }: TableSkeletonProps) => (
-    <div className="flex flex-col animate-pulse px-4 py-3">
-        <div className="overflow-auto">
+    <div className="min-h-0 flex-grow md:flex flex-col animate-pulse">
+        <div className="overflow-auto flex-grow">
             <table className="w-full text-sm border-collapse">
-                <tbody>
-                {Array.from({ length: rows }).map((_, rIdx) => (
-                    <tr key={rIdx}>
-                    {Array.from({ length: columns }).map((_, cIdx) => (
-                        <td
-                            key={cIdx}
-                            className="py-3 px-4 border-b border-gray-400"
+                {/* Table Head */}
+                <thead>
+                    <tr>
+                    {Array.from({ length: columns }).map((_, idx) => (
+                        <th
+                            key={idx}
+                            className="h-6 pb-5 border-b border-gray-400"
                         >
-                        <div className="h-4 w-full rounded bg-gray-400"></div>
-                        </td>
+                            <div className="h-4 rounded w-3/4 mx-auto bg-gray-400"></div>
+                        </th>
                     ))}
                     </tr>
-                ))}
+                </thead>
+
+                {/* Table Body */}
+                <tbody>
+                    {Array.from({ length: rows }).map((_, rowIdx) => (
+                    <tr key={rowIdx} className="transition-colors duration-200">
+                        {Array.from({ length: columns }).map((_, colIdx) => (
+                        <td
+                            key={colIdx}
+                            className="min-w-30 py-5 px-3 border-b border-gray-400"
+                        >
+                            <div className="h-4 rounded w-full bg-gray-400"></div>
+                        </td>
+                        ))}
+                    </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

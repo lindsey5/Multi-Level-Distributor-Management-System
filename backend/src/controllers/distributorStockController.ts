@@ -43,17 +43,15 @@ export const getDistributorStocks = async (
             { $unwind: "$variant" },
         ];
 
-        if (search) {
-            basePipeline.push({
-                $match: {
-                "variant.status" : 'active',
-                    $or: [
-                        { "variant.variant_name": { $regex: search, $options: "i" } },
-                        { "variant.sku": { $regex: search, $options: "i" } },
-                    ],
-                },
-            });
-        }
+        basePipeline.push({
+            $match: {
+            "variant.status" : 'active',
+                $or: [
+                    { "variant.variant_name": { $regex: search, $options: "i" } },
+                    { "variant.sku": { $regex: search, $options: "i" } },
+                ],
+            },
+        });
 
         const countPipeline = [...basePipeline, { $count: "total" }];
 
