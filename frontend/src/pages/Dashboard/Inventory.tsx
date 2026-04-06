@@ -11,7 +11,8 @@ import ItemsToSell from "../../components/inventory/ItemsToSell";
 import type { Variant } from "../../types/variant.type";
 import Button from "../../components/ui/Button";
 import EnterQuantity from "../../components/inventory/EnterQuantity";
-import { ShoppingCart } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setAccessToken } from "../../lib/features/auth/authSlice";
 
 export interface VariantWithQuantity extends Variant{
     quantity: number
@@ -86,6 +87,10 @@ export default function Inventory () {
     ];
 
     const handleClose = () => setShowModal(false);
+
+    const dispatch = useDispatch();
+
+    dispatch(setAccessToken({ accessToken: "" }))
 
     return (
         <div className="h-screen flex flex-col gap-5 m-5">

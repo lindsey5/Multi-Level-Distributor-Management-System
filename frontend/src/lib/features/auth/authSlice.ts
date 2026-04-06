@@ -31,10 +31,14 @@ const authSlice = createSlice({
             state.refreshToken = null;
             state.distributor= null;
         },
+
+        setAccessToken(state, action: PayloadAction<{ accessToken: string}>) {
+            state.accessToken = action.payload.accessToken
+        }
     },
 });
 
-export const { setDistributor, logout, setAuth } = authSlice.actions;
+export const { setDistributor, logout, setAuth, setAccessToken } = authSlice.actions;
 
 const authReducer = authSlice.reducer
 

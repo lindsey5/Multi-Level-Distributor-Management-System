@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { type ReactNode } from 'react';
-import { isAuthenticated } from '../lib/features/auth/authSelectors';
-import { useSelector } from 'react-redux';
+import { store } from '../lib/features/store';
 
 type ProtectedRouteProps = {
     children: ReactNode;
@@ -14,7 +13,8 @@ export const ProtectedRoute = ({
     requireAuthentication,
     redirectTo = '/',
 }: ProtectedRouteProps) => {
-    const isAuth = useSelector(isAuthenticated);
+    const auth = store.getState().auth;
+    const isAuth = !!(auth.accessToken && auth.distributor);
 
     if (requireAuthentication && !isAuth) {
         return <Navigate to={redirectTo} replace />;
