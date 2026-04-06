@@ -37,6 +37,12 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
                 return res.status(400).json({ message: `No stock found for variant: ${variant.variant_name}` });
             }
 
+            if (distributorStock.quantity < sale.quantity) {
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(400).json({ message: `Insufficient stock for variant: ${variant.variant_name}. Available: ${distributorStock.quantity}, requested: ${sale.quantity}`});
+            }
+
             distributorStock.quantity -= sale.quantity;
             distributorStock.save({ session })
         }
