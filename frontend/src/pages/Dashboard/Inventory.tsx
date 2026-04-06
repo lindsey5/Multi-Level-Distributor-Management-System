@@ -82,7 +82,7 @@ export default function Inventory () {
             )
         }
     ];
-    console.log(data)
+    
     const handleClose = () => setShowModal(false);
 
     return (

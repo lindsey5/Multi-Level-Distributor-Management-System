@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { type ReactNode } from 'react';
-import { store } from '../lib/features/store';
 
 type ProtectedRouteProps = {
     children: ReactNode;
@@ -13,8 +12,18 @@ export const ProtectedRoute = ({
     requireAuthentication,
     redirectTo = '/',
 }: ProtectedRouteProps) => {
-    const auth = store.getState().auth;
+    const rootString = localStorage.getItem("persist:root");
+    let root = null;
+
+    if (rootString) root = JSON.parse(rootString);
+
+    const authString = root.auth;
+    let auth = null;
+
+    if(authString) auth = JSON.parse(authString)
+
     const isAuth = !!(auth.accessToken && auth.distributor);
+
 
     if (requireAuthentication && !isAuth) {
         return <Navigate to={redirectTo} replace />;

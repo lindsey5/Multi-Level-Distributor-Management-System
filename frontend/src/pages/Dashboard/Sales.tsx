@@ -8,9 +8,10 @@ import CustomTable from "../../components/ui/Table";
 import TextField from "../../components/ui/Textfield";
 import { Search } from "lucide-react";
 import { useDebounce } from "../../hooks/useDebounce";
+import DateInput from "../../components/ui/DateInput";
 
 export default function Sales () {
-    const [sorting, setSorting] = useState<SortOption>({
+    const [sorting] = useState<SortOption>({
         order: 'desc',
         sortBy: 'createdAt'
     });
@@ -71,6 +72,7 @@ export default function Sales () {
 
     return (
         <div className="h-screen flex flex-col gap-5 m-5">
+            <div className="flex gap-3">
             <div className="md:max-w-100">
                 <TextField 
                     className="md:max-w-84"
@@ -78,6 +80,18 @@ export default function Sales () {
                     placeholder="Search by item name, sku..."
                     onChange={(e) => setSearch(e.target.value)}
                 />
+            </div>
+            <DateInput 
+                label="Start Date"
+                onChange={setStartDate}
+                value={startDate}
+            />
+            <DateInput 
+                label="End Date"
+                onChange={setEndDate}
+                value={endDate}
+            />
+
             </div>
             <CustomTable
                 isLoading={isFetching}
