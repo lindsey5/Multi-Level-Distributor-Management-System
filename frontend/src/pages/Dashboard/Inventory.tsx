@@ -11,6 +11,7 @@ import ItemsToSell from "../../components/inventory/ItemsToSell";
 import type { Variant } from "../../types/variant.type";
 import Button from "../../components/ui/Button";
 import EnterQuantity from "../../components/inventory/EnterQuantity";
+import { ShoppingCart } from "lucide-react";
 
 export interface VariantWithQuantity extends Variant{
     quantity: number
@@ -93,7 +94,7 @@ export default function Inventory () {
                     className="py-2 px-4 relative"
                     onClick={() => setShowModal(true)}
                 >
-                    Sales Cart
+                    Items To Sell
                     {items.length > 0 && (
                         <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
                             {items.length}

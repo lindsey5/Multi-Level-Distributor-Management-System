@@ -4,6 +4,7 @@ import Card from "../../components/ui/Card";
 import TextField from "../../components/ui/Textfield";
 import { LoginSchema, type LoginFormData } from "../../schemas/authSchema";
 import { useLogin } from "../../hooks/auth/use-login.hook";
+import Button from '../../components/ui/Button';
 
 export default function Login() {
     const loginMutation = useLogin();
@@ -49,12 +50,9 @@ export default function Login() {
 
                 <a href="#" className="text-sm font-medium mb-8 mt-4">Forgot password?</a>
 
-                <button
-                    type="submit"
-                    className="py-3 px-5 rounded-lg text-sm font-medium border transition-colors bg-gray-900 text-white border-gray-900 hover:opacity-70"
-                >
-                    Login
-                </button>
+                <Button type='submit' disabled={loginMutation.isPending}>
+                    {loginMutation.isPending ? 'Logging in...' : 'Log In'}
+                </Button>
             </Card>
         </form>
     );
