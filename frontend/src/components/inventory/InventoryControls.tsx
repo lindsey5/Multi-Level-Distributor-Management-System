@@ -4,6 +4,7 @@ import type { SortOption } from "../../types/types.type";
 import TextField from "../ui/Textfield";
 import { Search } from "lucide-react";
 import FiltersMenu from "../ui/FiltersMenu";
+import { getKeyByValue } from "../../utils/helpers";
 
 const options: Record<string, SortOption> = {
     'Newest' : { sortBy: 'updatedAt', order: 'desc' },
@@ -13,19 +14,6 @@ const options: Record<string, SortOption> = {
     'Quantity (ASC)' : { sortBy: 'quantity', order: 'asc' },
     'Quantity (DESC)' : { sortBy: 'quantity', order: 'desc' },
 };
-
-function getKeyByValue(
-    obj: Record<string, SortOption>,
-    target: SortOption
-) {
-    return Object.keys(obj).find(key => {
-        const value = obj[key]
-        return (
-            value.sortBy === target.sortBy &&
-            value.order === target.order
-        )
-    })
-}
 
 interface InventoryControlsProps {
     setSearch: React.Dispatch<React.SetStateAction<string>>;

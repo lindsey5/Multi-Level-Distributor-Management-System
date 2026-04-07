@@ -6,6 +6,7 @@ import DistributorLayout from "../pages/DistributorLayout";
 import Inventory from "../pages/Dashboard/Inventory";
 import StockTransferSocketContextProvider from "../contexts/StockTransferContext";
 import Sales from "../pages/Dashboard/Sales";
+import TransferLogs from "../pages/Dashboard/TransferLogs";
 
 const router = createBrowserRouter([ 
     {
@@ -43,6 +44,17 @@ const router = createBrowserRouter([
                 Component: () => (
                     <PageContainer title="Sales" description="Overview of all sales">
                         <Sales />
+                    </PageContainer>
+                )
+            },
+            {
+                path: 'transfer-logs',
+                Component: () => (
+                    <PageContainer
+                        title="Stock Transfer History"
+                        description="View all stock transfer records, including transferred items, and quantities"
+                    >
+                        <TransferLogs />
                     </PageContainer>
                 )
             }

@@ -28,9 +28,7 @@ const StockTransferSocketContextProvider: React.FC<StockTransferSocketContextPro
                     auth: { token: `Bearer ${accessToken}`}
                  });
 
-                newSocket.on("connect", () => {
-                    console.log("Connected to Socket");
-                });
+                newSocket.on("connect", () => {});
                 
                 setSocket(newSocket);
             } catch (error : any) {

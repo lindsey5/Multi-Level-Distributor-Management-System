@@ -1,11 +1,11 @@
 import type { PaginationParams, PaginationResponse } from "./pagination.type";
-import type { StockTransfer } from "./stock-transfer.type";
+import type { StockTransferLog } from "./stock-transfer.type";
 
 export interface DistributorNotification {
     _id: string;
     distributor_id: string;
     transfer_id: string;
-    stockTransfer: StockTransfer;
+    stockTransfer: StockTransferLog;
     message: string;
     status: 'read' | 'unread';
     createdAt: string;

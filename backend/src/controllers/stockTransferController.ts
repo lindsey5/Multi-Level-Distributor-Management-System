@@ -1,7 +1,8 @@
 import StockTransfer from "../models/StockTransfer";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
+import { AuthRequest } from "../types/types";
 
-export const getStockTransferLogs = async (req: Request, res: Response, next: NextFunction) => {
+export const getStockTransferLogs = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 10;
@@ -11,6 +12,8 @@ export const getStockTransferLogs = async (req: Request, res: Response, next: Ne
         const endDate = req.query.endDate ? new Date(req.query.endDate as string) : null;
 
         const pipeline: any[] = [
+        { $match: { receiver_id: req.user._id} },
+
         // Lookup receiver
         {
             $lookup: {
@@ -21,7 +24,6 @@ export const getStockTransferLogs = async (req: Request, res: Response, next: Ne
             },
         },
         { $unwind: { path: "$receiver" } },
-
         // Lookup sender
         {
             $lookup: {
@@ -103,10 +105,12 @@ export const getStockTransferLogs = async (req: Request, res: Response, next: Ne
 
         res.status(200).json({
             stockTransferLogs,
-            page,
-            limit,
-            totalPages: Math.ceil(total / limit),
-            total,
+            pagination: {
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit),
+                total,
+            }
         });
     } catch (err) {
         next(err);

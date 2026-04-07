@@ -55,7 +55,7 @@ const TableColumns = <T,>({ table }: { table: Table<T> }) => (
 type TableSkeletonProps = { columns: number; rows?: number };
 
 export const TableSkeleton = ({ columns, rows = 10 }: TableSkeletonProps) => (
-    <div className="min-h-0 flex-grow md:flex flex-col animate-pulse">
+    <div className="min-h-0 flex-grow flex flex-col animate-pulse">
         <div className="overflow-auto flex-grow">
             <table className="w-full text-sm border-collapse">
                 {/* Table Head */}
@@ -130,7 +130,7 @@ const CustomTable = <T,>({
     const cols = table.getAllColumns().length;
 
     return (
-        <div className="flex flex-col max-h-full">
+        <div className= "min-h-0 flex-grow flex flex-col">
             {isLoading ? (
                 <TableSkeleton columns={cols} />
             ) : rows.length < 1 ? (
@@ -139,7 +139,7 @@ const CustomTable = <T,>({
                 </div>
             ) : (
                 <>
-                    <div className="overflow-auto flex-grow border-x border-gray-300">
+                    <div className="overflow-auto min-h-0 flex-grow border-x border-gray-300">
                         <table className="w-full text-xs xl:text-sm border-collapse">
                             <TableColumns table={table} />
                             <TableRows table={table} />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from '../../services/authService';
 import { store } from '../features/store';
-import { logout, setAuth, setDistributor } from '../features/auth/authSlice';
+import { logout, setAuth } from '../features/auth/authSlice';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,12 +29,11 @@ axiosClient.interceptors.response.use(
 
             try {
                 const data = await authService.refreshAccessToken(refreshToken);
+                const distributor = data.distributor;
                 const { accessToken: newAccessToken, refreshToken: newRefreshToken } = data.token;
 
-                store.dispatch(setAuth({ accessToken: newAccessToken, refreshToken: newRefreshToken }))
-
-                store.dispatch(setDistributor(data.distributor))
-
+                store.dispatch(setAuth({ accessToken: newAccessToken, refreshToken: newRefreshToken, distributor }))
+                
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
                 return axiosClient(originalRequest);

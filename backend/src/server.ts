@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes";
 import distributorStockRoutes from "./routes/distributorStockRoutes";
 import distributorNotificationRoutes from "./routes/distributorNotificationRoutes";
 import distributorSaleRoutes from "./routes/distributorSaleRoutes";
+import stockTransferRoutes from "./routes/stockTransferRoutes";
 dotenv.config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/stocks', distributorStockRoutes);
 app.use('/api/distributor-notifications', distributorNotificationRoutes);
 app.use('/api/distributor-sales', distributorSaleRoutes);
+app.use('/api/stock-transfer-logs', stockTransferRoutes);
 
 connectDB();
 

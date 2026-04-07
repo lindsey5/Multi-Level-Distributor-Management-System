@@ -5,13 +5,11 @@ import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import type { DistributorSale } from "../../types/sale.type";
 import { formatDate, formatToPeso } from "../../utils/helpers";
 import CustomTable from "../../components/ui/Table";
-import TextField from "../../components/ui/Textfield";
-import { Search } from "lucide-react";
 import { useDebounce } from "../../hooks/useDebounce";
-import DateInput from "../../components/ui/DateInput";
+import SalesControls from "../../components/sales/SalesControls";
 
 export default function Sales () {
-    const [sorting] = useState<SortOption>({
+    const [sorting, setSorting] = useState<SortOption>({
         order: 'desc',
         sortBy: 'createdAt'
     });
@@ -71,28 +69,16 @@ export default function Sales () {
     ];
 
     return (
-        <div className="h-screen flex flex-col gap-5 m-5">
-            <div className="flex gap-3">
-            <div className="md:max-w-100">
-                <TextField 
-                    className="md:max-w-84"
-                    icon={<Search className="text-gray-400"/>}
-                    placeholder="Search by item name, sku..."
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-            </div>
-            <DateInput 
-                label="Start Date"
-                onChange={setStartDate}
-                value={startDate}
+        <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <SalesControls 
+                sorting={sorting}
+                setSorting={setSorting}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                setSearch={setSearch}
             />
-            <DateInput 
-                label="End Date"
-                onChange={setEndDate}
-                value={endDate}
-            />
-
-            </div>
             <CustomTable
                 isLoading={isFetching}
                 data={data?.distributorSales || []}

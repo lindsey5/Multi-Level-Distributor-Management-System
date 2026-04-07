@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "../utils/helpers";
-import { LayoutDashboard, DollarSign, Archive, FileText, Package, Users } from "lucide-react";
+import { LayoutDashboard, DollarSign, Archive, FileText, Users, Repeat } from "lucide-react";
 import type { MenuItem } from "../types/menu.type";
 import DistributorSidebar from "../components/distributor/DistributorSidebar";
 
@@ -10,7 +10,7 @@ export const MenuItems: MenuItem[] = [
     { label: "Sales", icon: <DollarSign size={18} />, path: "/distributor/sales" },
     { label: "Inventory", icon: <Archive size={18} />, path: "/distributor/inventory" },
     { label: "Commission Logs", icon: <FileText size={18} />, path: "/distributor/commission-logs" },
-    { label: "Stock Transfer Logs", icon: <Package size={18} />, path: "/distributor/transfer-logs" },
+    { label: "Transfer History", icon: <Repeat size={18} />, path: "/distributor/transfer-logs" },
     { label: "Recruit", icon: <Users size={18} />, path: "/distributor/recruit" },
 ];
 
@@ -19,7 +19,7 @@ export default function DistributorLayout () {
 
     return (
         <div className={cn(
-            "min-h-screen relative",
+            "w-full min-h-screen relative",
             collapsed ? "lg:pl-20" : "lg:pl-72"
         )}> 
             <DistributorSidebar 

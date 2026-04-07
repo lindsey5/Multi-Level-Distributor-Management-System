@@ -55,7 +55,7 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
         const { password: userPassword, _id, ...rest } = distributor.toObject();
         
         res.status(200).json({
-            admin: rest,
+            distributor: rest,
             token: {
                 accessToken: newAccessToken,
                 refreshToken: newRefreshToken,

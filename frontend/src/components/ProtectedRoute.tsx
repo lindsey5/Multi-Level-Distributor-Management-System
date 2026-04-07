@@ -1,5 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { type ReactNode } from 'react';
+import { type RootState } from '../lib/features/store';
+import { useSelector } from 'react-redux';
 
 type ProtectedRouteProps = {
     children: ReactNode;
@@ -12,18 +14,9 @@ export const ProtectedRoute = ({
     requireAuthentication,
     redirectTo = '/',
 }: ProtectedRouteProps) => {
-    const rootString = localStorage.getItem("persist:root");
-    let root = null;
-
-    if (rootString) root = JSON.parse(rootString);
-
-    const authString = root.auth;
-    let auth = null;
-
-    if(authString) auth = JSON.parse(authString)
-
+    const auth = useSelector((state : RootState) => state.auth);
+    
     const isAuth = !!(auth.accessToken && auth.distributor);
-
 
     if (requireAuthentication && !isAuth) {
         return <Navigate to={redirectTo} replace />;

@@ -54,11 +54,11 @@ export const PaginationControls = <T,>({ table, total }: PaginationControlsProps
         const right = Math.min(pageCount - 1, pageIndex + delta);
 
         for (let i = 0; i < pageCount; i++) {
-        if (i === 0 || i === pageCount - 1 || (i >= left && i <= right)) {
-            range.push(i);
-        } else if (range[range.length - 1] !== "...") {
-            range.push("...");
-        }
+            if (i === 0 || i === pageCount - 1 || (i >= left && i <= right)) {
+                range.push(i);
+            } else if (range[range.length - 1] !== "...") {
+                range.push("...");
+            }
         }
 
         return range;
@@ -68,25 +68,10 @@ export const PaginationControls = <T,>({ table, total }: PaginationControlsProps
     const endRow = Math.min((pageIndex + 1) * pageSize, total);
 
     return (
-        <div className="flex flex-col md:flex-row items-end md:items-center justify-between gap-4 mt-6">
-
+        <div className="flex flex-wrap items-center items-center justify-between gap-4 mt-6">
             <div className="flex items-center gap-5">
                 <div className="text-xs xl:text-sm text-gray-600">
                     Showing {startRow} - {endRow} of {total}
-                </div>
-                <div className="flex items-center gap-2 text-xs xl:text-sm">
-                    <span>Rows per page:</span>
-                    <select
-                        value={pageSize}
-                        onChange={(e) => table.setPageSize(Number(e.target.value))}
-                        className="border border-gray-300 rounded px-2 py-1"
-                    >
-                    {[5, 10, 20, 50, 100].map((size) => (
-                        <option key={size} value={size}>
-                        {size}
-                        </option>
-                    ))}
-                    </select>
                 </div>
             </div>
 
