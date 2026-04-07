@@ -17,7 +17,8 @@ export interface StockTransferLog {
     sender_id: string | null;
     receiver_id: string;
     sender?: Sender;
-    receiver?: Distributor
+    receiver?: Distributor;
+    createdAt: string;
 }
 
 export interface StockTransferItem {

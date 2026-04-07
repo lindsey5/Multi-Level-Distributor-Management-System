@@ -7,9 +7,11 @@ import { formatDate } from "../../utils/helpers";
 import type { StockTransferLog } from "../../types/stock-transfer.type";
 import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
-import TransferLogsControls from "../../components/transferLog/TransferLogsControls";
+import TransferLogsControls from "../../components/stockTransferLog/TransferLogsControls";
+import StockTransferItems from "../../components/stockTransferLog/StockTransferItems";
 
 export default function TransferLogs () {
+    const [stockTransfer, setStockTransfer] = useState<StockTransferLog | null>(null);
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     
     const [search, setSearch] = useState("");
@@ -53,7 +55,7 @@ export default function TransferLogs () {
         {
             header: 'Action',
             cell: ({ row }) => (
-                <Button className="px-2 py-1 ">
+                <Button className="px-2 py-1" onClick={() => setStockTransfer(row.original)}>
                     <Eye size={20}/>
                 </Button>
             )
@@ -63,6 +65,11 @@ export default function TransferLogs () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <StockTransferItems 
+                close={() => setStockTransfer(null)}
+                open={stockTransfer !== null}
+                stockTransferLog={stockTransfer}
+            />
             <TransferLogsControls 
                 startDate={startDate}
                 setStartDate={setStartDate}
