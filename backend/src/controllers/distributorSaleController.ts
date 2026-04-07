@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import Distributor from "../models/Distributor";
 import CommissionLog from "../models/CommissionLog";
 import DistributorStock from "../models/DistributorStock";
-import { match } from "node:assert";
+import { setEndDate, setStartDate } from "../utils/utils";
 
 export const createBulkDistributorSale = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
@@ -121,8 +121,8 @@ export const getDistributorSales = async (req: AuthRequest, res: Response, next:
         const order = req.query.order && String(req.query.order).toUpperCase() === "ASC" ? 1 : -1;
         const search = req.query.search?.toString() || "";
 
-        const startDate = req.query.startDate ? new Date(req.query.startDate as string) : null;
-        const endDate = req.query.endDate ? new Date(req.query.endDate as string) : null;
+        const startDate = req.query.startDate ? setStartDate(req.query.startDate as string) : null;
+        const endDate = req.query.endDate ? setEndDate(req.query.endDate as string) : null;
 
         const filter: any = { seller_id: req.user._id };
 

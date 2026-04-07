@@ -42,7 +42,7 @@ export default function StockTransferItems ({ open, close, stockTransferLog } : 
                         </div>
                 ))}
                 </div>
-                <h2 className="text-md font-semibold mt-4 mb-3">Transfer Log Details</h2>
+                <h2 className="text-md font-semibold mt-4 mb-3">Transfer Details</h2>
                 <div className="border border-gray-300 p-2 rounded-lg shadow-lg">
                     <p className="text-sm">Sent by: {`${stockTransferLog?.sender?.firstname} ${stockTransferLog?.sender?.lastname}`}</p>
                     <p className="text-sm">Date: {formatDate(stockTransferLog?.createdAt)}</p>

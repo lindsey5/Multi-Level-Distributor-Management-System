@@ -34,6 +34,16 @@ export default function SalesControls ({
     setEndDate,
     sorting
  } : SalesControlsProps) {
+
+    const clear = () => {
+        setStartDate('');
+        setEndDate('');
+        setSorting({ 
+            sortBy: 'createdAt',
+            order: 'desc'
+        })
+    }
+
     return (
         <div className="flex gap-3 items-center">
             <TextField 
@@ -54,13 +64,21 @@ export default function SalesControls ({
                         onChange={setEndDate}
                         value={endDate}
                     />
+                    <Dropdown 
+                        label="Sort"
+                        options={Object.keys(options).map(opt => ({ label: opt, value: opt }))}
+                        onChange={(value) => setSorting(options[value]) }
+                        value={getKeyByValue(options, sorting) || ""}
+                    />
                 </div>
-                <Dropdown 
-                    label="Sort"
-                    options={Object.keys(options).map(opt => ({ label: opt, value: opt }))}
-                    onChange={(value) => setSorting(options[value]) }
-                    value={getKeyByValue(options, sorting) || ""}
-                />
+                <div className="flex justify-end">
+                    <button
+                        className="cursor-pointer text-xs md:text-sm"
+                        onClick={clear}
+                    >
+                        Clear
+                    </button>
+                </div>
             </FiltersMenu>
         </div>
     )

@@ -18,6 +18,12 @@ export default function TransferLogsControls ({
     endDate,
     setEndDate,
 } : TransferLogsControlsProps) {
+
+    const clear = () => {
+        setStartDate('');
+        setEndDate('');
+    }
+
     return (
         <div className="flex items-center justify-between gap-5">
             <div className="flex-1 flex-0 md:max-w-100">
@@ -41,6 +47,12 @@ export default function TransferLogsControls ({
                         value={endDate}
                     />
                 </div>
+                <div className="flex justify-end">
+                    <button
+                        className="cursor-pointer text-xs md:text-sm mt-5"
+                        onClick={clear}
+                    >Clear</button>
+                </div>
             </FiltersMenu>
             <div className="hidden md:flex gap-3">
                 <DateInput 
@@ -53,6 +65,10 @@ export default function TransferLogsControls ({
                     onChange={setEndDate}
                     value={endDate}
                 />
+                <button
+                    className="cursor-pointer text-xs md:text-sm mt-5"
+                    onClick={clear}
+                >Clear</button>
             </div>
         </div>
     )

@@ -58,20 +58,6 @@ export const TableSkeleton = ({ columns, rows = 10 }: TableSkeletonProps) => (
     <div className="min-h-0 flex-grow flex flex-col animate-pulse">
         <div className="overflow-auto flex-grow">
             <table className="w-full text-sm border-collapse">
-                {/* Table Head */}
-                <thead>
-                    <tr>
-                    {Array.from({ length: columns }).map((_, idx) => (
-                        <th
-                            key={idx}
-                            className="h-6 pb-5 border-b border-gray-400"
-                        >
-                            <div className="h-4 rounded w-3/4 mx-auto bg-gray-400"></div>
-                        </th>
-                    ))}
-                    </tr>
-                </thead>
-
                 {/* Table Body */}
                 <tbody>
                     {Array.from({ length: rows }).map((_, rowIdx) => (
