@@ -25,7 +25,7 @@ export default function ProfileLayout() {
         <MenuButton
             icon={<Wallet size={20} />}
             label="Wallet Balance"
-            path="/distributor/profile/wallet-balance"
+            path="/distributor/profile/wallet-balance/withdraw"
         />
         <MenuButton
             icon={<Lock size={20} />}

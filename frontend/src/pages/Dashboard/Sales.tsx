@@ -70,6 +70,7 @@ export default function Sales () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <h1 className="block md:hidden text-gold font-bold text-lg">Your Sales</h1>
             <SalesControls 
                 sorting={sorting}
                 setSorting={setSorting}

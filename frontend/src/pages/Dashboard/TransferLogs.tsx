@@ -65,6 +65,7 @@ export default function TransferLogs () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <h1 className="block md:hidden text-gold font-bold text-lg">Stock Transfer History</h1>
             <StockTransferItems 
                 close={() => setStockTransfer(null)}
                 open={stockTransfer !== null}

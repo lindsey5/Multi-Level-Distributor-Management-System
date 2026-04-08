@@ -7,7 +7,7 @@ export const login = async (req : Request, res : Response, next : NextFunction) 
     try{
         const { email, password } = req.body;
 
-        const distributor = await Distributor.findOne({ email });
+        const distributor = await Distributor.findOne({ email, status: 'active' });
 
         if(!distributor) return res.status(404).json({ message: 'User not found.' });
 

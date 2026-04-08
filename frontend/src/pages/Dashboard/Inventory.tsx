@@ -86,7 +86,7 @@ export default function Inventory () {
     const handleClose = () => setShowModal(false);
 
     return (
-        <div className="h-screen flex flex-col gap-5 m-5">
+        <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
             <div className="relative flex justify-end">
                 <Button 
                     className="text-xs md:text-sm py-2 px-4 relative"

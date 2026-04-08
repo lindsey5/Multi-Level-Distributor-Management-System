@@ -10,6 +10,9 @@ import TransferLogs from "../pages/Dashboard/TransferLogs";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Profile from "../pages/Dashboard/Profile";
 import ProfileLayout from "../pages/ProfileLayout";
+import WalletBalance from "../pages/WalletBalanceLayout";
+import Withdraw from "../pages/Dashboard/Withdraw";
+import CommissionLogs from "../pages/Dashboard/CommissionLogs";
 
 const router = createBrowserRouter([ 
     {
@@ -45,7 +48,7 @@ const router = createBrowserRouter([
             {
                 path: 'sales',
                 Component: () => (
-                    <PageContainer title="Sales" description="Overview of all sales">
+                    <PageContainer title="Your Sales" description="View your sales history">
                         <Sales />
                     </PageContainer>
                 )
@@ -75,6 +78,20 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         Component: () => <Profile />
+                    },
+                    {
+                        path: 'wallet-balance',
+                        Component: () => <WalletBalance />,
+                        children: [
+                            {
+                                path: 'withdraw',
+                                Component: () => <Withdraw />
+                            },
+                            {
+                                path: 'commissions',
+                                Component: () => <CommissionLogs />
+                            }
+                        ]
                     }
                 ]
             }
