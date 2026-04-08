@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "../utils/helpers";
-import { LayoutDashboard, Archive, FileText, Users, Repeat, BarChart } from "lucide-react";
+import { LayoutDashboard, Archive, FileText, Repeat, BarChart, User, UserPlus } from "lucide-react";
 import type { MenuItem } from "../types/menu.type";
 import DistributorSidebar from "../components/distributor/DistributorSidebar";
 
@@ -9,12 +9,11 @@ export const MenuItems: MenuItem[] = [
     { label: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/distributor" },
     { label: "Sales", icon: <BarChart size={18} />, path: "/distributor/sales" },
     { label: "Inventory", icon: <Archive size={18} />, path: "/distributor/inventory" },
-    { label: "Commission Logs", icon: <FileText size={18} />, path: "/distributor/commission-logs" },
     { label: "Transfer History", icon: <Repeat size={18} />, path: "/distributor/transfer-logs" },
-    { label: "Recruit", icon: <Users size={18} />, path: "/distributor/recruit" },
+    { label: "Profile", icon: <User size={18} />, path: "/distributor/profile" },
 ];
 
-export default function DistributorLayout () {
+export default function DashboardLayout () {
     const [collapsed, setCollapsed] = useState(false);
 
     return (

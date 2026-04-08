@@ -23,6 +23,10 @@ const authSlice = createSlice({
             state.accessToken = action.payload.accessToken
         },
 
+        setDistributor(state, action: PayloadAction<{ distributor: Distributor }>) {
+            state.distributor = action.payload.distributor;
+        },
+
         logout(state) {
             state.accessToken = null;
             state.refreshToken = null;
@@ -31,7 +35,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout, setAuth } = authSlice.actions;
+export const { logout, setAuth, setDistributor } = authSlice.actions;
 
 const authReducer = authSlice.reducer
 

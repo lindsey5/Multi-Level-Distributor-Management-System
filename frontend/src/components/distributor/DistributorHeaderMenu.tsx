@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../lib/features/store";
 import HeaderMenu from "../ui/DropdownMenu";
 import { logout } from "../../lib/features/auth/authSlice";
-import { MenuItems } from "../../pages/DistributorLayout";
+import { MenuItems } from "../../pages/DashboardLayout";
 import NotificationBell from "../ui/NotificationBell";
 
 export default function DistributorHeaderMenu () {

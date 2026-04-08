@@ -2,12 +2,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "../pages/auth/Login";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import PageContainer from "../components/ui/PageContainer";
-import DistributorLayout from "../pages/DistributorLayout";
+import DashboardLayout from "../pages/DashboardLayout";
 import Inventory from "../pages/Dashboard/Inventory";
 import StockTransferSocketContextProvider from "../contexts/StockTransferContext";
 import Sales from "../pages/Dashboard/Sales";
 import TransferLogs from "../pages/Dashboard/TransferLogs";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import Profile from "../pages/Dashboard/Profile";
+import ProfileLayout from "../pages/ProfileLayout";
 
 const router = createBrowserRouter([ 
     {
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
         Component: () => (
             <StockTransferSocketContextProvider>
                 <ProtectedRoute requireAuthentication>
-                    <DistributorLayout />
+                    <DashboardLayout />
                 </ProtectedRoute>
             </StockTransferSocketContextProvider>
         ),
@@ -58,6 +60,23 @@ const router = createBrowserRouter([
                         <TransferLogs />
                     </PageContainer>
                 )
+            },
+            {
+                path: 'profile',
+                Component: () => (
+                    <PageContainer
+                        title="Profile"
+                        description="Manage your account"
+                    >
+                        <ProfileLayout />
+                    </PageContainer>
+                ),
+                children: [
+                    {
+                        index: true,
+                        Component: () => <Profile />
+                    }
+                ]
             }
         ]
     }

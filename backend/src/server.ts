@@ -8,6 +8,7 @@ import distributorStockRoutes from "./routes/distributorStockRoutes";
 import distributorNotificationRoutes from "./routes/distributorNotificationRoutes";
 import distributorSaleRoutes from "./routes/distributorSaleRoutes";
 import stockTransferRoutes from "./routes/stockTransferRoutes";
+import distributorRoutes from "./routes/distributorRoutes";
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/distributors', distributorRoutes);
 app.use('/api/stocks', distributorStockRoutes);
 app.use('/api/distributor-notifications', distributorNotificationRoutes);
 app.use('/api/distributor-sales', distributorSaleRoutes);

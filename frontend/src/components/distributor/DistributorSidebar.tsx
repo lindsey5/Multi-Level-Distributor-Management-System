@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import Sidebar from "../ui/Sidebar";
 import type { AppDispatch } from "../../lib/features/store";
-import { MenuItems } from "../../pages/DistributorLayout";
+import { MenuItems } from "../../pages/DashboardLayout";
 import { logout } from "../../lib/features/auth/authSlice";
 
 interface DistributorSidebarProps {

@@ -1,5 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { ChevronRight } from "lucide-react";
 import { cn } from "../../utils/helpers";
+import { Link, useLocation } from "react-router-dom";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
@@ -18,5 +20,31 @@ export default function Button({ children, className, ...props }: ButtonProps) {
         >
         {children}
         </button>
+    );
+}
+
+interface MenuButtonProps {
+    icon: React.ReactNode;
+    label: string;
+    path: string;
+}
+
+export function MenuButton({ icon, label, path }: MenuButtonProps) {
+    const pathname = useLocation().pathname;
+
+    return (
+        <Link
+            className={cn(
+                "py-3 px-4 flex justify-between items-center cursor-pointer hover:bg-gray-100",
+                pathname === path && 'bg-gray-200'
+            )}
+            to={path}
+        >
+            <div className="flex gap-2 items-center">
+                {icon}
+                <span className="text-sm">{label}</span>
+            </div>
+            <ChevronRight />
+        </Link>
     );
 }

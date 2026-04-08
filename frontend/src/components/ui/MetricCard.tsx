@@ -15,7 +15,7 @@ export default function MetricCard({ title, content, icon }: MetricCardProps) {
                     {content}
                 </span>
             </div>
-            <span className="text-white bg-black p-2 md:p-3 rounded-full">
+            <span className="md:block hidden text-white bg-black p-2 md:p-3 rounded-full">
                 {icon}
             </span>
         </Card>

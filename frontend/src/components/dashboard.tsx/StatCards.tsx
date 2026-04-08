@@ -1,4 +1,4 @@
-import { BarChartBig, TrendingUp } from "lucide-react";
+import { BarChartBig, Package, TrendingUp } from "lucide-react";
 import { useGetDistributorItemsSoldByPeriod, useGetDistributorSalesByPeriod } from "../../hooks/sale/use-get-sales-analytics.hook";
 import { formatToPeso } from "../../utils/helpers";
 import MetricCard, { MetricCardSkeleton } from "../ui/MetricCard";
@@ -68,7 +68,7 @@ export const DistributorItemsSoldToday = () => {
         <MetricCard 
             title="Items Sold Today"
             content={data?.totalQuantity.toString() || "0"}
-            icon={<TrendingUp size={20} />}
+            icon={<Package size={20} />}
         />
     )
 }
@@ -82,7 +82,7 @@ export const DistributorItemsSoldThisWeek = () => {
         <MetricCard 
             title="Items Sold This Week"
             content={data?.totalQuantity.toString() || "0"}
-            icon={<TrendingUp size={20} />}
+            icon={<Package size={20} />}
         />
     )
 }
@@ -96,7 +96,7 @@ export const DistributorItemsSoldThisMonth = () => {
         <MetricCard 
            title="Items Sold This Month"
             content={data?.totalQuantity.toString() || "0"}
-            icon={<TrendingUp size={20} />}
+            icon={<Package size={20} />}
         />
     )
 }
@@ -110,7 +110,7 @@ export const DistributorItemsSoldThisYear = () => {
         <MetricCard 
             title="Items Sold This Year"
             content={data?.totalQuantity.toString() || "0"}
-            icon={<TrendingUp size={20} />}
+            icon={<Package size={20} />}
         />
     )
 }

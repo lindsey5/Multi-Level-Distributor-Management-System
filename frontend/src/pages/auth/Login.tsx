@@ -5,14 +5,20 @@ import TextField from "../../components/ui/Textfield";
 import { LoginSchema, type LoginFormData } from "../../schemas/authSchema";
 import { useLogin } from "../../hooks/auth/use-login.hook";
 import Button from '../../components/ui/Button';
+import { type RootState } from '../../lib/features/store';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 export default function Login() {
+    const auth = useSelector((state : RootState) => state.auth);
     const loginMutation = useLogin();
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
         resolver: zodResolver(LoginSchema),
     });
 
     const onSubmit: SubmitHandler<LoginFormData> = (data) => loginMutation.mutate(data);
+
+    if(auth.distributor && auth.accessToken) return <Navigate to="/distributor" />
 
     return (
         <form 

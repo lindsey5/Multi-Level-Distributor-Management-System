@@ -31,22 +31,22 @@ export default function FiltersMenu({
 
     return (
         <div ref={menuRef} className={cn("relative", className)}>
-        <button
-            className="p-2 rounded-md"
-            onClick={() => setShow((prev) => !prev)}
-        >
-            <Filter size={20} />
-        </button>
+            <button
+                className="p-2 rounded-md"
+                onClick={() => setShow((prev) => !prev)}
+            >
+                <Filter size={20} />
+            </button>
 
-        <Card
-            className={cn(
-            "absolute right-0 mt-2 w-56 z-20 transition-all duration-200 ease-in",
-            show ? "opacity-100 visible" : "opacity-0 invisible",
-            containerStyle
-            )}
-        >
-            {children}
-        </Card>
+            <Card
+                className={cn(
+                "absolute right-0 top-8 mt-2 w-56 z-20 transition-all duration-200 ease-in",
+                show ? "opacity-100 visible" : "opacity-0 invisible",
+                containerStyle
+                )}
+            >
+                {children}
+            </Card>
         </div>
     );
 }
