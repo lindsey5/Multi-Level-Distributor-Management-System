@@ -3,7 +3,6 @@ import Dropdown from "../ui/Dropdown";
 import type { SortOption } from "../../types/types.type";
 import TextField from "../ui/Textfield";
 import { Search } from "lucide-react";
-import FiltersMenu from "../ui/FiltersMenu";
 import { getKeyByValue } from "../../utils/helpers";
 
 const options: Record<string, SortOption> = {
