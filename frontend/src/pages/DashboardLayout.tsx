@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "../utils/helpers";
-import { LayoutDashboard, Archive, FileText, Repeat, BarChart, User, UserPlus } from "lucide-react";
+import { LayoutDashboard, Archive, Repeat, BarChart, User, } from "lucide-react";
 import type { MenuItem } from "../types/menu.type";
 import DistributorSidebar from "../components/distributor/DistributorSidebar";
 

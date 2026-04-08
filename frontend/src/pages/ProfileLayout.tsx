@@ -1,4 +1,4 @@
-import { User, Wallet, Lock, LogOut, ChevronRight, MoreHorizontal, Repeat } from "lucide-react";
+import { User, Wallet, Lock, LogOut, ChevronRight, MoreHorizontal } from "lucide-react";
 import Card from "../components/ui/Card";
 import { MenuButton } from "../components/ui/Button";
 import { useDispatch, useSelector } from "react-redux";
