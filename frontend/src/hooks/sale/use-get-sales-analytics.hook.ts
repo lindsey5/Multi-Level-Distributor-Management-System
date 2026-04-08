@@ -29,7 +29,7 @@ export const useGetDistributorMonthlySales = (year: number = 2024) => (
     })
 )
 
-export const userGetDistributorItemsSoldPerMonth = (year: number = 2024) => (
+export const useGetDistributorItemsSoldPerMonth = (year: number = 2024) => (
         useQuery<GetDistributorItemsSoldPerMonthResponse, Error>({
         queryKey: [`distributor-sales/items-sold`, year],
         queryFn: () => saleService.getDistributorItemsSoldPerMonth(year),

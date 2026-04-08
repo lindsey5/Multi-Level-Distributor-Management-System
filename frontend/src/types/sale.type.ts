@@ -41,23 +41,19 @@ export interface GetDistributorSalesResponse extends PaginationResponse {
 export type Period = "today" | "this-week" | "this-month" | "this-year";
 
 export interface GetDistributorSalesByPeriodResponse {
-    success: boolean;
     sales: number;
 }
 
 export interface GetDistributorItemsSoldResponse {
-    success: boolean;
     totalQuantity: number;
 }
 
 export interface GetDistributorMonthlySalesResponse {
-    success: true;
     monthlySales: { month: string, totalSales: number }[];
     year: number;
 }
 
 export interface GetDistributorItemsSoldPerMonthResponse {
-    success: true;
     itemsSoldPerMonth: { month: string, totalQuantity: number }[];
     year: number;
 }

@@ -13,3 +13,8 @@ export interface GetCommissionLogsParams extends PaginationParams {}
 export interface GetCommissionLogsResponse extends PaginationResponse {
     commissionLogs: CommissionLog[];
 }
+
+export interface GetCommissionsPerMonthResponse {
+    commissionsPerMonth: { month: string, totalCommission: number }[];
+    year: number;
+}

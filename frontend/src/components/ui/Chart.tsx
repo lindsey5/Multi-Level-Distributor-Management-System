@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import Card from "./Card";
+import { formatToPeso as format } from "../../utils/helpers";
 
 ChartJS.register(
     LineElement,
@@ -25,9 +26,10 @@ interface ChartProps {
   title: string;
   labels: string[];
   values: number[];
+  formatToPeso: boolean;
 }
 
-export default function Chart({ title, labels, values }: ChartProps) {
+export default function Chart({ title, labels, values, formatToPeso = false }: ChartProps) {
     const getGradient = (ctx: any, chartArea: any) => {
         const gradient = ctx.createLinearGradient(
         0,
@@ -84,7 +86,7 @@ export default function Chart({ title, labels, values }: ChartProps) {
             padding: 10,
             displayColors: false,
             callbacks: {
-            label: (context: any) => `Value: ${context.raw}`,
+            label: (context: any) => `Value: ${formatToPeso ? format(Number(context.raw)) : context.raw}`,
             },
         },
         },

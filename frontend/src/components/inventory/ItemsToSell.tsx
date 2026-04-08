@@ -1,4 +1,4 @@
-import type { SetStateAction } from "react";
+import { useMemo, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
@@ -46,6 +46,14 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
     const handleRemove = (id: string) => {
         setItems(prev => prev.filter(item => item._id !== id));
     }
+
+    const totalAmount = useMemo(() => {
+        return items.reduce((total, item) => (item.price * item.quantity) + total, 0)
+    }, [items])
+
+    const commission = useMemo(() => {
+        return totalAmount * 0.05;
+    }, [totalAmount])
     
     return (
         <Modal className="max-w-[90vw] md:max-w-[50vw]" open={open} onClose={close}>
@@ -97,7 +105,14 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                     </div>
                 ))}
                 </div>
-                {items.length === 0 && <p className="w-full text-center">No Items</p>}
+                {items.length === 0 ? <p className="w-full text-center">No Items</p> : (
+                    <div className="flex justify-end">
+                        <div className="space-y-2 flex flex-col items-end">
+                            <p className="font-bold text-sm md:text-base">Commission: {formatToPeso(commission)}</p>
+                            <p className="font-bold text-sm md:text-base">Total: {formatToPeso(totalAmount)}</p>
+                        </div>
+                    </div>
+                )}
                 <div className="flex justify-end">
                     <Button
                         disabled={items.length === 0 || createSalesMutation.isPending}
