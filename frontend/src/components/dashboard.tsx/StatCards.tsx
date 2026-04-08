@@ -1,3 +1,4 @@
+import { BarChartBig, DollarSign, TrendingUp } from "lucide-react";
 import { useGetDistributorItemsSoldByPeriod, useGetDistributorSalesByPeriod } from "../../hooks/sale/use-get-sales-analytics.hook";
 import { formatToPeso } from "../../utils/helpers";
 import MetricCard, { MetricCardSkeleton } from "../ui/MetricCard";
@@ -11,6 +12,7 @@ export const DistributorSalesToday = () => {
         <MetricCard 
             title="Sales Today"
             content={formatToPeso(data?.sales || 0)}
+            icon={<BarChartBig size={20} />}
         />
     )
 }
@@ -24,6 +26,7 @@ export const DistributorSalesThisWeek = () => {
         <MetricCard 
             title="Sales This Week"
             content={formatToPeso(data?.sales || 0)}
+            icon={<BarChartBig size={20} />}
         />
     )
 }
@@ -37,6 +40,7 @@ export const DistributorSalesThisMonth = () => {
         <MetricCard 
             title="Sales This Month"
             content={formatToPeso(data?.sales || 0)}
+            icon={<BarChartBig size={20} />}
         />
     )
 }
@@ -50,6 +54,7 @@ export const DistributorSalesThisYear = () => {
         <MetricCard 
             title="Sales This Year"
             content={formatToPeso(data?.sales || 0)}
+            icon={<BarChartBig size={20} />}
         />
     )
 }
@@ -63,6 +68,7 @@ export const DistributorItemsSoldToday = () => {
         <MetricCard 
             title="Items Sold Today"
             content={data?.totalQuantity.toString() || "0"}
+            icon={<TrendingUp size={20} />}
         />
     )
 }
@@ -76,6 +82,7 @@ export const DistributorItemsSoldThisWeek = () => {
         <MetricCard 
             title="Items Sold This Week"
             content={data?.totalQuantity.toString() || "0"}
+            icon={<TrendingUp size={20} />}
         />
     )
 }
@@ -89,6 +96,7 @@ export const DistributorItemsSoldThisMonth = () => {
         <MetricCard 
            title="Items Sold This Month"
             content={data?.totalQuantity.toString() || "0"}
+            icon={<TrendingUp size={20} />}
         />
     )
 }
@@ -102,6 +110,7 @@ export const DistributorItemsSoldThisYear = () => {
         <MetricCard 
             title="Items Sold This Year"
             content={data?.totalQuantity.toString() || "0"}
+            icon={<TrendingUp size={20} />}
         />
     )
 }
