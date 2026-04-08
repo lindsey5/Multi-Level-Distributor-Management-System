@@ -40,10 +40,10 @@ export default function Chart({ title, labels, values, formatToPeso = false }: C
 
         gradient.addColorStop(
         0,
-        "rgba(0, 0, 0, 0.55)"
+        "#7494fd"
         );
 
-        gradient.addColorStop(1, "rgba(0, 0, 0, 0.2)");
+        gradient.addColorStop(1, "#465ba100")
 
         return gradient;
     };
@@ -52,12 +52,12 @@ export default function Chart({ title, labels, values, formatToPeso = false }: C
         datasets: [
         {
             data: values,
-            borderColor: "rgba(0, 0, 0, 0.55)",
+            borderColor: "#5e7cd4a2",
             borderWidth: 2,
-            tension: 0.4,
+            tension: 0.3,
             pointRadius: 3,
             pointHoverRadius: 4,
-            pointHoverBackgroundColor: "black",
+            pointHoverBackgroundColor: "#5b7ce9",
             fill: true, 
             backgroundColor: (context: any) => {
             const { ctx, chartArea } = context.chart;

@@ -13,6 +13,9 @@ export const DistributorSalesToday = () => {
             title="Sales Today"
             content={formatToPeso(data?.sales || 0)}
             icon={<BarChartBig size={20} />}
+            bgColor="bg-red-100"
+            iconBgColor="bg-red-600"
+            iconColor="text-white"
         />
     )
 }
@@ -27,6 +30,9 @@ export const DistributorSalesThisWeek = () => {
             title="Sales This Week"
             content={formatToPeso(data?.sales || 0)}
             icon={<BarChartBig size={20} />}
+            bgColor="bg-purple-200"
+            iconBgColor="bg-purple-600"
+            iconColor="text-white"
         />
     )
 }
@@ -41,6 +47,9 @@ export const DistributorSalesThisMonth = () => {
             title="Sales This Month"
             content={formatToPeso(data?.sales || 0)}
             icon={<BarChartBig size={20} />}
+            bgColor="bg-yellow-100"
+            iconBgColor="bg-yellow-600"
+            iconColor="text-white"
         />
     )
 }
@@ -55,6 +64,9 @@ export const DistributorSalesThisYear = () => {
             title="Sales This Year"
             content={formatToPeso(data?.sales || 0)}
             icon={<BarChartBig size={20} />}
+            bgColor="bg-green-100"
+            iconBgColor="bg-green-600"
+            iconColor="text-white"
         />
     )
 }
@@ -69,6 +81,9 @@ export const DistributorItemsSoldToday = () => {
             title="Items Sold Today"
             content={data?.totalQuantity.toString() || "0"}
             icon={<Package size={20} />}
+            bgColor="bg-red-100"
+            iconBgColor="bg-red-600"
+            iconColor="text-white"
         />
     )
 }
@@ -83,6 +98,9 @@ export const DistributorItemsSoldThisWeek = () => {
             title="Items Sold This Week"
             content={data?.totalQuantity.toString() || "0"}
             icon={<Package size={20} />}
+            bgColor="bg-purple-200"
+            iconBgColor="bg-purple-600"
+            iconColor="text-white"
         />
     )
 }
@@ -97,6 +115,9 @@ export const DistributorItemsSoldThisMonth = () => {
            title="Items Sold This Month"
             content={data?.totalQuantity.toString() || "0"}
             icon={<Package size={20} />}
+            bgColor="bg-yellow-100"
+            iconBgColor="bg-yellow-600"
+            iconColor="text-white"
         />
     )
 }
@@ -111,6 +132,9 @@ export const DistributorItemsSoldThisYear = () => {
             title="Items Sold This Year"
             content={data?.totalQuantity.toString() || "0"}
             icon={<Package size={20} />}
+            bgColor="bg-green-100"
+            iconBgColor="bg-green-600"
+            iconColor="text-white"
         />
     )
 }
