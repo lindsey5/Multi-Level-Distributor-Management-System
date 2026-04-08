@@ -28,25 +28,13 @@ interface ChartProps {
 }
 
 export default function Chart({ title, labels, values }: ChartProps) {
-    const getGradient = (ctx: any, chartArea: any) => {
-        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-        gradient.addColorStop(0, "rgba(166, 124, 82, 0.8)");
-        gradient.addColorStop(1, "rgba(212, 175, 55, 0)");
-        return gradient;
-    };
 
     const data = {
         labels,
         datasets: [
         {
             data: values,
-            borderColor: "#c2864a",
-            backgroundColor: (context: any) => {
-            const { ctx, chartArea } = context.chart;
-            if (!chartArea) return;
-            return getGradient(ctx, chartArea);
-            },
-            fill: true,
+            borderColor: "black",
             borderWidth: 2,
             tension: 0.4,
             pointRadius: 3,
@@ -80,12 +68,11 @@ export default function Chart({ title, labels, values }: ChartProps) {
         },
         scales: {
         x: {
-            ticks: { color: "#c2864a", maxRotation: 0, minRotation: 0 },
+            ticks: { maxRotation: 0, minRotation: 0 },
             grid: { display: false },
         },
         y: {
             ticks: {
-            color: "#c2864a",
             callback: (value: any) => (window.innerWidth < 768 ? "" : value),
             },
             grid: { color: "rgba(0,0,0,0.08)" },
@@ -94,8 +81,8 @@ export default function Chart({ title, labels, values }: ChartProps) {
     };
 
     return (
-        <Card className="w-full h-[280px] md:h-[500px] p-2 md:p-5">
-            <h2 className="text-gold text-sm sm:text-base md:text-lg font-bold mb-4 sm:mb-8">
+        <Card className="w-full h-[300px] md:h-[500px] p-3 md:p-5">
+            <h2 className="text-sm sm:text-base md:text-lg font-bold mb-4 sm:mb-8">
                 {title}
             </h2>
 
