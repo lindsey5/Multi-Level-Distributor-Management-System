@@ -136,9 +136,9 @@ export default function NotificationBell() {
             {/* Bell Button */}
             <button
                 onClick={() => setShowDropdown(prev => !prev)}
-                className="cursor-pointer flex w-10 h-10 rounded-full bg-black items-center justify-center text-white font-semibold relative"
+                className="cursor-pointer flex w-8 h-8 md:w-10 md:h-10 rounded-full bg-black items-center justify-center text-white font-semibold relative"
             >
-                <Bell size={20} />
+                <Bell className="text-md md:text-lg" />
             </button>
             {unread > 0 && (
                 <span className="absolute -top-1 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">

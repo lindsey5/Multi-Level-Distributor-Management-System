@@ -9,8 +9,8 @@ export default function MetricCard({ title, content }: MetricCardProps) {
     return (
         <Card className="p-3 md:p-5">
             <div className="flex flex-col gap-2">
-                <span className="text-gold text-xs md:text-md font-bold">{title}</span>
-                <h1 className="text-sm sm:text-lg lg:text-2xl">
+                <span className="text-gold text-xs md:text-base font-bold">{title}</span>
+                <h1 className="text-sm sm:text-lg">
                     {content}
                 </h1>
             </div>

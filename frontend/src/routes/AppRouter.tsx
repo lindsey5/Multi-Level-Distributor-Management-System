@@ -53,7 +53,7 @@ const router = createBrowserRouter([
                 Component: () => (
                     <PageContainer
                         title="Stock Transfer History"
-                        description="View all stock transfer records, including transferred items, and quantities"
+                        description="View all stock transfer records"
                     >
                         <TransferLogs />
                     </PageContainer>
