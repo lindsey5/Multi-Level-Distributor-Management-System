@@ -28,18 +28,40 @@ interface ChartProps {
 }
 
 export default function Chart({ title, labels, values }: ChartProps) {
+    const getGradient = (ctx: any, chartArea: any) => {
+        const gradient = ctx.createLinearGradient(
+        0,
+        chartArea.top,
+        0,
+        chartArea.bottom
+        );
 
+        gradient.addColorStop(
+        0,
+        "rgba(0, 0, 0, 0.55)"
+        );
+
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0.2)");
+
+        return gradient;
+    };
     const data = {
         labels,
         datasets: [
         {
             data: values,
-            borderColor: "black",
+            borderColor: "rgba(0, 0, 0, 0.55)",
             borderWidth: 2,
             tension: 0.4,
             pointRadius: 3,
             pointHoverRadius: 4,
-            pointHoverBackgroundColor: "#c2864a",
+            pointHoverBackgroundColor: "black",
+            fill: true, 
+            backgroundColor: (context: any) => {
+            const { ctx, chartArea } = context.chart;
+            if (!chartArea) return;
+            return getGradient(ctx, chartArea);
+            },
         },
         ],
     };
@@ -69,7 +91,11 @@ export default function Chart({ title, labels, values }: ChartProps) {
         scales: {
         x: {
             ticks: { maxRotation: 0, minRotation: 0 },
-            grid: { display: false },
+            grid: {
+                drawTicks: true, // only draw ticks on y-axis
+                drawBorder: false, // optional: hide border line
+                color: "rgba(0,0,0,0.08)",
+            },
         },
         y: {
             ticks: {
