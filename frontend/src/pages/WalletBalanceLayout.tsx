@@ -1,4 +1,3 @@
-import Card from "../components/ui/Card";
 import { cn, formatToPeso } from "../utils/helpers";
 import { NavLink, Outlet } from "react-router-dom";
 import { Wallet } from "lucide-react";
