@@ -1,4 +1,4 @@
-import { BarChartBig, DollarSign, TrendingUp } from "lucide-react";
+import { BarChartBig, TrendingUp } from "lucide-react";
 import { useGetDistributorItemsSoldByPeriod, useGetDistributorSalesByPeriod } from "../../hooks/sale/use-get-sales-analytics.hook";
 import { formatToPeso } from "../../utils/helpers";
 import MetricCard, { MetricCardSkeleton } from "../ui/MetricCard";
