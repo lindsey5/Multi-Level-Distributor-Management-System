@@ -33,7 +33,7 @@ export default function Dropdown({
                 value={value}
                 onChange={(e) => onChange && onChange(e.target.value)}
                 className={cn(
-                    "w-full px-3 py-2 border rounded-sm transition-all",
+                    "w-full px-2 py-1 md:px-3 md:py-2 border rounded-sm transition-all",
                     disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white",
                     error ? "border-red-500 focus:border-red-500" : "border-[var(--border-ui)]"
                 )}

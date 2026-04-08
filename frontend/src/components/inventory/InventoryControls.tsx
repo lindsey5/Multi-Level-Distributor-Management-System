@@ -28,7 +28,7 @@ export default function InventoryControls ({
 } : InventoryControlsProps) {
 
     return (
-        <div className="flex items-center justify-between gap-5">
+        <div className="flex items-end justify-between gap-5">
             <div className="flex-1 flex-0 md:max-w-100">
                 <TextField 
                     className="md:max-w-84"
@@ -37,18 +37,8 @@ export default function InventoryControls ({
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <FiltersMenu className="md:hidden">
-                <Dropdown 
-                    label="Sort"
-                    options={Object.keys(options).map(opt => ({ label: opt, value: opt }))}
-                    onChange={(value) => 
-                        setSorting(options[value])
-                    }
-                    value={getKeyByValue(options, sorting) || ""}
-                />
-            </FiltersMenu>
             <Dropdown 
-                className="max-w-60 w-[40%] hidden md:block"
+                className="max-w-60 w-[40%]"
                 label="Sort"
                 options={Object.keys(options).map(opt => ({ label: opt, value: opt }))}
                 onChange={(value) => setSorting(options[value]) }

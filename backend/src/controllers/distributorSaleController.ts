@@ -7,6 +7,7 @@ import Distributor from "../models/Distributor";
 import CommissionLog from "../models/CommissionLog";
 import DistributorStock from "../models/DistributorStock";
 import { setEndDate, setStartDate } from "../utils/utils";
+import DistributorSaleService from "../services/DistributorSaleService";
 
 export const createBulkDistributorSale = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
@@ -176,6 +177,171 @@ export const getDistributorSales = async (req: AuthRequest, res: Response, next:
         });
 
     } catch (err) {
+        next(err);
+    }
+}
+
+export const getDistributorSalesToday = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const sales = await DistributorSaleService.getDistributorSales({
+            distributorId: distributor?.id,
+            period: "today"
+        })
+
+        res.status(200).json({ success: true, sales })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorSalesThisMonth = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const sales = await DistributorSaleService.getDistributorSales({
+            distributorId: distributor?.id,
+            period: "thisMonth"
+        })
+
+        res.status(200).json({ success: true, sales })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorSalesThisWeek = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const sales = await DistributorSaleService.getDistributorSales({
+            distributorId: distributor?.id,
+            period: "thisWeek"
+        })
+
+        res.status(200).json({ success: true, sales })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorSalesThisYear = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const sales = await DistributorSaleService.getDistributorSales({
+            distributorId: distributor?.id,
+            period: "thisYear"
+        })
+
+        res.status(200).json({ success: true, sales })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorItemsSoldToday = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const totalQuantity = await DistributorSaleService.getDistributorItemsSold({
+            distributorId: distributor?.id,
+            period: 'today'
+        })
+        
+        res.status(200).json({ success: true, totalQuantity })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorItemsSoldThisWeek = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const totalQuantity = await DistributorSaleService.getDistributorItemsSold({
+            distributorId: distributor?.id,
+            period: 'thisWeek'
+        })
+        
+        res.status(200).json({ success: true, totalQuantity })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorItemsSoldThisMonth = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const totalQuantity = await DistributorSaleService.getDistributorItemsSold({
+            distributorId: distributor?.id,
+            period: 'thisMonth'
+        })
+        
+        res.status(200).json({ success: true, totalQuantity })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorItemsSoldThisYear = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        const totalQuantity = await DistributorSaleService.getDistributorItemsSold({
+            distributorId: distributor?.id,
+            period: 'thisYear'
+        })
+        
+        res.status(200).json({ success: true, totalQuantity })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorMonthlySales = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const year = Number(req.query.year) || new Date().getFullYear();
+        const distributor = await Distributor.findById(req.user._id);
+
+        const monthlySales = await DistributorSaleService.getMonthlySalesByYear(year, distributor?.id);
+
+        res.status(200).json({
+            success: true,
+            monthlySales,
+            year
+        })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getDistributorItemsSoldPerMonth = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const year = Number(req.query.year) || new Date().getFullYear();
+        const distributor = await Distributor.findById(req.user._id);
+
+
+        const itemsSoldPerMonth = await DistributorSaleService.getItemsSoldPerMonthByYear(year, distributor?.id);
+
+        res.status(200).json({
+            success: true,
+            itemsSoldPerMonth,
+            year
+        })
+
+    }catch(err){
         next(err);
     }
 }

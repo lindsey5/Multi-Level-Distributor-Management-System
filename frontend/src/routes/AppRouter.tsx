@@ -7,6 +7,7 @@ import Inventory from "../pages/Dashboard/Inventory";
 import StockTransferSocketContextProvider from "../contexts/StockTransferContext";
 import Sales from "../pages/Dashboard/Sales";
 import TransferLogs from "../pages/Dashboard/TransferLogs";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 const router = createBrowserRouter([ 
     {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
                 index: true,
                 Component: () => (
                     <PageContainer title="Dashboard">
-                        <></>
+                        <Dashboard />
                     </PageContainer>
                 )
             },
