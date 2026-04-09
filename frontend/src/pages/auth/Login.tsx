@@ -23,9 +23,9 @@ export default function Login() {
     return (
         <form 
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-main h-screen flex items-center justify-center"
+            className="h-screen flex items-center justify-center"
         >
-            <Card className="flex flex-col w-full max-w-sm px-8 py-12">
+            <Card className="flex flex-col w-[95vw] md:w-full md:max-w-sm px-8 py-12">
                 <div className="flex items-center gap-4 mb-5">
                     <div className="w-18 h-18 rounded-full p-2 bg-gray-800 flex items-center justify-center">
                         <img src="/logo.png" alt="logo" />

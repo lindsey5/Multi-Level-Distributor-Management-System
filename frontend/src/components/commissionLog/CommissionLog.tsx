@@ -25,7 +25,7 @@ export default function CommissionLogModal ({ open, close, commissionLog } : Com
             open={open}
             onClose={close}
         >
-            <Card className="space-y-5 max-h-[60vh] overflow-y-auto">
+            <Card className="space-y-5">
                 <h1 className="text-md md:text-lg font-bold">Commission Details</h1>
                 <div className="border border-gray-300 p-3 rounded-lg shadow-md">
                     <h1 className="font-bold text-sm md:text-base mb-2">Seller</h1>
@@ -33,7 +33,7 @@ export default function CommissionLogModal ({ open, close, commissionLog } : Com
                     <p className="text-xs md:text-sm">{commissionLog?.sales[0].seller.email}</p>
                     <p className="text-xs md:text-sm font-semibold">ID: {commissionLog?.sales[0].seller.distributor_id}</p>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-[40vh] overflow-y-auto">
                 {commissionLog?.sales.map(sale => (
                     <div className="flex gap-3">
                         <img className="w-20 h-20" src={sale.variant.image_url} alt="" />
@@ -53,13 +53,13 @@ export default function CommissionLogModal ({ open, close, commissionLog } : Com
                         </p>
 
                         <p className="text-xs md:text-sm">
-                            <span className="font-semibold">Deduction (5%):</span>{" "}
-                            {formatToPeso(totalSales)} x 5%
+                            <span className="font-semibold">{commissionLog?.receiver_id === commissionLog?.sales[0].seller_id ? "5%" : "2%"} of Total Sales:</span>{" "}
+                            {formatToPeso(totalSales)} x {commissionLog?.receiver_id === commissionLog?.sales[0].seller_id ? "5%" : "2%"}
                         </p>
 
                         <p className="font-bold">
                             <span>Your Commission:</span>{" "}
-                            {formatToPeso(totalSales * 0.05)}
+                            {formatToPeso(totalSales * (commissionLog?.receiver_id === commissionLog?.sales[0].seller_id ? 0.05 : 0.02))}
                         </p>
                         <Button
                             className="py-2 px-6 mt-2"

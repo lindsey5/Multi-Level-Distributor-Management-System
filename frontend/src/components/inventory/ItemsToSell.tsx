@@ -153,7 +153,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                         disabled={items.length === 0 || createSalesMutation.isPending}
                         className="py-2 px-6 mt-2"
                         onClick={handleSellItems}
-                    >Sell Items</Button>
+                    >{createSalesMutation.isPending ? "Loading..." : "Sell Items"}</Button>
                 </div>
             </Card>
         </Modal>

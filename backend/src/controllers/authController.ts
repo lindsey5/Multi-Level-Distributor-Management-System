@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import Distributor from "../models/Distributor";
 import { generateAccessToken, generateRefreshToken } from "../utils/auth";
 import jwt from "jsonwebtoken";
+import { AuthRequest } from "../types/types";
 
 export const login = async (req : Request, res : Response, next : NextFunction) => {
     try{
@@ -65,3 +66,29 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
         next(err);
     }
 };
+
+export const changePassword = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const { currentPassword, newPassword } = req.body;
+
+        if(!currentPassword || !newPassword){
+            return res.status(400).json({ message: "Missing required password fields" });
+        }
+
+        const distributor = await Distributor.findById(req.user._id);
+
+        if(!distributor) return res.status(404).json({ message: "User not found" });
+
+        const isMatch = distributor.matchPassword(currentPassword);
+
+        if (!isMatch)  return res.status(401).json({ message: "Incorrect current password." });
+
+        distributor.password = newPassword;
+        await distributor.save();
+
+        res.status(200).json({ message: "Password successfully changed" })
+
+    }catch(err) {
+        next(err);
+    }
+}

@@ -14,6 +14,7 @@ import WalletBalance from "../pages/WalletBalanceLayout";
 import Withdraw from "../pages/Dashboard/Withdraw";
 import CommissionLogs from "../pages/Dashboard/CommissionLogs";
 import UserNotificationSocketContextProvider from "../contexts/UserNotificationSocket";
+import ChangePassword from "../pages/Dashboard/ChangePassword";
 
 const router = createBrowserRouter([ 
     {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
                                 Component: () => <CommissionLogs />
                             }
                         ]
+                    },
+                    {
+                        path: 'change-password',
+                        Component: () => <ChangePassword />
                     }
                 ]
             }

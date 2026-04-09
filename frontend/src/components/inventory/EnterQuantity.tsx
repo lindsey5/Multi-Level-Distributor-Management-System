@@ -72,7 +72,12 @@ export default function EnterQuantity({ setItems, open, close, variant }: EnterQ
                     label="Enter Quantity to Sell"
                     placeholder="Enter quantity"
                     type="number"
-                    value={quantity?.toString()}
+                    value={quantity ? quantity.toString() : ""}
+                    onKeyDown={(e) => {
+                        if (e.key === "." || e.key === "," || e.key === "e" || e.key === "-") {
+                        e.preventDefault();
+                        }
+                    }}
                     onChange={(e) => setQuantity(Math.floor(Number(e.target.value)))}
                     error={errorMessage}
                 />

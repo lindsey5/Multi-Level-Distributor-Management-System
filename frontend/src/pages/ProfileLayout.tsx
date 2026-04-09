@@ -61,7 +61,7 @@ export default function ProfileLayout() {
 
     return (
         <div className="md:flex items-start gap-5 p-2 md:p-5 space-y-4 md:space-y-0">
-            <Card className="md:w-80 px-0 py-3 relative">
+            <Card className="md:w-80 lg:w-100 px-0 py-3 relative">
                 <div className="flex items-center justify-between px-5 py-3">
                     <div className="flex items-start gap-3">
                         <div className="md:block hidden p-3 bg-black rounded-full text-white">
