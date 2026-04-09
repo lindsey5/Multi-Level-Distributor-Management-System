@@ -1,7 +1,7 @@
 import { Bell, X } from "lucide-react";
 import { useGetNotifications } from "../../hooks/notification/use-get-notifications.hook";
 import { useState, useEffect, useContext } from "react";
-import { cn, formatToPeso, minutesAgo } from "../../utils/helpers";
+import { cn, formatToPeso, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
 import { StockTransferSocketContext } from "../../contexts/StockTransferContext";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
@@ -169,7 +169,7 @@ export default function NotificationBell() {
                                     <p className={cn("text-xs break-words", notification.status === 'unread' && 'font-bold')}>
                                         {notification.message}
                                     </p>
-                                    <span className="text-xs mt-1 text-gray-400">{minutesAgo(notification.createdAt)}</span>
+                                    <span className="text-xs mt-1 text-gray-400">{timeAgo(notification.createdAt)}</span>
                                 </div>
                             </div>
                         </div>
