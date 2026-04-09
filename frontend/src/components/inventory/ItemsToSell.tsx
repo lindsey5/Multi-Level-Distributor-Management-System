@@ -1,4 +1,4 @@
-import { useMemo, type SetStateAction } from "react";
+import { useContext, useMemo, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
@@ -7,6 +7,9 @@ import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { useCreateSales } from "../../hooks/sale/use-create-sales.hook";
 import { promiseToast } from "../../utils/sileo";
+import { UserNotificationSocketContext } from "../../contexts/UserNotificationSocket";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../lib/features/store";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
@@ -17,6 +20,8 @@ interface ItemsToSellProps{
 
 export default function ItemsToSell ({ open, close, items, setItems } : ItemsToSellProps) {
     const createSalesMutation = useCreateSales();
+    const { distributor } = useSelector((store : RootState) => store.auth);
+    const { socket } = useContext(UserNotificationSocketContext);
 
     const handleSellItems = async () => {
         const isConfirmed = confirm(`Are you sure you want to sell ${items.length} item(s)?`);
@@ -29,7 +34,16 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
             total_amount: item.quantity * item.price
         }));
 
-        await promiseToast(createSalesMutation.mutateAsync({ data: itemsToSell }));
+        const data = await promiseToast(createSalesMutation.mutateAsync({ data: itemsToSell }));
+
+        if(socket){
+            socket.emit("send-sale-notification", {
+                distributor_id: data.sales[0].seller_id,
+                distributor_name: distributor?.distributor_name,
+                sales: data.sales
+            })
+        }
+
         setItems([]);
     };
 
@@ -56,7 +70,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
     }, [totalAmount])
     
     return (
-        <Modal className="max-w-[90vw] md:max-w-[50vw]" open={open} onClose={close}>
+        <Modal className="max-w-[90vw] md:max-w-120" open={open} onClose={close}>
             <Card className="flex flex-col gap-3">
                 <div className="flex justify-between mb-2">
                     <h1 className="font-bold">Items to Sell</h1>

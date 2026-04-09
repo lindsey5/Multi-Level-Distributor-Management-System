@@ -13,6 +13,7 @@ import ProfileLayout from "../pages/ProfileLayout";
 import WalletBalance from "../pages/WalletBalanceLayout";
 import Withdraw from "../pages/Dashboard/Withdraw";
 import CommissionLogs from "../pages/Dashboard/CommissionLogs";
+import UserNotificationSocketContextProvider from "../contexts/UserNotificationSocket";
 
 const router = createBrowserRouter([ 
     {
@@ -23,9 +24,11 @@ const router = createBrowserRouter([
         path: '/distributor',
         Component: () => (
             <StockTransferSocketContextProvider>
-                <ProtectedRoute requireAuthentication>
-                    <DashboardLayout />
-                </ProtectedRoute>
+                <UserNotificationSocketContextProvider>
+                    <ProtectedRoute requireAuthentication>
+                        <DashboardLayout />
+                    </ProtectedRoute>
+                </UserNotificationSocketContextProvider>
             </StockTransferSocketContextProvider>
         ),
         children: [

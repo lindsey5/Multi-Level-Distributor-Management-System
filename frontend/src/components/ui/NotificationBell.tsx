@@ -91,11 +91,6 @@ export default function NotificationBell() {
             }
         };
         document.addEventListener('click', handleClickOutside);
-        return () => {
-            socket?.off('stockTransfer');
-            document.removeEventListener('click', handleClickOutside);
-        }
-
     }, [data])
 
     useEffect(() => {

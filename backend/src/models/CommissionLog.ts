@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface CommissionLogAttributes extends Document {
-  receiver_id: mongoose.Types.ObjectId;
-  commission_rate: number;
-  commission_amount: number;
+    receiver_id: mongoose.Types.ObjectId;
+    commission_rate: number;
+    commission_amount: number;
 }
 
 const CommissionLogSchema: Schema<CommissionLogAttributes> = new Schema(
