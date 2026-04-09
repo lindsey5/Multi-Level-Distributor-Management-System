@@ -22,6 +22,7 @@ export const PasswordSchema = z.object({
     password: z
         .string()
         .min(8, "Password must be at least 8 characters")
+        .max(100, "Password must not exceed 100 characters")
         .regex(/[A-Z]/, "Must include at least 1 uppercase letter")
         .regex(/[a-z]/, "Must include at least 1 lowercase letter")
         .regex(/[0-9]/, "Must include at least 1 number")
