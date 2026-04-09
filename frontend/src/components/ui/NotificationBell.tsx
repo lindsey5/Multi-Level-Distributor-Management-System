@@ -65,7 +65,7 @@ export default function NotificationBell() {
     const [showModal, setShowModal] = useState(false);
     const [items, setItems] = useState<StockTransferItem[] | null>(null);
     const { socket } = useContext(StockTransferSocketContext); 
-    const limit = 50;
+    const limit = 10;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);
     const [unread, setUnread] = useState(0);
@@ -175,13 +175,16 @@ export default function NotificationBell() {
                         </div>
                     ))}
                     </div>
-                    {!(page >= (data?.pagination.totalPages || 1)) && <div className="flex justify-center mt-2">
+                    <div className={cn(
+                        "justify-center mt-2",
+                        !(page >= (data?.pagination.totalPages || 1)) ? 'flex' : 'hidden'
+                    )}>
                         <button
                             disabled={isFetching}
                             className="disabled:cursor-not-allowed cursor-pointer bg-black text-white px-3 py-1 text-xs rounded-md"
                             onClick={() => setPage(prev => prev + 1)}
                         >{isFetching ? 'Loading...' : 'See more'}</button>
-                    </div>}
+                    </div>
                 </div>
             )}
         </div>
