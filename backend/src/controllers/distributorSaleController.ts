@@ -79,7 +79,12 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
                 parent_distributor.set({ wallet_balance: newBalance})
                 await parent_distributor.save({ session });
 
-                await CommissionLog.create([{ receiver_id: parent_distributor._id, commission_rate: parentRate * 100, commission_amount: parentCommission }],{ session });
+                await CommissionLog.create([{ 
+                    receiver_id: parent_distributor._id, 
+                    sale_ids: distributorSales.map(sale => sale._id),
+                    commission_rate: parentRate * 100, 
+                    commission_amount: parentCommission 
+                }],{ session });
             }
         }
         const newBalance = distributor.wallet_balance + distributorCommission;
@@ -89,6 +94,7 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
         await CommissionLog.create(
         [
             {
+                sale_ids: distributorSales.map(sale => sale._id),
                 receiver_id: req.user._id,
                 commission_rate: distributor.commission_rate,
                 commission_amount: distributorCommission,

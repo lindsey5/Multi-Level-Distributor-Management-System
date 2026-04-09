@@ -11,6 +11,13 @@ export const getCommissionLogs = async (req: AuthRequest, res: Response, next: N
 
         const [commissionLogs, total] = await Promise.all([
             CommissionLog.find({ receiver_id: req.user._id })
+            .populate({
+                path: "sales",
+                populate: [
+                    { path: "variant" },
+                    { path: "seller" }
+                ]
+            })
             .limit(limit)
             .skip(skip)
             .sort({ createdAt: -1 }),

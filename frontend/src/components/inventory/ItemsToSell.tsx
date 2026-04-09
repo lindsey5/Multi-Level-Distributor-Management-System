@@ -8,8 +8,10 @@ import Button from "../ui/Button";
 import { useCreateSales } from "../../hooks/sale/use-create-sales.hook";
 import { promiseToast } from "../../utils/sileo";
 import { UserNotificationSocketContext } from "../../contexts/UserNotificationSocket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../lib/features/store";
+import { authService } from "../../services/authService";
+import { setAuth } from "../../lib/features/auth/authSlice";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
@@ -20,7 +22,8 @@ interface ItemsToSellProps{
 
 export default function ItemsToSell ({ open, close, items, setItems } : ItemsToSellProps) {
     const createSalesMutation = useCreateSales();
-    const { distributor } = useSelector((store : RootState) => store.auth);
+    const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
+    const dispatch = useDispatch();
     const { socket } = useContext(UserNotificationSocketContext);
 
     const handleSellItems = async () => {
@@ -37,6 +40,14 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
         const data = await promiseToast(createSalesMutation.mutateAsync({ data: itemsToSell }));
 
         if(socket){
+            const response = await authService.refreshAccessToken(refreshToken || "");
+
+            dispatch(setAuth({
+                accessToken: response.token.accessToken, 
+                refreshToken: response.token.refreshToken,
+                distributor: response.distributor
+            }))
+
             socket.emit("send-sale-notification", {
                 distributor_id: data.sales[0].seller_id,
                 distributor_name: distributor?.distributor_name,
@@ -78,7 +89,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                         <X size={20}/>
                     </button>
                 </div>
-                <div className="max-h-[50vh] overflow-y-auto">
+                <div className="max-h-[40vh] overflow-y-auto">
                 {items?.map(item => (
                     <div key={item._id} className="flex flex-col md:flex-row justify-between items-start gap-3 py-2 border-b border-gray-300">
                         <div className="flex flex-col md:flex-row gap-3">
@@ -120,17 +131,27 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                 ))}
                 </div>
                 {items.length === 0 ? <p className="w-full text-center">No Items</p> : (
-                    <div className="flex justify-end">
-                        <div className="space-y-2 flex flex-col items-end">
-                            <p className="font-bold text-sm md:text-base">Commission: {formatToPeso(commission)}</p>
-                            <p className="font-bold text-sm md:text-base">Total: {formatToPeso(totalAmount)}</p>
-                        </div>
+                    <div className="flex flex-col items-end gap-2">
+                        <p className="text-xs md:text-sm">
+                            <span className="font-semibold">Total Sales:</span>{" "}
+                            {formatToPeso(totalAmount)}
+                        </p>
+
+                        <p className="text-xs md:text-sm">
+                            <span className="font-semibold">Deduction (5%):</span>{" "}
+                            {formatToPeso(totalAmount)} x 5%
+                        </p>
+
+                        <p className="font-bold">
+                            <span>Your Commission:</span>{" "}
+                            {formatToPeso(commission)}
+                        </p>
                     </div>
                 )}
                 <div className="flex justify-end">
                     <Button
                         disabled={items.length === 0 || createSalesMutation.isPending}
-                        className="text-sm py-2 md:py-3 px-2 md:px-4"
+                        className="py-2 px-6 mt-2"
                         onClick={handleSellItems}
                     >Sell Items</Button>
                 </div>

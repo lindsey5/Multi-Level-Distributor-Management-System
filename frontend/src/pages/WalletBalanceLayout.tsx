@@ -16,16 +16,16 @@ export default function WalletBalanceLayout () {
                     <span className="text-2xl font-bold">{formatToPeso(data?.wallet_balance || 0)}</span>}
                 </div>
             </div>
-            <div className="flex items-start justify-center my-3">
+            <div className="flex items-start justify-center my-5">
                 <NavLink
                     to="/distributor/profile/wallet-balance/withdraw"
-                    className={({ isActive }) => cn( "font-semibold text-sm flex flex-col items-center w-24 pb-2", isActive && "border-b-2 border-black")}
+                    className={({ isActive }) => cn( "font-semibold text-sm flex flex-col items-center w-24 pb-2", isActive && "border-b-3 border-black")}
                 >
                     Withdraw
                 </NavLink>
                 <NavLink
                     to="/distributor/profile/wallet-balance/commissions"
-                    className={({ isActive }) => cn( "font-semibold text-sm flex flex-col items-center w-24 pb-2", isActive && "border-b-2 border-black")}
+                    className={({ isActive }) => cn( "font-semibold text-sm flex flex-col items-center w-24 pb-2", isActive && "border-b-3 border-black")}
                 >
                     Commissions
                 </NavLink>
