@@ -43,7 +43,7 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
             process.env.JWT_REFRESH_SECRET || "test-jwt-refresh-secret-key"
         );
 
-        const distributor = await Distributor.findById(decoded._id);
+        const distributor = await Distributor.findOne({ _id: decoded._id, status: 'active' });
 
         if (!distributor) {
             return res.status(404).json({ message: "Distributor not found" });
