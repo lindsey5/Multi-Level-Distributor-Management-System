@@ -25,15 +25,15 @@ export default function ProfileTour() {
 
     return (
         <Joyride
-            continuous 
             run={true}
+            continuous
             options={{
                 skipBeacon: true,
                 showProgress: true
             }}
             steps={steps}
             onEvent={(data) => {
-                if(data.status === 'finished') localStorage.setItem("profileTourSeen", "true");
+                if(data.index !== 0 && data.status === 'finished') localStorage.setItem("profileTourSeen", "true");
             }}
         />
     )

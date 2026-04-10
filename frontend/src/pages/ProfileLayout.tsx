@@ -8,6 +8,7 @@ import { logout } from "../lib/features/auth/authSlice";
 import { useEffect, useState } from "react";
 import { cn } from "../utils/helpers";
 import ProfileTour from "../components/ui/Tour/ProfileTour";
+import ProfileMenuTour from "../components/ui/Tour/ProfileMenuTour";
 
 export default function ProfileLayout() {
     const auth = useSelector((store: RootState) => store.auth);
@@ -53,7 +54,7 @@ export default function ProfileLayout() {
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (!target.closest('#profile-dropdown')) {
+            if (!target.closest('#profile-dropdown') && localStorage.getItem("profileTourSeen")) {
                 setShow(false);
             }
         };
@@ -65,7 +66,7 @@ export default function ProfileLayout() {
 
     return (
         <div className="md:flex items-start gap-5 p-2 md:p-5 space-y-4 md:space-y-0">
-            <ProfileTour />
+            {window.innerWidth > 768 && <ProfileTour />}
             <Card className="md:w-80 lg:w-100 px-0 py-3 relative">
                 <div className="flex items-center justify-between px-5 py-3">
                     <div className="flex items-start gap-3">
@@ -82,8 +83,10 @@ export default function ProfileLayout() {
                     <div className="relative" id="profile-dropdown">
                         <button
                             className="md:hidden cursor-pointer p-2 rounded-full hover:bg-gray-200"
+                            data-tour="profile-menu"
                             onClick={() => setShow((prev) => !prev)}
                         >
+                             {window.innerWidth <= 768 && <ProfileMenuTour />}
                             <MoreHorizontal />
                         </button>
 
@@ -93,6 +96,7 @@ export default function ProfileLayout() {
                                 "transition-all duration-200 ease-in absolute top-10 right-5 p-3 rounded-md border border-gray-300 shadow-md space-y-1 w-64 bg-white z-50 md:hidden",
                             )}
                         >
+                        <ProfileTour />
                         {menuItems}
                         </div>}
                     </div>
