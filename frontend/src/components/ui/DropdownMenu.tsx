@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LogOut, Menu, User } from "lucide-react";
 import type { MenuItem } from "../../types/menu.type";
