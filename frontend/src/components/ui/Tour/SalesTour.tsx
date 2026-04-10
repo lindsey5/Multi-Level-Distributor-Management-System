@@ -7,7 +7,7 @@ const steps = [
     },
     {
         target: '[data-tour="sales-table"]',
-        content: "This table shows all your sales history including products your sold, quantities, date and sales",
+        content: "This table shows all your sales history including products your sold, quantities, date, commission and sales",
     },
 ];
 

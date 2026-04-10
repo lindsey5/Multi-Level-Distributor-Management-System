@@ -69,7 +69,12 @@ export default function Sales () {
         {
             header: 'Date',
             accessorKey: 'createdAt',
-            cell: (info) => formatDate(info.getValue() as string),
+            cell: (info) => <div className="min-w-30">{formatDate(info.getValue() as string)}</div>,
+            meta: { align: 'center' }
+        },
+        {
+            header: 'Commission',
+            cell: ({ row }) => formatToPeso(row.original.total_amount * 0.05),
             meta: { align: 'center' }
         },
         {
