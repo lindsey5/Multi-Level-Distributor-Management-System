@@ -131,12 +131,22 @@ export const getDistributorSales = async (req: AuthRequest, res: Response, next:
         const startDate = req.query.startDate ? setStartDate(req.query.startDate as string) : null;
         const endDate = req.query.endDate ? setEndDate(req.query.endDate as string) : null;
 
+        const distributor = await Distributor.findById(req.user._id);
+
+        if(!distributor){
+            return res.status(404).json({
+                success: false,
+                message: 'Distributor not found.'
+            })
+        }
+
         const filter: any = { seller_id: req.user._id };
 
         if(search){
             filter.$or = [
                 { "variant.variant_name" : { $regex: search, $options: "i" } },
-                { "variant.sku" : { $regex: search, $options: "i" } }
+                { "variant.sku" : { $regex: search, $options: "i" } },
+                { "product.product_name" : { $regex: search, $options: "i" } },
             ]
         }
 
@@ -157,6 +167,26 @@ export const getDistributorSales = async (req: AuthRequest, res: Response, next:
                     }
                 },
                 { $unwind: "$variant" },
+
+                {
+                    $lookup: {
+                        from: "products",
+                        localField: "variant.product_id",
+                        foreignField: "_id",
+                        as: "product"
+                    }
+                },
+                { $unwind: "$product" },
+
+                {
+                    $lookup: {
+                        from: "distributors",
+                        localField: "seller_id",
+                        foreignField: "_id",
+                        as: "seller"
+                    }
+                },
+                { $unwind: "$seller" },
                 { $match: filter },
                 { $sort: { [sortBy]: order } },
                 { $skip: skip },
@@ -164,7 +194,7 @@ export const getDistributorSales = async (req: AuthRequest, res: Response, next:
             ]),
             DistributorSale.countDocuments(filter),
             DistributorSale.aggregate([
-                { $match: { seller_id: req.user._id } },
+                { $match: filter },
                 { $group: { _id: null, totalSales: { $sum: "$total_amount" } } }
             ])
         ]);
@@ -173,8 +203,8 @@ export const getDistributorSales = async (req: AuthRequest, res: Response, next:
 
         res.status(200).json({
             distributorSales,
-            totalSales,
             pagination: {
+                totalSales,
                 page,
                 limit,
                 totalPages: Math.ceil(total / limit),

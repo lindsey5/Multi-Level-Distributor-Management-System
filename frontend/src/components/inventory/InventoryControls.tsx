@@ -6,8 +6,8 @@ import { Search } from "lucide-react";
 import { getKeyByValue } from "../../utils/helpers";
 
 const options: Record<string, SortOption> = {
-    'Newest' : { sortBy: 'updatedAt', order: 'desc' },
-    'Oldest' : { sortBy: 'updatedAt', order: 'asc' },
+    'Newest' : { sortBy: 'createdAt', order: 'desc' },
+    'Oldest' : { sortBy: 'createdAt', order: 'asc' },
     'A-Z': { sortBy: 'variant_name', order: 'asc' },
     'Z-A': { sortBy: 'variant_name', order: 'desc' },
     'Quantity (ASC)' : { sortBy: 'quantity', order: 'asc' },
@@ -32,7 +32,7 @@ export default function InventoryControls ({
                 <TextField 
                     className="md:max-w-84"
                     icon={<Search className="text-gray-400"/>}
-                    placeholder="Search by variant name, sku..."
+                    placeholder="Search by product name, variant name, sku..."
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>

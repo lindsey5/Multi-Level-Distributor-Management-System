@@ -49,7 +49,7 @@ export default function SalesControls ({
             <TextField 
                 className="md:max-w-100"
                 icon={<Search className="text-gray-400"/>}
-                placeholder="Search by item name, sku..."
+                placeholder="Search by product name, variant name or sku..."
                 onChange={(e) => setSearch(e.target.value)}
             />
             <FiltersMenu containerStyle="space-y-2 gap-3 w-[90vw] md:w-90 md:-right-1">

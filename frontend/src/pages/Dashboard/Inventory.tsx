@@ -11,6 +11,7 @@ import ItemsToSell from "../../components/inventory/ItemsToSell";
 import type { Variant } from "../../types/variant.type";
 import Button from "../../components/ui/Button";
 import EnterQuantity from "../../components/inventory/EnterQuantity";
+import Chip from "../../components/ui/Chip";
 
 export interface VariantWithQuantity extends Variant{
     quantity: number
@@ -22,7 +23,7 @@ export default function Inventory () {
     const [items, setItems] = useState<VariantWithQuantity[]>([]);
     const [sorting, setSorting] = useState<SortOption>({
         order: 'desc',
-        sortBy: 'updatedAt'
+        sortBy: 'createdAt'
     })
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     const [search, setSearch] = useState("");
@@ -38,18 +39,28 @@ export default function Inventory () {
 
     const columns: ColumnDef<DistributorStock>[] = [
         {
-            header: "Variant",
+            header: "Product",
             cell: ({ row }) => (
-                <div className="min-w-30 flex gap-3 items-center">
+                <div className="min-w-50 flex gap-3 items-center">
                     <img 
                         className="w-8 h-8 lg:w-10 lg:h-10 rounded-md object-cover" 
                         src={row.original.variant.image_url} 
                         alt={row.original.variant.variant_name}
                     />
-                    <h1>{row.original.variant.variant_name}</h1>
+                    <h1>{row.original.variant.product?.product_name}</h1>
                 </div>
             ),
             meta: { align: 'left' },
+        },
+        {
+            header: "Variant",
+            accessorKey: 'variant.variant_name',
+            cell: info => (
+                <div className="min-w-80">
+                    <Chip>{info.getValue() as string}</Chip>
+                </div>
+            ),
+            meta: { align: 'center' }
         },
         {
             header: "SKU",
@@ -67,9 +78,13 @@ export default function Inventory () {
             meta: { align: 'center' }
         },
         {
-            header: 'Updated At',
-            accessorKey: 'updatedAt',
-            cell: ({ row }) => formatDate(row.original.updatedAt),
+            header: 'Created At',
+            accessorKey: 'createdAt',
+            cell: info => (
+                <div className="min-w-50">
+                    {formatDate(info.getValue() as string)}
+                </div>
+            ),
             meta: { align: 'center' }
         },
         {

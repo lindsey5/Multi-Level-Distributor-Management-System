@@ -30,7 +30,7 @@ export default function TransferLogsControls ({
                 <TextField 
                     className="md:max-w-84"
                     icon={<Search className="text-gray-400"/>}
-                    placeholder="Search by variant name, sku..."
+                    placeholder="Search by seller, product name, variant name, sku..."
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>

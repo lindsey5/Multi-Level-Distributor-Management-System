@@ -1,6 +1,9 @@
+import type { Product } from "./product.type";
+
 export interface Variant {
     _id: string;
     product_id: string;
+    product?: Product;
     variant_name: string;
     stock: number;
     price: number;

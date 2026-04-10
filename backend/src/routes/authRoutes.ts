@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/login', login);
 router.post('/refreshToken', refreshAccessToken);
-router.post('/change-password', requireAuth, changePassword);
+router.patch('/change-password', requireAuth, changePassword);
 
 const authRoutes = router;
 

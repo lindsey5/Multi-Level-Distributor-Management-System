@@ -16,7 +16,7 @@ export const authService = {
 
     changePassword: (currentPassword: string, newPassword: string): Promise<{ message?: string}> => 
         apiAxios<{ message?: string }>("auth/change-password", {
-            method: HttpMethod.POST,
+            method: HttpMethod.PATCH,
             data: { currentPassword, newPassword }
         }),
 };

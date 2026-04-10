@@ -55,14 +55,14 @@ export default function CommissionLogs () {
                         </Card>
                     </button>
                 ))}
-                {isFetching && <p className="w-full text-center my-3">Loading...</p>}
+                {isFetching && data?.commissionLogs.length && <p className="w-full text-center my-3">Loading...</p>}
                 {page < (data?.pagination.totalPages || 1) && !isFetching && (
                     <div className="flex justify-center mt-2">
                         <Button
                             disabled={isFetching}
                             className="disabled:cursor-not-allowed cursor-pointer bg-black text-white text-sm py-2 rounded-md"
                             onClick={() => setPage(prev => prev + 1)}
-                        >'See more'</Button>
+                        >See more</Button>
                     </div>
                 )}
              </div>

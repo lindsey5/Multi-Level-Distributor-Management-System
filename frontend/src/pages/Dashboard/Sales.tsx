@@ -7,6 +7,7 @@ import { formatDate, formatToPeso } from "../../utils/helpers";
 import CustomTable from "../../components/ui/Table";
 import { useDebounce } from "../../hooks/useDebounce";
 import SalesControls from "../../components/sales/SalesControls";
+import Chip from "../../components/ui/Chip";
 
 export default function Sales () {
     const [sorting, setSorting] = useState<SortOption>({
@@ -31,18 +32,28 @@ export default function Sales () {
 
     const columns: ColumnDef<DistributorSale>[] = [
         {
-            header: "Item",
+            header: "Product",
             cell: ({ row }) => (
-                <div className="min-w-30 flex gap-3 items-center">
+                <div className="min-w-50 flex gap-3 items-center">
                     <img 
                         className="w-8 h-8 lg:w-10 lg:h-10 rounded-md object-cover" 
                         src={row.original.variant.image_url} 
                         alt={row.original.variant.variant_name}
                     />
-                    <h1>{row.original.variant.variant_name}</h1>
+                    <h1>{row.original.product.product_name}</h1>
                 </div>
             ),
             meta: { align: 'left' },
+        },
+        {
+            header: "Variant",
+            accessorKey: "variant.variant_name",
+            cell: info => (
+                <div className="min-w-80">
+                    <Chip>{info.getValue() as string}</Chip>
+                </div>
+            ),
+            meta: { align: 'center' },
         },
         {
             header: "SKU",

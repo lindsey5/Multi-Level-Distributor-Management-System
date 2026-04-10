@@ -18,7 +18,10 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
             path: 'stockTransfer',
             populate: {
                 path: 'items',
-                populate: 'variant'
+                populate: {
+                    path: 'variant',
+                    populate: 'product'
+                }
             }
         })
         .skip(skip)

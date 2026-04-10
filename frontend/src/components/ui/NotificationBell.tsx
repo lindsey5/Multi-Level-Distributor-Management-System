@@ -10,6 +10,7 @@ import Card from "./Card";
 import type { StockTransferItem } from "../../types/stock-transfer.type";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+import Chip from "./Chip";
 
 interface ItemsModal {
     items: StockTransferItem[] | null;
@@ -42,8 +43,9 @@ const ItemsModal = ({ items, open, close } : ItemsModal) => {
                     <div key={item._id} className="flex gap-3 py-2 border-b border-gray-300">
                         <img className="w-15 h-15 md:w-20 md:h-20" src={item.variant.image_url} alt="item-image"/>
                         <div className="space-y-1">
-                            <p className="font-semibold">{item.variant.variant_name}</p>
-                            <p className="text-sm">Quantity: {item.quantity}</p>
+                            <p className="font-semibold">{item.variant.product?.product_name}</p>
+                            <Chip className="text-xs">{item.variant.variant_name}</Chip>
+                            <p className="text-sm mt-2">Quantity: {item.quantity}</p>
                             <p className="text-sm">Price: {formatToPeso(item.variant.price)}</p>
                         </div>
                     </div>

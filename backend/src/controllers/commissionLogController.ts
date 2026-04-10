@@ -2,6 +2,7 @@ import { NextFunction, Response } from "express";
 import { AuthRequest } from "../types/types";
 import CommissionLog from "../models/CommissionLog";
 import Distributor from "../models/Distributor";
+import '../models/Product';
 
 export const getCommissionLogs = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
@@ -14,7 +15,11 @@ export const getCommissionLogs = async (req: AuthRequest, res: Response, next: N
             .populate({
                 path: "sales",
                 populate: [
-                    { path: "variant" },
+                    { 
+                        path: "variant",
+                        populate: "product"
+
+                    },
                     { path: "seller" }
                 ]
             })

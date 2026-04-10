@@ -4,15 +4,17 @@ import DistributorStock from "../models/DistributorStock";
 import { AuthRequest } from "../types/types";
 
 export const getDistributorStocks = async (
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
 ) => {
     try {
         const search = (req.query.search as string) || "";
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
         const skip = (page - 1) * limit;
+
+        const distributorId = req.user._id;
 
         const sortBy = (req.query.sortBy as string)
 
@@ -27,31 +29,60 @@ export const getDistributorStocks = async (
         }
 
         const basePipeline: any[] = [
-            {
-                $match: {
-                    distributor_id: new mongoose.Types.ObjectId(req.user._id),
-                },
+        {
+            $match: {
+            distributor_id: new mongoose.Types.ObjectId(distributorId as string),
             },
-            {
-                $lookup: {
-                    from: "variants",
-                    localField: "variant_id",
-                    foreignField: "_id",
-                    as: "variant",
-                },
+        },
+
+        // lookup variant
+        {
+            $lookup: {
+                from: "variants",
+                localField: "variant_id",
+                foreignField: "_id",
+                as: "variant",
             },
-            { $unwind: "$variant" },
+        },
+        { $unwind: "$variant" },
+
+        // lookup product
+        {
+            $lookup: {
+                from: "products",
+                localField: "variant.product_id",
+                foreignField: "_id",
+                as: "product",
+            },
+        },
+        { $unwind: { path: "$product", preserveNullAndEmptyArrays: true } },
+
+        // move product inside variant
+        {
+            $addFields: {
+                "variant.product": "$product",
+            },
+        },
+
+        // remove root product
+        {
+            $project: {
+                product: 0,
+            },
+        },
         ];
 
-        basePipeline.push({
-            $match: {
-            "variant.status" : 'active',
+        if (search) {
+            basePipeline.push({
+                $match: {
                 $or: [
                     { "variant.variant_name": { $regex: search, $options: "i" } },
                     { "variant.sku": { $regex: search, $options: "i" } },
+                    { "variant.product.product_name": { $regex: search, $options: "i" } },
                 ],
-            },
-        });
+                },
+            });
+        }
 
         const countPipeline = [...basePipeline, { $count: "total" }];
 

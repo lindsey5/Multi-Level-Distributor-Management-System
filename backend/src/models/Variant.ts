@@ -71,6 +71,17 @@ const VariantSchema: Schema<VariantAttributes> = new Schema(
 
 VariantSchema.index({ status: 1, variant_name: 1, sku: 1})
 
+VariantSchema.virtual("product", {
+    ref: "Product",
+    localField: "product_id",
+    foreignField: "_id",
+    match: { status: "active" },
+    justOne: true,
+});
+
+VariantSchema.set("toObject", { virtuals: true });
+VariantSchema.set("toJSON", { virtuals: true });
+
 const Variant: Model<VariantAttributes> = mongoose.model(
     "Variant",
     VariantSchema

@@ -4,6 +4,7 @@ import { formatToPeso } from "../../utils/helpers";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import Button from "../ui/Button";
+import Chip from "../ui/Chip";
 
 interface CommissionLogProps {
     open: boolean;
@@ -38,8 +39,9 @@ export default function CommissionLogModal ({ open, close, commissionLog } : Com
                     <div className="flex gap-3">
                         <img className="w-20 h-20" src={sale.variant.image_url} alt="" />
                         <div className="text-xs md:text-sm space-y-1">
-                            <p>{sale.variant.variant_name}</p>
-                            <p>Quantity Sold: {sale.quantity}</p> 
+                            <p className="my-3">{sale.variant.product?.product_name}</p>
+                            <Chip className="text-xs">{sale.variant.variant_name}</Chip>
+                            <p className="mt-3">Quantity Sold: {sale.quantity}</p> 
                             <p className="font-semibold">Sales: {formatToPeso(sale.total_amount)}</p>
                         </div>
                     </div>

@@ -3,82 +3,108 @@ import { Response, NextFunction } from "express";
 import { AuthRequest } from "../types/types";
 import { setEndDate, setStartDate } from "../utils/utils";
 
-export const getStockTransferLogs = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getStockTransferLogs = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const page = Number(req.query.page) || 1;
         const limit = Number(req.query.limit) || 10;
         const skip = (page - 1) * limit;
-        const search = req.query.search as string;
-        const startDate = req.query.startDate ? setStartDate(req.query.startDate as string) : null;
-        const endDate = req.query.endDate ? setEndDate(req.query.endDate as string) : null;
+        const search = (req.query.search as string) || "";
+        const startDate = req.query.startDate
+            ? setStartDate(req.query.startDate as string)
+            : null;
+        const endDate = req.query.endDate
+            ? setEndDate(req.query.endDate as string)
+            : null;
 
         const pipeline: any[] = [
-        { $match: { receiver_id: req.user._id} },
+            { $match: { receiver_id: req.user._id } },
 
-        // Lookup receiver
-        {
-            $lookup: {
-                from: "distributors",
-                localField: "receiver_id",
-                foreignField: "_id",
-                as: "receiver",
+            // receiver
+            {
+                $lookup: {
+                    from: "distributors",
+                    localField: "receiver_id",
+                    foreignField: "_id",
+                    as: "receiver",
+                },
             },
-        },
-        { $unwind: { path: "$receiver" } },
-        // Lookup sender
-        {
-            $lookup: {
-                from: "users",
-                localField: "sender_id",
-                foreignField: "_id",
-                as: "sender",
-            },
-        },
-        { $unwind: { path: "$sender" } },
+            { $unwind: "$receiver" },
 
-        // Lookup items
-        {
-            $lookup: {
-                from: "stocktransferitems",
-                localField: "_id",
-                foreignField: "transfer_id",
-                as: "items",
+            // sender
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "sender_id",
+                    foreignField: "_id",
+                    as: "sender",
+                },
             },
-        },
+            { $unwind: "$sender" },
 
-        // Unwind items to populate variant
-        { $unwind: { path: "$items" } },
+            // items
+            {
+                $lookup: {
+                    from: "stocktransferitems",
+                    localField: "_id",
+                    foreignField: "transfer_id",
+                    as: "items",
+                },
+            },
+            { $unwind: "$items" },
 
-        // Lookup variant for each item
-        {
-            $lookup: {
-                from: "variants",
-                localField: "items.variant_id",
-                foreignField: "_id",
-                as: "items.variant",
+            // variant
+            {
+                $lookup: {
+                    from: "variants",
+                    localField: "items.variant_id",
+                    foreignField: "_id",
+                    as: "variant",
+                },
             },
-        },
-         { $unwind: { path: "$items.variant" } },
-        // Group items back into array
-        {
-            $group: {
-                _id: "$_id",
-                receiver: { $first: "$receiver" },
-                sender: { $first: "$sender" },
-                createdAt: { $first: "$createdAt" },
-                updatedAt: { $first: "$updatedAt" },
-                items: { $push: "$items" },
+            { $unwind: "$variant" },
+
+            // product
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "variant.product_id",
+                    foreignField: "_id",
+                    as: "product",
+                },
             },
-        },
+            { $unwind: "$product" },
+
+            // attach product into items
+            {
+                $addFields: {
+                    "items.variant": {
+                        $mergeObjects: ["$variant", { product: "$product" }],
+                    },
+                },
+            },
+
+            {
+                $project: {
+                    variant: 0,
+                    product: 0,
+                },
+            },
         ];
 
-        // Build search & date filter
         const match: any = {};
+
         if (search) {
             match.$or = [
                 { "sender.firstname": { $regex: search, $options: "i" } },
                 { "sender.lastname": { $regex: search, $options: "i" } },
                 { "sender.email": { $regex: search, $options: "i" } },
+                { "items.variant.variant_name": { $regex: search, $options: "i" } },
+                { "items.variant.sku": { $regex: search, $options: "i" } },
+                { "items.variant.product.product_name": { $regex: search, $options: "i" } },
             ];
         }
 
@@ -92,12 +118,24 @@ export const getStockTransferLogs = async (req: AuthRequest, res: Response, next
             pipeline.push({ $match: match });
         }
 
-        // Count total documents
+        // group
+        pipeline.push({
+            $group: {
+                _id: "$_id",
+                receiver: { $first: "$receiver" },
+                sender: { $first: "$sender" },
+                createdAt: { $first: "$createdAt" },
+                updatedAt: { $first: "$updatedAt" },
+                items: { $push: "$items" },
+            },
+        });
+
+        // count
         const countPipeline = [...pipeline, { $count: "total" }];
         const countResult = await StockTransfer.aggregate(countPipeline);
         const total = countResult[0]?.total || 0;
 
-        // Sort, skip, limit for pagination
+        // pagination
         pipeline.push({ $sort: { createdAt: -1 } });
         pipeline.push({ $skip: skip });
         pipeline.push({ $limit: limit });
@@ -111,7 +149,7 @@ export const getStockTransferLogs = async (req: AuthRequest, res: Response, next
                 limit,
                 totalPages: Math.ceil(total / limit),
                 total,
-            }
+            },
         });
     } catch (err) {
         next(err);
