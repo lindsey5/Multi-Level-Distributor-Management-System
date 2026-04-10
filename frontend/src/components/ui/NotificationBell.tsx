@@ -132,6 +132,7 @@ export default function NotificationBell() {
         <div className="relative" id="notification-bell">
             {/* Bell Button */}
             <button
+                data-tour="header-notification"
                 onClick={() => setShowDropdown(prev => !prev)}
                 className="cursor-pointer flex items-center justify-center font-semibold relative"
             >

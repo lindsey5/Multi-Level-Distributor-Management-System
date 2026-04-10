@@ -9,6 +9,7 @@ import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
 import TransferLogsControls from "../../components/stockTransferLog/TransferLogsControls";
 import StockTransferItems from "../../components/stockTransferLog/StockTransferItems";
+import StockTransferTour from "../../components/ui/Tour/StockTransferTour";
 
 export default function TransferLogs () {
     const [stockTransfer, setStockTransfer] = useState<StockTransferLog | null>(null);
@@ -55,7 +56,7 @@ export default function TransferLogs () {
         {
             header: 'Action',
             cell: ({ row }) => (
-                <Button className="px-2 py-1" onClick={() => setStockTransfer(row.original)}>
+                <Button data-tour="stock-transfer-btn" className="px-2 py-1" onClick={() => setStockTransfer(row.original)}>
                     <Eye size={20}/>
                 </Button>
             )
@@ -65,6 +66,7 @@ export default function TransferLogs () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <StockTransferTour />
             <h1 className="block md:hidden text-gold font-bold text-lg">Stock Transfer History</h1>
             <StockTransferItems 
                 close={() => setStockTransfer(null)}
@@ -88,6 +90,7 @@ export default function TransferLogs () {
                 showPagination
                 noDataMessage="No Available Stock"
                 total={data?.pagination.total || 0}
+                dataTour="stock-transfer-table"
             />
         </div>
     )

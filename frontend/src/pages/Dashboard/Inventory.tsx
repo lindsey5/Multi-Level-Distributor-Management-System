@@ -12,6 +12,7 @@ import type { Variant } from "../../types/variant.type";
 import Button from "../../components/ui/Button";
 import EnterQuantity from "../../components/inventory/EnterQuantity";
 import Chip from "../../components/ui/Chip";
+import InventoryTour from "../../components/ui/Tour/InventoryTour";
 
 export interface VariantWithQuantity extends Variant{
     quantity: number
@@ -91,6 +92,7 @@ export default function Inventory () {
             header: 'Action',
             cell: ({ row }) => (
                 <Button 
+                    data-tour="inventory-sell-btn"
                     className="py-1 text-xs"
                     onClick={() => setVariant({ ...row.original.variant, stock: row.original.quantity })}
                 >Sell</Button>
@@ -102,10 +104,12 @@ export default function Inventory () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <InventoryTour />
             <div className="relative flex justify-end">
                 <Button 
                     className="text-xs md:text-sm py-2 px-4 relative"
                     onClick={() => setShowModal(true)}
+                    data-tour="inventory-items-to-sell"
                 >
                     Items To Sell
                     {items.length > 0 && (
@@ -133,6 +137,7 @@ export default function Inventory () {
                 setItems={setItems}
             />
             <CustomTable
+                dataTour="inventory-table"
                 isLoading={isFetching}
                 data={data?.distributorStocks || []}
                 columns={columns}

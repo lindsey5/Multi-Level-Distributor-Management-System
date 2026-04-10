@@ -27,9 +27,10 @@ interface MenuButtonProps {
     icon: React.ReactNode;
     label: string;
     path: string;
+    dataTour?: string;
 }
 
-export function MenuButton({ icon, label, path }: MenuButtonProps) {
+export function MenuButton({ icon, label, path, dataTour }: MenuButtonProps) {
     const pathname = useLocation().pathname;
 
     return (
@@ -39,6 +40,7 @@ export function MenuButton({ icon, label, path }: MenuButtonProps) {
                 pathname === path && 'bg-gray-200'
             )}
             to={path}
+            data-tour={dataTour}
         >
             <div className="flex gap-2 items-center">
                 {icon}

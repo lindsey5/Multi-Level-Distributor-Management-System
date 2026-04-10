@@ -25,7 +25,7 @@ export default function TransferLogsControls ({
     }
 
     return (
-        <div className="flex items-center justify-between gap-5">
+        <div className="flex items-center justify-between gap-5" data-tour="stock-transfer-controls">
             <div className="flex-1 flex-0 md:max-w-100">
                 <TextField 
                     className="md:max-w-84"

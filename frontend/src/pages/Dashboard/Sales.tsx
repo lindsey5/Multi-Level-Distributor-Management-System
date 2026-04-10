@@ -8,6 +8,7 @@ import CustomTable from "../../components/ui/Table";
 import { useDebounce } from "../../hooks/useDebounce";
 import SalesControls from "../../components/sales/SalesControls";
 import Chip from "../../components/ui/Chip";
+import SalesTour from "../../components/ui/Tour/SalesTour";
 
 export default function Sales () {
     const [sorting, setSorting] = useState<SortOption>({
@@ -82,6 +83,7 @@ export default function Sales () {
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
             <h1 className="block md:hidden text-gold font-bold text-lg">Your Sales</h1>
+            <SalesTour />
             <SalesControls 
                 sorting={sorting}
                 setSorting={setSorting}
@@ -101,6 +103,7 @@ export default function Sales () {
                 showPagination
                 noDataMessage="No Available Stock"
                 total={data?.pagination.total || 0}
+                dataTour="sales-table"
             />
             <div className="flex justify-end">
                 <h1 className="font-bold mt-2 text-md md:text-lg">Total Sales: {formatToPeso(data?.totalSales || 0)}</h1>

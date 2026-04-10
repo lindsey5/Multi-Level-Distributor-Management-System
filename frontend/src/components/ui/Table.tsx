@@ -88,6 +88,7 @@ type CustomTableProps<T> = {
     showPagination: boolean;
     total?: number;
     noDataMessage?: string;
+    dataTour?: string;
 };
 
 const CustomTable = <T,>({
@@ -100,6 +101,7 @@ const CustomTable = <T,>({
     showPagination,
     total,
     noDataMessage = "No Data Available",
+    dataTour
 }: CustomTableProps<T>) => {
     
     const table = useReactTable({
@@ -116,7 +118,7 @@ const CustomTable = <T,>({
     const cols = table.getAllColumns().length;
 
     return (
-        <div className= "min-h-0 flex-grow flex flex-col">
+        <div className= "min-h-0 flex-grow flex flex-col" data-tour={dataTour}>
             {isLoading ? (
                 <TableSkeleton columns={cols} />
             ) : rows.length < 1 ? (

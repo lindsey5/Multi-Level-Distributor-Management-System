@@ -45,7 +45,7 @@ export default function SalesControls ({
     }
 
     return (
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-3 items-center" data-tour="sales-controls">
             <TextField 
                 className="md:max-w-100"
                 icon={<Search className="text-gray-400"/>}

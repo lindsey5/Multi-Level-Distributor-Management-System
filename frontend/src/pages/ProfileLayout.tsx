@@ -7,6 +7,7 @@ import { Outlet } from "react-router-dom";
 import { logout } from "../lib/features/auth/authSlice";
 import { useEffect, useState } from "react";
 import { cn } from "../utils/helpers";
+import ProfileTour from "../components/ui/Tour/ProfileTour";
 
 export default function ProfileLayout() {
     const auth = useSelector((store: RootState) => store.auth);
@@ -20,16 +21,19 @@ export default function ProfileLayout() {
         <MenuButton 
             icon={<User size={20} />} 
             label="My Profile" 
+            dataTour="profile-my-profile"
             path="/distributor/profile" 
         />
         <MenuButton
             icon={<Wallet size={20} />}
             label="Wallet Balance"
+            dataTour="profile-wallet-balance"
             path="/distributor/profile/wallet-balance/withdraw"
         />
         <MenuButton
             icon={<Lock size={20} />}
             label="Change Password"
+            dataTour="profile-change-password"
             path="/distributor/profile/change-password"
         />
 
@@ -61,6 +65,7 @@ export default function ProfileLayout() {
 
     return (
         <div className="md:flex items-start gap-5 p-2 md:p-5 space-y-4 md:space-y-0">
+            <ProfileTour />
             <Card className="md:w-80 lg:w-100 px-0 py-3 relative">
                 <div className="flex items-center justify-between px-5 py-3">
                     <div className="flex items-start gap-3">
@@ -83,14 +88,13 @@ export default function ProfileLayout() {
                         </button>
 
                         {/* Mobile Dropdown Menu */}
-                        <div
+                        {show && <div
                             className={cn(
                                 "transition-all duration-200 ease-in absolute top-10 right-5 p-3 rounded-md border border-gray-300 shadow-md space-y-1 w-64 bg-white z-50 md:hidden",
-                                show ? "opacity-100 visible" : "opacity-0 invisible"
                             )}
                         >
                         {menuItems}
-                        </div>
+                        </div>}
                     </div>
                     </div>
 
