@@ -4,6 +4,7 @@ import type { SortOption } from "../../types/types.type";
 import TextField from "../ui/Textfield";
 import { Search } from "lucide-react";
 import { getKeyByValue } from "../../utils/helpers";
+import type { PaginationState } from "@tanstack/react-table";
 
 const options: Record<string, SortOption> = {
     'Newest' : { sortBy: 'createdAt', order: 'desc' },
@@ -18,12 +19,14 @@ interface InventoryControlsProps {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     setSorting: React.Dispatch<React.SetStateAction<SortOption>>
     sorting: SortOption
+    setPagination: React.Dispatch<React.SetStateAction<PaginationState>>
 }
 
 export default function InventoryControls ({
     setSearch,
     setSorting,
     sorting,
+    setPagination,
 } : InventoryControlsProps) {
 
     return (
@@ -33,7 +36,10 @@ export default function InventoryControls ({
                     className="md:max-w-84"
                     icon={<Search className="text-gray-400"/>}
                     placeholder="Search by product name, variant name, sku..."
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => {
+                        setPagination(prev => ({ ...prev, pageIndex: 0}))
+                        setSearch(e.target.value);
+                    }}
                 />
             </div>
             <Dropdown 

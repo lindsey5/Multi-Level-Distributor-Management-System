@@ -97,6 +97,7 @@ export default function Sales () {
                 endDate={endDate}
                 setEndDate={setEndDate}
                 setSearch={setSearch}
+                setPagination={setPagination}
             />
             <CustomTable
                 isLoading={isFetching}

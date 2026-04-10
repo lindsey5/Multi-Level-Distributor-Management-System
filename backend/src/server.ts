@@ -26,6 +26,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.get('/', (_, res) => res.send('Welcome'));
 app.use('/api/auth', authRoutes);
 app.use('/api/distributors', distributorRoutes);
 app.use('/api/stocks', distributorStockRoutes);

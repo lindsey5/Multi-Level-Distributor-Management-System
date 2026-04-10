@@ -123,6 +123,7 @@ export default function Inventory () {
                 setSearch={setSearch}
                 setSorting={setSorting}
                 sorting={sorting}
+                setPagination={setPagination}
             />
             <EnterQuantity 
                 open={variant !== null}

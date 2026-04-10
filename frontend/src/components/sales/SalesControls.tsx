@@ -5,6 +5,7 @@ import DateInput from "../ui/DateInput";
 import Dropdown from "../ui/Dropdown";
 import type { SortOption } from "../../types/types.type";
 import { getKeyByValue } from "../../utils/helpers";
+import type { PaginationState } from "@tanstack/react-table";
 
 const options: Record<string, SortOption> = {
     'Newest' : { sortBy: 'createdAt', order: 'desc' },
@@ -23,6 +24,7 @@ interface SalesControlsProps {
     endDate: string;
     setEndDate: React.Dispatch<React.SetStateAction<string>>;
     sorting: SortOption;
+    setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
 
 export default function SalesControls ({
@@ -32,7 +34,8 @@ export default function SalesControls ({
     setStartDate,
     endDate,
     setEndDate,
-    sorting
+    sorting,
+    setPagination
  } : SalesControlsProps) {
 
     const clear = () => {
@@ -50,7 +53,10 @@ export default function SalesControls ({
                 className="md:max-w-100"
                 icon={<Search className="text-gray-400"/>}
                 placeholder="Search by product name, variant name or sku..."
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                    setPagination(prev => ({...prev, pageIndex: 0}))
+                    setSearch(e.target.value);
+                }}
             />
             <FiltersMenu containerStyle="space-y-2 gap-3 w-[90vw] md:w-90 md:-right-1">
                 <h1 className="font-semibold">Filter</h1>
