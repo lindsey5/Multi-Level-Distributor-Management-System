@@ -178,10 +178,9 @@ export default function NotificationBell() {
                     {isFetching && <p className="w-full text-center text-xs md:text-sm my-3">Loading...</p>}
                     <div className={cn(
                         "justify-center mt-2",
-                        (data?.pagination.totalPages || 0) > page ? 'flex' : 'hidden'
+                        page < (data?.pagination.totalPages || 1) && !isFetching ? 'flex' : 'hidden'
                     )}>
                         <button
-                            disabled={isFetching}
                             className="disabled:cursor-not-allowed cursor-pointer bg-black text-white px-3 py-1 text-xs rounded-md"
                             onClick={() => setPage(prev => prev + 1)}
                         >See more</button>

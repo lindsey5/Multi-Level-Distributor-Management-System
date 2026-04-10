@@ -56,7 +56,7 @@ export default function CommissionLogs () {
                     </button>
                 ))}
                 {isFetching && <p className="w-full text-center my-3">Loading...</p>}
-                {page < (data?.pagination.totalPages || 1) && (
+                {page < (data?.pagination.totalPages || 1) && !isFetching && (
                     <div className="flex justify-center mt-2">
                         <Button
                             disabled={isFetching}
