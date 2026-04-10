@@ -54,7 +54,7 @@ export default function CommissionLogModal ({ open, close, commissionLog } : Com
 
                         <p className="text-xs md:text-sm">
                             <span className="font-semibold">{commissionLog?.receiver_id === commissionLog?.sales[0].seller_id ? "5%" : "2%"} of Total Sales:</span>{" "}
-                            {formatToPeso(totalSales)} x {commissionLog?.receiver_id === commissionLog?.sales[0].seller_id ? "5%" : "2%"}
+                            {formatToPeso(totalSales)} x {commissionLog?.receiver_id === commissionLog?.sales[0].seller_id ? "0.05" : "0.02"}
                         </p>
 
                         <p className="font-bold">

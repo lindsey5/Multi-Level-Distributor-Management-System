@@ -1,16 +1,28 @@
 import { sileo, type SileoPosition } from "sileo";
 
-export const successToast = (title : string, position: SileoPosition = "top-center") => {
+export const successToast = (title : string, description: string, position: SileoPosition = "top-center") => {
     sileo.success({
-        title: title,
+        title,
+        description,
         position,
+        fill: "black",
+        styles: {
+            title: "text-white!",
+            description: "text-white/75!",
+        },
     });
 }
 
-export const errorToast = (title : string, position: SileoPosition = "top-center") => {
+export const errorToast = (title : string, description : string, position: SileoPosition = "top-center") => {
     sileo.error({
-        title: title,
+        title,
+        description,
         position: position,
+        fill: "black",
+        styles: {
+            title: "text-white!",
+            description: "text-white/75!",
+        },
     });
 }
 export const promiseToast = <T extends { message?: string}>(
@@ -20,13 +32,26 @@ export const promiseToast = <T extends { message?: string}>(
 ) => {
     return sileo.promise(promise, {
         position: position,
-        loading: { title: "Loading..." },
+        loading: { 
+            title: "Loading...", 
+            fill: "black",                 
+            styles: {
+                title: "text-white!",
+                description: "text-white/75!",
+            }
+        },
         success: (data: T) => {
             setTimeout(() => {
                 window.location.reload()
-            }, 1000)
+            }, 2000)
             return ({
-                title: data?.message || successMessage || "Success",
+                title: "Success",
+                description: data?.message || successMessage,
+                fill: "black",
+                styles: {
+                    title: "text-white!",
+                    description: "text-white/75!",
+                },
             })
         },
         error: (err: any) => ({

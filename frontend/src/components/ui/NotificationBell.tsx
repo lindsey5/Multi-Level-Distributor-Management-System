@@ -143,7 +143,7 @@ export default function NotificationBell() {
             {showDropdown && (
                 <div className="w-[80vw] md:w-70 border border-gray-300 shadow-md absolute pb-5 -right-10 md:right-5 top-12 rounded-md bg-white">
                     <h1 className="bg-white text-md xl:text-lg font-bold border-b border-gray-300 px-2 py-5">Notifications</h1>
-                    {notifications.length === 0 && <p className="text-center mt-5 text-sm xl:text-md">No notifications yet</p>}
+                    {notifications.length === 0 && !isFetching && <p className="text-center mt-5 text-sm xl:text-md">No notifications yet</p>}
                     <div className="max-h-[40vh] md:max-h-[30vh] overflow-y-auto">
                     {notifications.map(notification => (
                         <div 
@@ -175,15 +175,16 @@ export default function NotificationBell() {
                         </div>
                     ))}
                     </div>
+                    {isFetching && <p className="w-full text-center text-xs md:text-sm my-3">Loading...</p>}
                     <div className={cn(
                         "justify-center mt-2",
-                        !(page >= (data?.pagination.totalPages || 1)) ? 'flex' : 'hidden'
+                        (data?.pagination.totalPages || 0) > page ? 'flex' : 'hidden'
                     )}>
                         <button
                             disabled={isFetching}
                             className="disabled:cursor-not-allowed cursor-pointer bg-black text-white px-3 py-1 text-xs rounded-md"
                             onClick={() => setPage(prev => prev + 1)}
-                        >{isFetching ? 'Loading...' : 'See more'}</button>
+                        >See more</button>
                     </div>
                 </div>
             )}

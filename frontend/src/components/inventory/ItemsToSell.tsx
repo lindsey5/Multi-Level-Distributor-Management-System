@@ -139,7 +139,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
 
                         <p className="text-xs md:text-sm">
                             <span className="font-semibold">Deduction (5%):</span>{" "}
-                            {formatToPeso(totalAmount)} x 5%
+                            {formatToPeso(totalAmount)} x 0.05
                         </p>
 
                         <p className="font-bold">
