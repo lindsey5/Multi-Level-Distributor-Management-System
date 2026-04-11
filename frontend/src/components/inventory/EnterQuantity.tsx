@@ -6,6 +6,7 @@ import TextField from "../ui/Textfield";
 import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
+import Chip from "../ui/Chip";
 
 interface EnterQuantityProps {
     setItems: React.Dispatch<SetStateAction<VariantWithQuantity[]>>;
@@ -62,8 +63,9 @@ export default function EnterQuantity({ setItems, open, close, variant }: EnterQ
                 <div className="flex gap-3">
                 <img className="w-20 h-20" src={variant?.image_url} alt="" />
                 <div>
-                    <h1 className="text-sm xl:text-md font-bold">{variant?.variant_name}</h1>
-                    <p className="text-sm xl:text-md">Available Stock: {stock}</p>
+                    <h1 className="mb-2 text-sm xl:text-md font-bold">{variant?.product?.product_name}</h1>
+                    <Chip className="text-xs">{variant?.variant_name}</Chip>
+                    <p className="mt-2 text-sm xl:text-md">Available Stock: {stock}</p>
                     <p className="text-sm xl:text-md">Price: {formatToPeso(variant?.price || 0)}</p>
                 </div>
                 </div>

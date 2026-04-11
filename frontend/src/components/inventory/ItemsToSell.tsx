@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../lib/features/store";
 import { authService } from "../../services/authService";
 import { setAuth } from "../../lib/features/auth/authSlice";
+import Chip from "../ui/Chip";
+import TextField from "../ui/Textfield";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
@@ -79,6 +81,21 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
     const commission = useMemo(() => {
         return totalAmount * 0.05;
     }, [totalAmount])
+
+    const handleQuantity = (quantity : number, variant: VariantWithQuantity) => {
+        if(quantity <= variant.stock){
+            setItems(prev => 
+                prev.map(item => 
+                    item._id === variant._id ? ({ ...item, quantity }) : 
+                    item
+                )
+            )
+        }
+    }
+
+    const isValidItems = useMemo(() => {
+        return items.every(item => item.quantity);
+    }, [items])
     
     return (
         <Modal className="max-w-[90vw] md:max-w-120" open={open} onClose={close}>
@@ -95,8 +112,9 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                         <div className="flex flex-col md:flex-row gap-3">
                             <img className="w-15 h-15 md:w-18 md:h-18" src={item.image_url} alt="item-image"/>
                             <div className="space-y-1">
-                                <p className="font-semibold">{item.variant_name}</p>
-                                <p className="text-sm">Available Stock: {item.stock}</p>
+                                <p className="font-semibold mb-2 text-sm">{item.product?.product_name}</p>
+                                <Chip className="text-xs">{item.variant_name}</Chip>
+                                <p className="text-sm mt-4">Available Stock: {item.stock}</p>
                                 <div className="flex items-center gap-3 mt-2">
                                     <button
                                         onClick={() => updateQuantity(item._id, -1)}
@@ -105,9 +123,17 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                                     >
                                         <Minus size={18}/>
                                     </button>
-                                    <div className="bg-white border border-gray-300 px-2 text-md rounded-sm shadow-md">
-                                        {item.quantity}
-                                    </div>
+                                    <input 
+                                        type="number"
+                                        onKeyDown={(e) => {
+                                            if (e.key === "." || e.key === "," || e.key === "e" || e.key === "-") {
+                                            e.preventDefault();
+                                            }
+                                        }}
+                                        className="border border-gray-400 text-center w-15"
+                                        value={item.quantity ? item.quantity : ""}
+                                        onChange={(e) => handleQuantity(Number(e.target.value), item)}
+                                    />
                                     <button
                                         onClick={() => updateQuantity(item._id, 1)}
                                         disabled={item.quantity >= item.stock}
@@ -138,7 +164,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                         </p>
 
                         <p className="text-xs md:text-sm">
-                            <span className="font-semibold">Deduction (5%):</span>{" "}
+                            <span className="font-semibold">5% of Total Sales:</span>{" "}
                             {formatToPeso(totalAmount)} x 0.05
                         </p>
 
@@ -150,7 +176,7 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
                 )}
                 <div className="flex justify-end">
                     <Button
-                        disabled={items.length === 0 || createSalesMutation.isPending}
+                        disabled={items.length === 0 || createSalesMutation.isPending || !isValidItems}
                         className="py-2 px-6 mt-2"
                         onClick={handleSellItems}
                     >{createSalesMutation.isPending ? "Loading..." : "Sell Items"}</Button>
