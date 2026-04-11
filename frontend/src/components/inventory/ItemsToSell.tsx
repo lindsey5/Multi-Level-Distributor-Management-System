@@ -13,7 +13,6 @@ import type { RootState } from "../../lib/features/store";
 import { authService } from "../../services/authService";
 import { setAuth } from "../../lib/features/auth/authSlice";
 import Chip from "../ui/Chip";
-import TextField from "../ui/Textfield";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
