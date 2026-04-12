@@ -1,23 +1,29 @@
+import type { Distributor } from "./distributor.type";
 import type { Variant } from "./variant.type";
 
 interface ReturnItem {
+    _id: string;
     variant_id: string;
     quantity: number;
     variant: Variant;
+    status: 'pending' | 'rejected' | 'expired' | 'insufficient stock'
 }
 
 export interface ReturnRequest {
+    _id: string;
     distributor_id: string;
+    distributor: Distributor;
     items: ReturnItem[];
     reason: string;
-    createdAt: string;
+}
+
+interface ItemPayload {
+    variant_id: string;
+    quantity: number;
 }
 
 export interface CreateReturnRequestPayload {
-    items: {
-        variant_id: string;
-        quantity: number;
-    }[],
+    items: ItemPayload[];
     reason: string;
 }
 

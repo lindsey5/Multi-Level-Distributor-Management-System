@@ -5,10 +5,10 @@ import type { StockTransferLog } from "./stock-transfer.type";
 export interface DistributorNotification {
     _id: string;
     distributor_id: string;
-    transfer_id?: string;
-    stockTransfer?: StockTransferLog;
-    return_id?: string;
-    returnRequest?: ReturnRequest;
+    transfer_id?: string | null;
+    stockTransfer?: StockTransferLog | null;
+    return_id?: string | null;
+    returnRequest?: ReturnRequest | null;
     message: string;
     status: 'read' | 'unread';
     createdAt: string;

@@ -2,7 +2,7 @@ import { useContext, useMemo, useState, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
-import { Minus, Plus, RotateCcw, X } from "lucide-react";
+import { Minus, Plus, Undo2, X } from "lucide-react";
 import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { promiseToast } from "../../utils/sileo";
@@ -190,8 +190,8 @@ export default function ItemsToReturn ({ open, close, items, setItems } : ItemsT
                         className="py-2 px-5 mt-2 flex gap-2"
                         onClick={handleReturnItems}
                     >
-                        <RotateCcw size={20}/>
-                        {createReturnMutation.isPending ? "Loading..." : "Return Items"}
+                        <Undo2 size={20}/>
+                        {createReturnMutation.isPending ? "Loading..." : "Request Return"}
                     </Button>
                 </div>
             </Card>

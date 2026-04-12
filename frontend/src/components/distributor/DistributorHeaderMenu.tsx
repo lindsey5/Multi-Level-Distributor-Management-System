@@ -3,7 +3,7 @@ import { type AppDispatch, type RootState } from "../../lib/features/store";
 import HeaderMenu from "../ui/DropdownMenu";
 import { logout } from "../../lib/features/auth/authSlice";
 import { MenuItems } from "../../pages/DashboardLayout";
-import NotificationBell from "../ui/NotificationBell";
+import NotificationBell from "../notification/NotificationBell";
 
 export default function DistributorHeaderMenu () {
     const auth = useSelector((state : RootState) => state.auth);

@@ -1,71 +1,16 @@
-import { Bell, X } from "lucide-react";
+import { Bell } from "lucide-react";
 import { useGetNotifications } from "../../hooks/notification/use-get-notifications.hook";
 import { useState, useEffect, useContext } from "react";
-import { cn, formatToPeso, timeAgo } from "../../utils/helpers";
+import { cn, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
 import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationContext";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
-import Modal from "./Modal";
-import Card from "./Card";
-import type { StockTransferItem } from "../../types/stock-transfer.type";
-import Button from "./Button";
-import { useNavigate } from "react-router-dom";
-import Chip from "./Chip";
-
-interface ItemsModal {
-    items: StockTransferItem[] | null;
-    open: boolean;
-    close: () => void;
-}
-
-const ItemsModal = ({ items, open, close } : ItemsModal) => {
-    const navigate = useNavigate();
-
-    const handleView = () => {
-        navigate('/distributor/inventory');
-        close();
-    }
-
-    return (
-        <Modal
-            open={open}
-            onClose={close}
-        >
-            <Card className="flex flex-col gap-3">
-                <div className="flex justify-between mb-2">
-                    <h1 className="font-bold">Received Items</h1>
-                    <button className="cursor-pointer" onClick={close}>
-                        <X size={20}/>
-                    </button>
-                </div>
-                <div className="max-h-[50vh] overflow-y-auto">
-                {items?.map(item => (
-                    <div key={item._id} className="flex gap-3 py-2 border-b border-gray-300">
-                        <img className="w-15 h-15 md:w-20 md:h-20" src={item.variant.image_url} alt="item-image"/>
-                        <div className="space-y-1">
-                            <p className="font-semibold">{item.variant.product?.product_name}</p>
-                            <Chip className="text-xs">{item.variant.variant_name}</Chip>
-                            <p className="text-sm mt-2">Quantity: {item.quantity}</p>
-                            <p className="text-sm">Price: {formatToPeso(item.variant.price)}</p>
-                        </div>
-                    </div>
-                ))}
-                </div>
-                <div className="flex justify-end">
-                    <Button
-                        className="text-sm py-3"
-                        onClick={handleView}
-                    >Go to Inventory</Button>
-                </div>
-            </Card>
-        </Modal>
-    )
-}
+import StockTransferItemsModal from "./StockTransferItemsModal";
+import ReturnDetailsModal from "./ReturnDetailsModal";
 
 export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [items, setItems] = useState<StockTransferItem[] | null>(null);
+    const [notification, setNotification] = useState<DistributorNotification | null>(null);
     const { socket } = useContext(DistributorNotificationSocketContext); 
     const limit = 10;
     const [page, setPage] = useState(1);
@@ -108,26 +53,33 @@ export default function NotificationBell() {
     }, [socket])
 
     const readNotification = (notification : DistributorNotification) => {
-        setShowModal(true);
-        setItems(notification.stockTransfer?.items || []);
-        
+        setNotification(notification);
+
         if(notification.status === 'unread'){
             readNotificationMutation.mutate({ id: notification._id })
+            setNotifications(prev => 
+                prev.map(notif => 
+                    notif._id === notification._id ? ({...notif, status: 'read'}) : notif
+                )
+            )
             setUnread(prev => prev -1)
         }
     }
 
     const handleClose = () => {
-        setShowModal(false)
-        setItems(null)
+        setNotification(null)
     }
 
     return (
         <>
-        <ItemsModal 
-            open={showModal}
+        <StockTransferItemsModal
+            open={(notification?.stockTransfer || null) !== null}
             close={handleClose}
-            items={items}
+            stockTransfer={notification?.stockTransfer || null}
+        />
+        <ReturnDetailsModal 
+            returnRequest={notification?.returnRequest || null}
+            close={handleClose}
         />
         <div className="relative" id="notification-bell">
             {/* Bell Button */}

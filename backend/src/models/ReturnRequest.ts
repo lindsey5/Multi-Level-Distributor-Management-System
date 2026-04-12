@@ -1,13 +1,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import { VariantAttributes } from "./Variant";
 
 export interface ReturnRequestAttributes extends Document {
     distributor_id: mongoose.Types.ObjectId;
     items: {
         variant_id: mongoose.Types.ObjectId;
-        variant?: VariantAttributes;
         quantity: number;
-        status: 'pending' | 'rejected' | 'expired'
+        status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'insufficient stock'
     }[];
     reason: string;
 }
@@ -32,7 +30,7 @@ const ReturnRequestSchema: Schema<ReturnRequestAttributes> = new Schema(
             },
             status: {
                 type: String,
-                enum: ['pending', 'rejected', 'expired'],
+                enum: ['pending', 'accepted', 'rejected', 'expired', 'insufficient stock'],
                 default: 'pending'
             }
         }],
@@ -53,6 +51,13 @@ ReturnRequestSchema.virtual("items.variant", {
     foreignField: "_id",
     justOne: true,
 });
+
+ReturnRequestSchema.virtual("distributor", {
+    ref: 'Distributor',
+    localField: 'distributor_id',
+    foreignField: "_id",
+    justOne: true,
+})
 
 ReturnRequestSchema.set("toObject", { virtuals: true });
 ReturnRequestSchema.set("toJSON", { virtuals: true });

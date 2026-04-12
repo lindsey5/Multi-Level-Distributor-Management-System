@@ -12,7 +12,10 @@ import Button from "../../components/ui/Button";
 import EnterQuantity from "../../components/inventory/EnterQuantity";
 import Chip from "../../components/ui/Chip";
 import InventoryTour from "../../components/ui/Tour/InventoryTour";
-import { Package, RotateCcw } from "lucide-react";
+import { 
+    Package, 
+    Undo2 
+} from "lucide-react";
 import ItemsToSell from "../../components/inventory/ItemsToSell";
 import ItemsToReturn from "../../components/inventory/ItemsToReturn";
 
@@ -82,7 +85,7 @@ export default function Inventory () {
             meta: { align: 'center' }
         },
         {
-            header: 'Created At',
+            header: 'Date Created',
             accessorKey: 'createdAt',
             cell: info => (
                 <div className="min-w-50">
@@ -98,9 +101,12 @@ export default function Inventory () {
                 {enableReturn ? 
                     <Button 
                         data-tour="inventory-sell-btn"
-                        className="py-1 text-xs bg-red-600"
+                        className="flex gap-2 items-center py-1 text-xs bg-red-600 border-none"
                         onClick={() => setVariant({ ...row.original.variant, stock: row.original.quantity })}
-                    >Return</Button>
+                    >
+                        <Undo2 size={18}/>
+                        Return
+                    </Button>
                     :
                     <Button 
                         data-tour="inventory-sell-btn"
@@ -136,7 +142,7 @@ export default function Inventory () {
                     )}
                     onClick={() => setEnableReturn(prev => !prev)}
                 >
-                    <RotateCcw size={20} />
+                    <Undo2 size={20} />
                     Return Items
                 </Button>
             </div>
