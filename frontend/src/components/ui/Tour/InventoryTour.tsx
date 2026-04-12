@@ -2,6 +2,10 @@ import { Joyride } from "react-joyride";
 
 const steps = [
     {
+        target: '[data-tour="inventory-mode-controls"]',
+        content: "Choose whether you want to sell or return items.",
+    },
+    {
         target: '[data-tour="inventory-controls"]',
         content: "Use this to search and sort your inventory items.",
     },
@@ -10,12 +14,8 @@ const steps = [
         content: "This is your stock list with product details.",
     },
     {
-        target: '[data-tour="inventory-sell-btn"]',
-        content: "Click here to sell a specific item.",
-    },
-    {
-        target: '[data-tour="inventory-items-to-sell"]',
-        content: "View all items you selected for selling here.",
+        target: '[data-tour="inventory-selected-items"]',
+        content: "View all items you selected for selling or returning here.",
     },
 ];
 

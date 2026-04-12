@@ -4,7 +4,7 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
 import PageContainer from "../components/ui/PageContainer";
 import DashboardLayout from "../pages/DashboardLayout";
 import Inventory from "../pages/Dashboard/Inventory";
-import StockTransferSocketContextProvider from "../contexts/StockTransferContext";
+import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationContext";
 import Sales from "../pages/Dashboard/Sales";
 import TransferLogs from "../pages/Dashboard/TransferLogs";
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -24,13 +24,13 @@ const router = createBrowserRouter([
     {
         path: '/distributor',
         Component: () => (
-            <StockTransferSocketContextProvider>
+            <DistributorNotificationSocketContextProvider>
                 <UserNotificationSocketContextProvider>
                     <ProtectedRoute requireAuthentication>
                         <DashboardLayout />
                     </ProtectedRoute>
                 </UserNotificationSocketContextProvider>
-            </StockTransferSocketContextProvider>
+            </DistributorNotificationSocketContextProvider>
         ),
         children: [
             {

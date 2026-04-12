@@ -3,7 +3,7 @@ import { useGetNotifications } from "../../hooks/notification/use-get-notificati
 import { useState, useEffect, useContext } from "react";
 import { cn, formatToPeso, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
-import { StockTransferSocketContext } from "../../contexts/StockTransferContext";
+import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationContext";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
 import Modal from "./Modal";
 import Card from "./Card";
@@ -66,7 +66,7 @@ export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [items, setItems] = useState<StockTransferItem[] | null>(null);
-    const { socket } = useContext(StockTransferSocketContext); 
+    const { socket } = useContext(DistributorNotificationSocketContext); 
     const limit = 10;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);
@@ -97,19 +97,19 @@ export default function NotificationBell() {
 
     useEffect(() => {
         if(socket) {
-            socket.on("stockTransfer", (data) => {
+            socket.on("receive-notification", (data) => {
                 setNotifications(prev => [data, ...prev]);
                 setUnread(prev => prev + 1);
             })
         }
         return () => {
-            if(socket) socket.off('stockTransfer');
+            if(socket) socket.off('receive-notification');
         }
     }, [socket])
 
     const readNotification = (notification : DistributorNotification) => {
         setShowModal(true);
-        setItems(notification.stockTransfer.items);
+        setItems(notification.stockTransfer?.items || []);
         
         if(notification.status === 'unread'){
             readNotificationMutation.mutate({ id: notification._id })

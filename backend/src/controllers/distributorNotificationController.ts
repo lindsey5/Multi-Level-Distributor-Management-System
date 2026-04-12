@@ -1,9 +1,10 @@
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../types/types";
 import DistributorNotification from "../models/DistributorNotification";
-import '../models/StockTransfer'
-import '../models/StockTransferItem'
-import '../models/Variant'
+import '../models/StockTransfer';
+import '../models/StockTransferItem';
+import '../models/Variant';
+import '../models/Product';
 
 export const getDistributorNotifications = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
@@ -14,16 +15,25 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
         const notifications = await DistributorNotification.find({
             distributor_id: req.user._id
         })
-        .populate({
-            path: 'stockTransfer',
-            populate: {
-                path: 'items',
+        .populate([
+            {
+                path: 'stockTransfer',
                 populate: {
-                    path: 'variant',
+                    path: 'items',
+                    populate: {
+                        path: 'variant',
+                        populate: 'product'
+                    }
+                }
+            },
+            {
+                path: 'returnRequest',
+                populate: {
+                    path: 'items.variant',
                     populate: 'product'
                 }
             }
-        })
+        ])
         .skip(skip)
         .limit(limit)
         .sort({ createdAt: -1 });

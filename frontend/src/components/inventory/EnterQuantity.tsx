@@ -3,7 +3,7 @@ import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { Variant } from "../../types/variant.type";
 import TextField from "../ui/Textfield";
-import { formatToPeso } from "../../utils/helpers";
+import { cn, formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
 import Chip from "../ui/Chip";
@@ -13,9 +13,10 @@ interface EnterQuantityProps {
     open: boolean;
     close: () => void;
     variant: Variant | null;
+    mode: 'return' | 'sell';
 }
 
-export default function EnterQuantity({ setItems, open, close, variant }: EnterQuantityProps) {
+export default function EnterQuantity({ setItems, open, close, variant, mode }: EnterQuantityProps) {
   const [quantity, setQuantity] = useState<number>(1);
 
     const stock = variant?.stock || 0;
@@ -71,7 +72,7 @@ export default function EnterQuantity({ setItems, open, close, variant }: EnterQ
                 </div>
 
                 <TextField
-                    label="Enter Quantity to Sell"
+                    label={`Enter Quantity to ${mode === 'return' ? 'Return' : 'Sell'}`}
                     placeholder="Enter quantity"
                     type="number"
                     value={quantity ? quantity.toString() : ""}
@@ -86,11 +87,14 @@ export default function EnterQuantity({ setItems, open, close, variant }: EnterQ
 
                 <div className="flex justify-end">
                 <Button
-                    className="py-1 px-10"
+                    className={cn(
+                        "py-2 px-10",
+                        mode === 'return' && 'bg-red-600 border-none'
+                    )}
                     disabled={!quantity || isInvalid || isExceedingStock}
                     onClick={handleSell}
                 >
-                    Sell
+                    {mode === 'return' ? 'Return Item' : 'Sell Item'}
                 </Button>
                 </div>
             </Card>

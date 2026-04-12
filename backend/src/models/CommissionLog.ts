@@ -12,7 +12,7 @@ const CommissionLogSchema: Schema<CommissionLogAttributes> = new Schema(
         sale_ids: {
             type: [{
                 type: Schema.Types.ObjectId,
-                ref: "Distributor",
+                ref: "DistributorSale",
                 required: true,
             }],
             required: true

@@ -1,18 +1,20 @@
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import type { DistributorStock } from "../../types/stock.type";
-import { formatDate, formatToPeso } from "../../utils/helpers";
+import { cn, formatDate, formatToPeso } from "../../utils/helpers";
 import { useGetStocks } from "../../hooks/stock/use-get-stocks.hook";
 import { useState } from "react";
 import type { SortOption } from "../../types/types.type";
 import { useDebounce } from "../../hooks/useDebounce";
 import CustomTable from "../../components/ui/Table";
 import InventoryControls from "../../components/inventory/InventoryControls";
-import ItemsToSell from "../../components/inventory/ItemsToSell";
 import type { Variant } from "../../types/variant.type";
 import Button from "../../components/ui/Button";
 import EnterQuantity from "../../components/inventory/EnterQuantity";
 import Chip from "../../components/ui/Chip";
 import InventoryTour from "../../components/ui/Tour/InventoryTour";
+import { Package, RotateCcw } from "lucide-react";
+import ItemsToSell from "../../components/inventory/ItemsToSell";
+import ItemsToReturn from "../../components/inventory/ItemsToReturn";
 
 export interface VariantWithQuantity extends Variant{
     quantity: number
@@ -29,6 +31,7 @@ export default function Inventory () {
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 200);
+    const [enableReturn, setEnableReturn] = useState(false);
 
     const { data, isFetching } = useGetStocks({
         search: debouncedSearch,
@@ -91,11 +94,21 @@ export default function Inventory () {
         {
             header: 'Action',
             cell: ({ row }) => (
-                <Button 
-                    data-tour="inventory-sell-btn"
-                    className="py-1 text-xs"
-                    onClick={() => setVariant({ ...row.original.variant, stock: row.original.quantity })}
-                >Sell</Button>
+                <>
+                {enableReturn ? 
+                    <Button 
+                        data-tour="inventory-sell-btn"
+                        className="py-1 text-xs bg-red-600"
+                        onClick={() => setVariant({ ...row.original.variant, stock: row.original.quantity })}
+                    >Return</Button>
+                    :
+                    <Button 
+                        data-tour="inventory-sell-btn"
+                        className="py-1 text-xs"
+                        onClick={() => setVariant({ ...row.original.variant, stock: row.original.quantity })}
+                    >Sell</Button>
+                }
+                </>
             )
         }
     ];
@@ -105,18 +118,26 @@ export default function Inventory () {
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
             <InventoryTour />
-            <div className="relative flex justify-end">
+            <div className="flex gap-3 items-center" data-tour="inventory-mode-controls">
                 <Button 
-                    className="text-xs md:text-sm py-2 px-4 relative"
-                    onClick={() => setShowModal(true)}
-                    data-tour="inventory-items-to-sell"
-                >
-                    Items To Sell
-                    {items.length > 0 && (
-                        <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                            {items.length}
-                        </span>
+                    className={cn(
+                        "flex gap-2 px-6 py-2 text-black bg-white border border-gray-300 shadow-none",
+                        !enableReturn && 'bg-black text-white'
                     )}
+                    onClick={() => setEnableReturn(prev => !prev)}
+                >
+                    <Package size={20} />
+                    Sell Items
+                </Button>
+                <Button 
+                    className={cn(
+                        "flex gap-2 px-6 py-2 text-black bg-white border border-gray-300 shadow-none",
+                        enableReturn && 'bg-black text-white'
+                    )}
+                    onClick={() => setEnableReturn(prev => !prev)}
+                >
+                    <RotateCcw size={20} />
+                    Return Items
                 </Button>
             </div>
             <InventoryControls 
@@ -130,13 +151,43 @@ export default function Inventory () {
                 close={() => setVariant(null)}
                 setItems={setItems}
                 variant={variant}
+                mode={enableReturn ? 'return' : 'sell'}
             />
-            <ItemsToSell 
-                open={showModal}
-                close={handleClose}
-                items={items}
-                setItems={setItems}
-            />
+            {enableReturn ? (
+                <ItemsToReturn
+                    open={showModal}
+                    close={handleClose}
+                    items={items}
+                    setItems={setItems}
+                />
+            ) : (
+                <ItemsToSell
+                    open={showModal}
+                    close={handleClose}
+                    items={items}
+                    setItems={setItems}
+                />
+            )}
+            <div className="relative flex justify-end">
+                <Button 
+                    className={cn(
+                        "text-xs md:text-sm py-2 px-4 relative",
+                        enableReturn && 'bg-red-600 border border-red-600'
+                    )}
+                    onClick={() => setShowModal(true)}
+                    data-tour="inventory-selected-items"
+                >
+                    {enableReturn ? 'Items To Return' : 'Items To Sell'}
+                    {items.length > 0 && (
+                        <span className={cn(
+                            "absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full",
+                            enableReturn && 'bg-black'
+                        )}>
+                            {items.length}
+                        </span>
+                    )}
+                </Button>
+            </div>
             <CustomTable
                 dataTour="inventory-table"
                 isLoading={isFetching}

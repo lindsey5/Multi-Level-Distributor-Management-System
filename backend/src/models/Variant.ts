@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import { ProductAttributes } from "./Product";
 
 export interface VariantAttributes extends Document {
     product_id: Types.ObjectId;
@@ -9,6 +10,7 @@ export interface VariantAttributes extends Document {
     image_url: string;
     sku: string;
     status?: "active" | "deleted";
+    product?: ProductAttributes;
 }
 
 const VariantSchema: Schema<VariantAttributes> = new Schema(
