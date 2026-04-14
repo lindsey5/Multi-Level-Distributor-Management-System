@@ -4,9 +4,9 @@ import DistributorStock from "../models/DistributorStock";
 import { AuthRequest } from "../types/types";
 
 export const getDistributorStocks = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
 ) => {
     try {
         const search = (req.query.search as string) || "";
