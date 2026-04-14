@@ -18,6 +18,10 @@ const steps = [
         content: "View all product transfers and logs here.",
     },
     {
+        target: '[data-tour="menu-return-history"]',
+        content: "View the status of all your return requests including product details",
+    },
+    {
         target: '[data-tour="menu-profile"]',
         content: "Manage your profile, password, view wallet balance, withdraw commission and view commissions details",
     },

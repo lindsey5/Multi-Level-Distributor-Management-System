@@ -47,7 +47,7 @@ export default function Sidebar({
                     {!collapsed && (
                         <div>
                             <p className="text-sm font-semibold text-gray-900 tracking-tight">Zhiyuan</p>
-                            <p className="text-sm text-gray-400">Enterprise Group</p>
+                            <p className="text-sm text-gray-400">Enterprise Group Inc.</p>
                         </div>
                     )}
                 </div>
