@@ -14,7 +14,7 @@ const getColumns = (setReturnRequest : React.Dispatch<SetStateAction<ReturnReque
     {
         header: 'Date',
         accessorKey: 'createdAt',
-        cell: info => formatDate(info.getValue() as string),
+        cell: info => <div className="min-w-30">{formatDate(info.getValue() as string)}</div>,
         meta: { align: 'center' }
     },
     {

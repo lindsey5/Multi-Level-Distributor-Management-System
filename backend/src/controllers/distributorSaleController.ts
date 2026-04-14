@@ -119,103 +119,123 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
     }
 };
 
-export const getDistributorSales = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getDistributorSales = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
     try {
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 10;
         const skip = (page - 1) * limit;
+
         const sortBy = (req.query.sortBy as string) || "createdAt";
-        const order = req.query.order && String(req.query.order).toUpperCase() === "ASC" ? 1 : -1;
+        const order =
+        req.query.order && String(req.query.order).toUpperCase() === "ASC" ? 1 : -1;
+
         const search = req.query.search?.toString() || "";
 
         const startDate = req.query.startDate ? setStartDate(req.query.startDate as string) : null;
+
         const endDate = req.query.endDate ? setEndDate(req.query.endDate as string) : null;
 
         const distributor = await Distributor.findById(req.user._id);
 
-        if(!distributor){
+        if (!distributor) {
             return res.status(404).json({
                 success: false,
-                message: 'Distributor not found.'
-            })
+                message: "Distributor not found.",
+            });
         }
 
-        const filter: any = { seller_id: req.user._id };
-
-        if(search){
-            filter.$or = [
-                { "variant.variant_name" : { $regex: search, $options: "i" } },
-                { "variant.sku" : { $regex: search, $options: "i" } },
-                { "product.product_name" : { $regex: search, $options: "i" } },
-            ]
-        }
+        const matchFilter: any = { seller_id: req.user._id };
 
         if (startDate || endDate) {
-            filter.createdAt = {};
-            if (startDate) filter.createdAt.$gte = startDate;
-            if (endDate) filter.createdAt.$lte = endDate;
+            matchFilter.createdAt = {};
+            if (startDate) matchFilter.createdAt.$gte = startDate;
+            if (endDate) matchFilter.createdAt.$lte = endDate;
         }
 
-        const [distributorSales, total, totalSalesResult] = await Promise.all([
+        const pipeline: any[] = [
+            { $match: matchFilter },
+
+            {
+                $lookup: {
+                from: "variants",
+                localField: "variant_id",
+                foreignField: "_id",
+                as: "variant",
+                },
+            },
+            { $unwind: "$variant" },
+
+            {
+                $lookup: {
+                from: "products",
+                localField: "variant.product_id",
+                foreignField: "_id",
+                as: "product",
+                },
+            },
+            { $unwind: "$product" },
+
+            {
+                $lookup: {
+                from: "distributors",
+                localField: "seller_id",
+                foreignField: "_id",
+                as: "seller",
+                },
+            },
+            { $unwind: "$seller" },
+        ];
+
+        if (search) {
+            pipeline.push({
+                $match: {
+                $or: [
+                    { "variant.variant_name": { $regex: search, $options: "i" } },
+                    { "variant.sku": { $regex: search, $options: "i" } },
+                    { "product.product_name": { $regex: search, $options: "i" } },
+                ],
+                },
+            });
+        }
+
+        const [distributorSales, totalResult, totalSalesResult] = await Promise.all([
             DistributorSale.aggregate([
-                {
-                    $lookup: {
-                        from: "variants",
-                        localField: "variant_id",
-                        foreignField: "_id",
-                        as: "variant"
-                    }
-                },
-                { $unwind: "$variant" },
-
-                {
-                    $lookup: {
-                        from: "products",
-                        localField: "variant.product_id",
-                        foreignField: "_id",
-                        as: "product"
-                    }
-                },
-                { $unwind: "$product" },
-
-                {
-                    $lookup: {
-                        from: "distributors",
-                        localField: "seller_id",
-                        foreignField: "_id",
-                        as: "seller"
-                    }
-                },
-                { $unwind: "$seller" },
-                { $match: filter },
-                { $sort: { [sortBy]: order } },
-                { $skip: skip },
-                { $limit: limit }
+            ...pipeline,
+            { $sort: { [sortBy]: order } },
+            { $skip: skip },
+            { $limit: limit },
             ]),
-            DistributorSale.countDocuments(filter),
+
+            DistributorSale.aggregate([...pipeline, { $count: "total" }]),
+
             DistributorSale.aggregate([
-                { $match: filter },
-                { $group: { _id: null, totalSales: { $sum: "$total_amount" } } }
-            ])
+            ...pipeline,
+            { $group: { _id: null, totalSales: { $sum: "$total_amount" } } },
+            ]),
         ]);
 
+        const total = totalResult[0]?.total || 0;
         const totalSales = totalSalesResult[0]?.totalSales || 0;
 
-        res.status(200).json({
+
+        return res.status(200).json({
             distributorSales,
+            totalSales,
             pagination: {
-                totalSales,
                 page,
                 limit,
                 totalPages: Math.ceil(total / limit),
-                total
-            }
+                total,
+            },
         });
-
     } catch (err) {
         next(err);
     }
-}
+};
 
 export const getDistributorSalesToday = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
