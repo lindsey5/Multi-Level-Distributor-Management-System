@@ -79,9 +79,13 @@ export const changePassword = async (req: AuthRequest, res: Response, next: Next
 
         if(!distributor) return res.status(404).json({ message: "User not found" });
 
+        const isSamePassword=  await distributor.matchPassword(newPassword);
+
+        if(isSamePassword) return res.status(400).json({ message: 'New password must be different from current password' });
+
         const isMatch = distributor.matchPassword(currentPassword);
 
-        if (!isMatch)  return res.status(401).json({ message: "Incorrect current password." });
+        if (!isMatch)  return res.status(403).json({ message: "Incorrect current password." });
 
         distributor.password = newPassword;
         await distributor.save();
