@@ -6,7 +6,7 @@ import type { DistributorNotification } from "../../types/notification.type";
 import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationContext";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
 import StockTransferItemsModal from "./StockTransferItemsModal";
-import ReturnDetailsModal from "./ReturnDetailsModal";
+import ReturnDetailsModal from "../return-request/ReturnDetailsModal";
 
 export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);

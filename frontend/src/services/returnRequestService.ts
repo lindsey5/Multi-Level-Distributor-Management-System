@@ -1,5 +1,5 @@
 import { apiAxios, HttpMethod } from "../lib/api/apiAxios";
-import type { CreateReturnRequestPayload, CreateReturnRequestResponse } from "../types/returnRequest.type";
+import type { GetReturnRequestResponse, CreateReturnRequestPayload, CreateReturnRequestResponse, GetReturnRequestsParams } from "../types/returnRequest.type";
 
 export const returnRequestService = {
     createReturnRequest: (data: CreateReturnRequestPayload) =>
@@ -7,4 +7,11 @@ export const returnRequestService = {
             method: HttpMethod.POST,
             data,
         }),
+
+    getReturnRequests: (params: GetReturnRequestsParams) =>
+        apiAxios<GetReturnRequestResponse>("return-requests", {
+            method: HttpMethod.GET,
+            params
+        }) 
+
 };

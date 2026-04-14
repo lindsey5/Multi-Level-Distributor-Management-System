@@ -1,26 +1,19 @@
-import { Search } from "lucide-react";
 import FiltersMenu from "../ui/FiltersMenu";
-import TextField from "../ui/Textfield";
 import DateInput from "../ui/DateInput";
-import type { PaginationState } from "@tanstack/react-table";
 
-interface TransferLogsControlsProps {
-    setSearch: React.Dispatch<React.SetStateAction<string>>;
+interface ReturnRequestControlsProps {
     startDate: string;
     setStartDate: React.Dispatch<React.SetStateAction<string>>;
     endDate: string;
     setEndDate: React.Dispatch<React.SetStateAction<string>>;
-    setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
 
-export default function TransferLogsControls ({
-    setSearch,
+export default function ReturnRequestControls ({
     startDate,
     setStartDate,
     endDate,
     setEndDate,
-    setPagination
-} : TransferLogsControlsProps) {
+} : ReturnRequestControlsProps) {
 
     const clear = () => {
         setStartDate('');
@@ -29,17 +22,6 @@ export default function TransferLogsControls ({
 
     return (
         <div className="flex items-center justify-between gap-5" data-tour="stock-transfer-controls">
-            <div className="flex-1 flex-0 md:max-w-100">
-                <TextField 
-                    className="md:max-w-84"
-                    icon={<Search className="text-gray-400"/>}
-                    placeholder="Search by product name, variant name, sku..."
-                    onChange={(e) => {
-                        setPagination(prev => ({...prev, pageIndex: 0}))
-                        setSearch(e.target.value);
-                    }}
-                />
-            </div>
             <FiltersMenu className="flex md:hidden" containerStyle="space-y-2 gap-3 w-[90vw] md:w-90 md:-right-1">
                 <h1 className="font-semibold">Filter</h1>
                 <div className="grid grid-cols-2 gap-3">

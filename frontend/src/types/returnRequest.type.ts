@@ -1,4 +1,5 @@
 import type { Distributor } from "./distributor.type";
+import type { PaginationParams, PaginationResponse } from "./pagination.type";
 import type { Variant } from "./variant.type";
 
 interface ReturnItem {
@@ -30,4 +31,13 @@ export interface CreateReturnRequestPayload {
 export interface CreateReturnRequestResponse {
     message: string;
     returnRequest: ReturnRequest;
+}
+
+export interface GetReturnRequestsParams extends PaginationParams{
+    startDate?: string;
+    endDate?: string;
+}
+
+export interface GetReturnRequestResponse extends PaginationResponse {
+    returnRequests: ReturnRequest[];
 }

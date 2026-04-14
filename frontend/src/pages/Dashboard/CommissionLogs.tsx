@@ -24,8 +24,6 @@ export default function CommissionLogs () {
         }
     }, [data])
 
-    console.log(data)
-
     return (
         <div className="px-3">
             <CommissionLogModal 

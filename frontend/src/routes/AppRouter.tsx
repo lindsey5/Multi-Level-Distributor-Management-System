@@ -15,6 +15,7 @@ import Withdraw from "../pages/Dashboard/Withdraw";
 import CommissionLogs from "../pages/Dashboard/CommissionLogs";
 import UserNotificationSocketContextProvider from "../contexts/UserNotificationSocket";
 import ChangePassword from "../pages/Dashboard/ChangePassword";
+import ReturnHistory from "../pages/Dashboard/ReturnHistory";
 
 const router = createBrowserRouter([ 
     {
@@ -65,6 +66,17 @@ const router = createBrowserRouter([
                         description="View all stock transfer records"
                     >
                         <TransferLogs />
+                    </PageContainer>
+                )
+            },
+            {
+                path: 'return-history',
+                Component: () => (
+                    <PageContainer 
+                        title="Return History"
+                        description="Check the status of all your return requests"
+                    >
+                        <ReturnHistory />
                     </PageContainer>
                 )
             },

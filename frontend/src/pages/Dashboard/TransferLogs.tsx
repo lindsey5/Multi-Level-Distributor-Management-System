@@ -56,7 +56,7 @@ export default function TransferLogs () {
         {
             header: 'Action',
             cell: ({ row }) => (
-                <Button data-tour="stock-transfer-btn" className="px-2 py-1" onClick={() => setStockTransfer(row.original)}>
+                <Button className="px-2 py-1" onClick={() => setStockTransfer(row.original)}>
                     <Eye size={20}/>
                 </Button>
             )

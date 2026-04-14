@@ -4,7 +4,7 @@ import Chip from "../ui/Chip";
 import type { ReturnRequest } from "../../types/returnRequest.type";
 import Modal from "../ui/Modal";
 import Card from "../ui/Card";
-import ReturnRequestStatusChip from "../return-request/ReturnRequestStatusChip";
+import ReturnRequestStatusChip from "./ReturnRequestStatusChip";
 
 export default function ReturnDetailsModal ({ returnRequest, close } : { returnRequest: ReturnRequest | null, close: () => void }) {
 

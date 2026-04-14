@@ -11,10 +11,6 @@ const steps = [
         content:
         "This table displays your complete stock transfer history.",
     },
-    {
-        target: '[data-tour="stock-transfer-btn"]',
-        content:"Click here to view detailed items included in each stock transfer record.",
-    },
 ];
 
 export default function StockTransferTour() {
