@@ -12,23 +12,20 @@ import type { RootState } from "../../lib/features/store";
 import { authService } from "../../services/authService";
 import { setAuth } from "../../lib/features/auth/authSlice";
 import Chip from "../ui/Chip";
-import { useSocket } from "../../hooks/useSocket";
+import type { Socket } from "socket.io-client";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
     setItems: React.Dispatch<SetStateAction<VariantWithQuantity[]>>;
     open: boolean;
     close: () => void;
+    socket: Socket | null
 }
 
-export default function ItemsToSell ({ open, close, items, setItems } : ItemsToSellProps) {
+export default function ItemsToSell ({ open, close, items, setItems, socket } : ItemsToSellProps) {
     const createSalesMutation = useCreateSales();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
-    const socket = useSocket({
-        namespace: "/notification",
-        events: {}
-    })
 
     const handleSellItems = async () => {
         const isConfirmed = confirm(`Are you sure you want to sell ${items.length} item(s)?`);

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import ItemsToSell from "../../components/inventory/ItemsToSell";
 import ItemsToReturn from "../../components/inventory/ItemsToReturn";
+import { useSocket } from "../../hooks/useSocket";
 
 export interface VariantWithQuantity extends Variant{
     quantity: number
@@ -35,6 +36,10 @@ export default function Inventory () {
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 200);
     const [enableReturn, setEnableReturn] = useState(false);
+    const socket = useSocket({
+        namespace: "/notification",
+        events: {}
+    })
 
     const { data, isFetching } = useGetStocks({
         search: debouncedSearch,
@@ -165,6 +170,7 @@ export default function Inventory () {
                     close={handleClose}
                     items={items}
                     setItems={setItems}
+                    socket={socket}
                 />
             ) : (
                 <ItemsToSell
@@ -172,6 +178,7 @@ export default function Inventory () {
                     close={handleClose}
                     items={items}
                     setItems={setItems}
+                    socket={socket}
                 />
             )}
             <div className="relative flex justify-end">

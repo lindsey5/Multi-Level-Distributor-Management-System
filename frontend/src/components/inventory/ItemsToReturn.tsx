@@ -14,13 +14,14 @@ import Chip from "../ui/Chip";
 import { useCreateReturnRequest } from "../../hooks/returnRequest/use-create-return-request.hook";
 import TextField from "../ui/Textfield";
 import Dropdown from "../ui/Dropdown";
-import { useSocket } from "../../hooks/useSocket";
+import type { Socket } from "socket.io-client";
 
 interface ItemsToReturnProps{
     items: VariantWithQuantity[];
     setItems: React.Dispatch<SetStateAction<VariantWithQuantity[]>>;
     open: boolean;
     close: () => void;
+    socket: Socket | null
 }
 
 const returnReasons = [
@@ -29,14 +30,10 @@ const returnReasons = [
     "Others",
 ];
 
-export default function ItemsToReturn ({ open, close, items, setItems } : ItemsToReturnProps) {
+export default function ItemsToReturn ({ open, close, items, setItems, socket } : ItemsToReturnProps) {
     const createReturnMutation = useCreateReturnRequest();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
-    const socket = useSocket({
-        namespace: "/notification",
-        events: {}
-    })
     const [reason, setReason] = useState(returnReasons[0]);
     const [otherReason, setOtherReason] = useState("");
 
