@@ -1,4 +1,4 @@
-import { useContext, useMemo, type SetStateAction } from "react";
+import { useMemo, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
@@ -7,12 +7,12 @@ import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { useCreateSales } from "../../hooks/sale/use-create-sales.hook";
 import { promiseToast } from "../../utils/sileo";
-import { UserNotificationSocketContext } from "../../contexts/UserNotificationSocket";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../lib/features/store";
 import { authService } from "../../services/authService";
 import { setAuth } from "../../lib/features/auth/authSlice";
 import Chip from "../ui/Chip";
+import { useSocket } from "../../hooks/useSocket";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
@@ -25,7 +25,10 @@ export default function ItemsToSell ({ open, close, items, setItems } : ItemsToS
     const createSalesMutation = useCreateSales();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
-    const { socket } = useContext(UserNotificationSocketContext);
+    const socket = useSocket({
+        namespace: "/notification",
+        events: {}
+    })
 
     const handleSellItems = async () => {
         const isConfirmed = confirm(`Are you sure you want to sell ${items.length} item(s)?`);

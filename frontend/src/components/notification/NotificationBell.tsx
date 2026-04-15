@@ -1,17 +1,18 @@
 import { Bell } from "lucide-react";
 import { useGetNotifications } from "../../hooks/notification/use-get-notifications.hook";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { cn, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
-import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationContext";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
 import StockTransferItemsModal from "./StockTransferItemsModal";
 import ReturnDetailsModal from "../return-request/ReturnDetailsModal";
+import { useSocket } from "../../hooks/useSocket";
+
 
 export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [notification, setNotification] = useState<DistributorNotification | null>(null);
-    const { socket } = useContext(DistributorNotificationSocketContext); 
+    const socket = useSocket({ namespace: "/distributor-notification" });
     const limit = 10;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);

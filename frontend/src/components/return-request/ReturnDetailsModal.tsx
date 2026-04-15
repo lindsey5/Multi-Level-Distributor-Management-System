@@ -5,6 +5,7 @@ import type { ReturnRequest } from "../../types/returnRequest.type";
 import Modal from "../ui/Modal";
 import Card from "../ui/Card";
 import ReturnRequestStatusChip from "./ReturnRequestStatusChip";
+import { formatDate } from "../../utils/helpers";
 
 export default function ReturnDetailsModal ({ returnRequest, close } : { returnRequest: ReturnRequest | null, close: () => void }) {
 
@@ -55,6 +56,7 @@ export default function ReturnDetailsModal ({ returnRequest, close } : { returnR
                         </div>
                     ))}
                 </div>
+                <p className="text-xs md:text-sm">Date Requested: {formatDate(returnRequest?.createdAt)}</p>
                 <div className="space-y-2">
                     <h1 className="font-bold text-sm">Reason:</h1>
                     <p className="text-break-all px-2 py-3 bg-black/10 max-h-20 overflow-y-auto">{returnRequest?.reason}</p>

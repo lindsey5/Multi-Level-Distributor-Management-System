@@ -16,6 +16,7 @@ export interface ReturnRequest {
     distributor: Distributor;
     items: ReturnItem[];
     reason: string;
+    createdAt: string;
 }
 
 interface ItemPayload {

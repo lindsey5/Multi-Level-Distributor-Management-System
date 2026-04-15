@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState, type SetStateAction } from "react";
+import { useMemo, useState, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
@@ -6,7 +6,6 @@ import { Minus, Plus, Undo2, X } from "lucide-react";
 import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { promiseToast } from "../../utils/sileo";
-import { UserNotificationSocketContext } from "../../contexts/UserNotificationSocket";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../lib/features/store";
 import { authService } from "../../services/authService";
@@ -15,6 +14,7 @@ import Chip from "../ui/Chip";
 import { useCreateReturnRequest } from "../../hooks/returnRequest/use-create-return-request.hook";
 import TextField from "../ui/Textfield";
 import Dropdown from "../ui/Dropdown";
+import { useSocket } from "../../hooks/useSocket";
 
 interface ItemsToReturnProps{
     items: VariantWithQuantity[];
@@ -33,7 +33,10 @@ export default function ItemsToReturn ({ open, close, items, setItems } : ItemsT
     const createReturnMutation = useCreateReturnRequest();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
-    const { socket } = useContext(UserNotificationSocketContext);
+    const socket = useSocket({
+        namespace: "/notification",
+        events: {}
+    })
     const [reason, setReason] = useState(returnReasons[0]);
     const [otherReason, setOtherReason] = useState("");
 

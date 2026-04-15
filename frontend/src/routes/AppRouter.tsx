@@ -4,7 +4,6 @@ import { ProtectedRoute } from "../components/ProtectedRoute";
 import PageContainer from "../components/ui/PageContainer";
 import DashboardLayout from "../pages/DashboardLayout";
 import Inventory from "../pages/Dashboard/Inventory";
-import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationContext";
 import Sales from "../pages/Dashboard/Sales";
 import TransferLogs from "../pages/Dashboard/TransferLogs";
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -13,7 +12,6 @@ import ProfileLayout from "../pages/ProfileLayout";
 import WalletBalance from "../pages/WalletBalanceLayout";
 import Withdraw from "../pages/Dashboard/Withdraw";
 import CommissionLogs from "../pages/Dashboard/CommissionLogs";
-import UserNotificationSocketContextProvider from "../contexts/UserNotificationSocket";
 import ChangePassword from "../pages/Dashboard/ChangePassword";
 import ReturnHistory from "../pages/Dashboard/ReturnHistory";
 
@@ -25,13 +23,9 @@ const router = createBrowserRouter([
     {
         path: '/distributor',
         Component: () => (
-            <DistributorNotificationSocketContextProvider>
-                <UserNotificationSocketContextProvider>
-                    <ProtectedRoute requireAuthentication>
-                        <DashboardLayout />
-                    </ProtectedRoute>
-                </UserNotificationSocketContextProvider>
-            </DistributorNotificationSocketContextProvider>
+            <ProtectedRoute requireAuthentication>
+                <DashboardLayout />
+            </ProtectedRoute>
         ),
         children: [
             {
