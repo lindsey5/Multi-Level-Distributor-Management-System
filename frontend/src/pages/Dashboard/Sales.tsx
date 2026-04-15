@@ -111,9 +111,6 @@ export default function Sales () {
                 total={data?.pagination.total || 0}
                 dataTour="sales-table"
             />
-            <div className="flex justify-end">
-                <h1 className="font-bold mt-2 text-md md:text-lg">Total Sales: {formatToPeso(data?.totalSales || 0)}</h1>
-            </div>
         </div>
     )
 }

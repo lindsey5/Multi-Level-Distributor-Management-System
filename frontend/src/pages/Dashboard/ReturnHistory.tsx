@@ -20,7 +20,7 @@ const getColumns = (setReturnRequest : React.Dispatch<SetStateAction<ReturnReque
     {
         header: 'Reason',
         accessorKey: 'reason',
-        cell: info => <div className="max-w-50 truncate">{info.getValue() as string}</div>,
+        cell: info => <div className="max-w-50 truncate text-center">{info.getValue() as string}</div>,
         meta: { align: 'center' }
     },
     {

@@ -202,7 +202,7 @@ export const getDistributorSales = async (
             });
         }
 
-        const [distributorSales, totalResult, totalSalesResult] = await Promise.all([
+        const [distributorSales, totalResult] = await Promise.all([
             DistributorSale.aggregate([
             ...pipeline,
             { $sort: { [sortBy]: order } },
@@ -211,20 +211,12 @@ export const getDistributorSales = async (
             ]),
 
             DistributorSale.aggregate([...pipeline, { $count: "total" }]),
-
-            DistributorSale.aggregate([
-            ...pipeline,
-            { $group: { _id: null, totalSales: { $sum: "$total_amount" } } },
-            ]),
         ]);
 
         const total = totalResult[0]?.total || 0;
-        const totalSales = totalSalesResult[0]?.totalSales || 0;
-
 
         return res.status(200).json({
             distributorSales,
-            totalSales,
             pagination: {
                 page,
                 limit,
