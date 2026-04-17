@@ -38,9 +38,7 @@ export const useSocket = ({ namespace, events = {} }: UseSocketOptions) => {
         connectSocket();
 
         return () => {
-            if(socket) {
-                socket.disconnect();
-            }
+            if(socket) socket.disconnect();
         };
     }, [accessToken]);
 
