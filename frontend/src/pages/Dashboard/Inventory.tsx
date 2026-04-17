@@ -123,6 +123,10 @@ export default function Inventory () {
             )
         }
     ];
+
+    const onRowClick = (row : DistributorStock) => {
+        setVariant({ ...row.variant, stock: row.quantity })
+    }
     
     const handleClose = () => setShowModal(false);
 
@@ -212,6 +216,7 @@ export default function Inventory () {
                 showPagination
                 noDataMessage="No Available Stock"
                 total={data?.pagination.total || 0}
+                onRowClick={onRowClick}
             />
         </div>
     )

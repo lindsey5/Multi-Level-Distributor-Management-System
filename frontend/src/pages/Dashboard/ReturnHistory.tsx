@@ -57,6 +57,10 @@ export default function ReturnHistory () {
         endDate
     })
 
+    const onRowClick = (row : ReturnRequest) => {
+        setReturnRequest(row)
+    }
+
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
@@ -82,6 +86,7 @@ export default function ReturnHistory () {
                 noDataMessage="No Return Requests Found"
                 total={data?.pagination.total || 0}
                 dataTour="return-history-table"
+                onRowClick={onRowClick}
             />
         </div>
     )

@@ -61,8 +61,11 @@ export default function TransferLogs () {
                 </Button>
             )
         }
-
     ];
+
+    const onRowClick = (row : StockTransferLog) => {
+        setStockTransfer(row)
+    }
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
@@ -92,6 +95,7 @@ export default function TransferLogs () {
                 noDataMessage="No Available Stock"
                 total={data?.pagination.total || 0}
                 dataTour="stock-transfer-table"
+                onRowClick={onRowClick}
             />
         </div>
     )

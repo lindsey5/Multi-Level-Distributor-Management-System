@@ -1,11 +1,21 @@
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef, type PaginationState, type Row, type Table } from "@tanstack/react-table";
 import { PaginationControls } from "./Pagination";
+import { cn } from "../../utils/helpers";
 
-type TableRowProps<T> = { row: Row<T> };
+type TableRowProps<T> = { 
+    row: Row<T>;
+    onRowClick?: (row : T) => void;
+};
 
-const TableRow = <T,>({ row }: TableRowProps<T>) => {
+const TableRow = <T,>({ row, onRowClick }: TableRowProps<T>) => {
     return (
-        <tr className="hover:bg-gray-100 transition-colors">
+        <tr 
+            className={cn(
+                "hover:bg-gray-100 transition-colors" ,
+                onRowClick && 'cursor-pointer'
+            )}
+            onClick={() => onRowClick?.(row.original)}
+        >
             {row.getVisibleCells().map((cell) => {
                 const align = (cell.column.columnDef.meta as any)?.align || "left";
                 return (
@@ -21,10 +31,10 @@ const TableRow = <T,>({ row }: TableRowProps<T>) => {
     );
 };
 
-const TableRows = <T,>({ table }: { table: Table<T> }) => (
+const TableRows = <T,>({ table, onRowClick }: { table: Table<T>, onRowClick?: (row : T) => void }) => (
     <tbody>
         {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} row={row} />
+            <TableRow key={row.id} row={row} onRowClick={onRowClick}/>
         ))}
     </tbody>
 );
@@ -89,6 +99,7 @@ type CustomTableProps<T> = {
     total?: number;
     noDataMessage?: string;
     dataTour?: string;
+    onRowClick?: (row : T) => void
 };
 
 const CustomTable = <T,>({
@@ -101,7 +112,8 @@ const CustomTable = <T,>({
     showPagination,
     total,
     noDataMessage = "No Data Available",
-    dataTour
+    dataTour,
+    onRowClick
 }: CustomTableProps<T>) => {
     
     const table = useReactTable({
@@ -130,7 +142,7 @@ const CustomTable = <T,>({
                     <div className="overflow-auto min-h-0 flex-grow border-x border-gray-300">
                         <table className="w-full text-xs xl:text-sm border-collapse">
                             <TableColumns table={table} />
-                            <TableRows table={table} />
+                            <TableRows table={table} onRowClick={onRowClick}/>
                         </table>
                     </div>
                     {showPagination && rows.length > 0 && (
