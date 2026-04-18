@@ -18,6 +18,7 @@ export interface StockTransferLog {
     receiver_id: string;
     sender?: Sender;
     receiver?: Distributor;
+    status: 'pending'| 'approved'| 'processing' | 'delivered' | 'received' |  'cancelled' | 'rejected'
     createdAt: string;
 }
 
@@ -37,4 +38,9 @@ export interface GetStockTransferLogsParams extends PaginationParams {
     search?: string;
     startDate: string;
     endDate: string;
+}
+
+export interface UpdateStockTransferLogResponse {
+    message: string;
+    stockTransfer: StockTransferLog
 }

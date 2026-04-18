@@ -9,7 +9,7 @@ export const MenuItems: MenuItem[] = [
     { label: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/distributor" },
     { label: "Sales", icon: <BarChartBig size={18} />, path: "/distributor/sales" },
     { label: "Inventory", icon: <Archive size={18} />, path: "/distributor/inventory" },
-    { label: "Transfer History", icon: <Repeat size={18} />, path: "/distributor/transfer-logs" },
+    { label: "Distribution History", icon: <Repeat size={18} />, path: "/distributor/distribution-history" },
     { label: "Return History", icon: <Undo2 size={18} />, path: "/distributor/return-history" },
     { label: "Profile", icon: <User size={18} />, path: "/distributor/profile" },
 ];

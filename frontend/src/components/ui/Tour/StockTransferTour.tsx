@@ -4,12 +4,12 @@ const steps = [
     {
         target: '[data-tour="stock-transfer-controls"]',
         content:
-        "Use these controls to search, and filter your stock transfer history",
+        "Use these controls to search, and filter your stock distribution history",
     },
     {
         target: '[data-tour="stock-transfer-table"]',
         content:
-        "This table displays your complete stock transfer history.",
+        "This table displays your complete history of your stock distributions",
     },
 ];
 

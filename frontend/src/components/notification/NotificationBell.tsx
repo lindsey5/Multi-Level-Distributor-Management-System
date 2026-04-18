@@ -4,15 +4,16 @@ import { useState, useEffect } from "react";
 import { cn, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
 import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
-import StockTransferItemsModal from "./StockTransferItemsModal";
 import ReturnDetailsModal from "../return-request/ReturnDetailsModal";
 import { useSocket } from "../../hooks/useSocket";
+import StockTransferItems from "../stockTransferLog/StockTransferItems";
 
 
 export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [notification, setNotification] = useState<DistributorNotification | null>(null);
     const socket = useSocket({ namespace: "/distributor-notification" });
+    const userNotificationSocket = useSocket({ namespace: "/notification" })
     const limit = 10;
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState<DistributorNotification[]>([]);
@@ -73,10 +74,11 @@ export default function NotificationBell() {
 
     return (
         <>
-        <StockTransferItemsModal
-            open={(notification?.stockTransfer || null) !== null}
+        <StockTransferItems 
             close={handleClose}
-            stockTransfer={notification?.stockTransfer || null}
+            stockTransferLog={notification?.stockTransfer || null}
+            open={notification !== null}
+            socket={userNotificationSocket}
         />
         <ReturnDetailsModal 
             returnRequest={notification?.returnRequest || null}

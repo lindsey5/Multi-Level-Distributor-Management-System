@@ -5,7 +5,7 @@ import PageContainer from "../components/ui/PageContainer";
 import DashboardLayout from "../pages/DashboardLayout";
 import Inventory from "../pages/Dashboard/Inventory";
 import Sales from "../pages/Dashboard/Sales";
-import TransferLogs from "../pages/Dashboard/TransferLogs";
+import DistributionHistory from "../pages/Dashboard/DistributionHistory";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Profile from "../pages/Dashboard/Profile";
 import ProfileLayout from "../pages/ProfileLayout";
@@ -53,13 +53,13 @@ const router = createBrowserRouter([
                 )
             },
             {
-                path: 'transfer-logs',
+                path: 'distribution-history',
                 Component: () => (
                     <PageContainer
-                        title="Stock Transfer History"
-                        description="View all stock transfer records"
+                        title="Distribution History"
+                        description="View and manage the complete history of your stock distributions"
                     >
-                        <TransferLogs />
+                        <DistributionHistory />
                     </PageContainer>
                 )
             },

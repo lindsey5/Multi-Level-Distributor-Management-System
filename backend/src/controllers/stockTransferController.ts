@@ -2,6 +2,10 @@ import StockTransfer from "../models/StockTransfer";
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "../types/types";
 import { setEndDate, setStartDate } from "../utils/utils";
+import Variant from "../models/Variant";
+import DistributorStock from "../models/DistributorStock";
+import StockTransferItem from "../models/StockTransferItem";
+import mongoose from "mongoose";
 
 export const getStockTransferLogs = async (
     req: AuthRequest,
@@ -127,6 +131,7 @@ export const getStockTransferLogs = async (
                 createdAt: { $first: "$createdAt" },
                 updatedAt: { $first: "$updatedAt" },
                 items: { $push: "$items" },
+                status: { $first: '$status' }
             },
         });
 
@@ -152,6 +157,85 @@ export const getStockTransferLogs = async (
             },
         });
     } catch (err) {
+        next(err);
+    }
+};
+
+export const markStockTransferAsReceived = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        const stockTransfer = await StockTransfer.findById(req.params.id).session(session);
+
+        if (!stockTransfer) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(404).json({ message: "Stock transfer not found" });
+        }
+
+        if (stockTransfer.receiver_id.toString() !== req.user._id.toString()) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        if (stockTransfer.status === "received") {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(400).json({ message: "Stock transfer already received" });
+        }
+
+        stockTransfer.status = "received";
+        await stockTransfer.save({ session });
+
+        // populate items
+        const items = await StockTransferItem.find({
+            transfer_id: stockTransfer._id
+        }).session(session);
+
+        for (const item of items) {
+            const variant = await Variant.findById(item.variant_id).session(session);
+            if (!variant) continue;
+
+            const existingStock = await DistributorStock.findOne(
+                {
+                    distributor_id: stockTransfer.receiver_id,
+                    variant_id: item.variant_id,
+                }
+            ).session(session);
+
+            if (existingStock) {
+                existingStock.quantity += item.quantity;
+                await existingStock.save({ session });
+                continue;
+            }
+
+            await DistributorStock.create(
+                [
+                    {
+                        distributor_id: stockTransfer.receiver_id,
+                        variant_id: item.variant_id,
+                        quantity: item.quantity,
+                    },
+                ],
+                { session }
+            );
+
+        }
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return res.status(200).json({
+            stockTransfer,
+            message: "Stock successfully marked as received",
+        });
+
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
         next(err);
     }
 };

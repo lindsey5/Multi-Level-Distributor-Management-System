@@ -40,7 +40,7 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
 
         const data = await promiseToast(createSalesMutation.mutateAsync({ data: itemsToSell }));
 
-        if(socket){
+        if(socket && data.sales){
             const response = await authService.refreshAccessToken(refreshToken || "");
 
             dispatch(setAuth({

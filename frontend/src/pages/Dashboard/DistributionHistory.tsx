@@ -10,11 +10,13 @@ import { Eye } from "lucide-react";
 import TransferLogsControls from "../../components/stockTransferLog/TransferLogsControls";
 import StockTransferItems from "../../components/stockTransferLog/StockTransferItems";
 import StockTransferTour from "../../components/ui/Tour/StockTransferTour";
+import StockTransferStatusChip from "../../components/stockTransferLog/StockTransferStatusChip";
+import { useSocket } from "../../hooks/useSocket";
 
 export default function TransferLogs () {
     const [stockTransfer, setStockTransfer] = useState<StockTransferLog | null>(null);
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
-    
+    const socket = useSocket({ namespace: "/notification" })
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 300);
 
@@ -43,9 +45,19 @@ export default function TransferLogs () {
         },
         {
             header: "Quantity",
-            accessorKey: "description",
             cell: ({ row }) => `${row.original.items.reduce((acc, item) => acc + item.quantity, 0)}`,
             meta: { align: 'center' },
+        },
+        {
+            header: "Status",
+            accessorKey: "status",
+            cell: info => (
+                <div className="flex justify-center">
+                    <StockTransferStatusChip status={info.getValue() as string}/>
+                </div>
+            ),
+            meta: { align: 'center' }
+
         },
         {
             header: "Date",
@@ -75,6 +87,7 @@ export default function TransferLogs () {
                 close={() => setStockTransfer(null)}
                 open={stockTransfer !== null}
                 stockTransferLog={stockTransfer}
+                socket={socket}
             />
             <TransferLogsControls 
                 startDate={startDate}

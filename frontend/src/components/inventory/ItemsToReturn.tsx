@@ -54,7 +54,7 @@ export default function ItemsToReturn ({ open, close, items, setItems, socket } 
                 reason: finalReason,
         }}));
 
-        if(socket){
+        if(socket && data.returnRequest){
             const response = await authService.refreshAccessToken(refreshToken || "");
 
             dispatch(setAuth({
