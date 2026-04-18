@@ -58,6 +58,14 @@ const StockTransferStatusChip = ({ status }: { status: string }) => {
                 </Chip>
             );
 
+        case "failed":
+            return (
+                <Chip className="flex items-center gap-2 capitalize text-sm">
+                    <span className="w-2 h-2 rounded-full bg-red-600"></span>
+                    Failed
+                </Chip>
+            );
+
         default:
             return (
                 <Chip className="flex items-center gap-2 capitalize text-sm">

@@ -42,6 +42,8 @@ export default function NotificationBell() {
         document.addEventListener('click', handleClickOutside);
     }, [data])
 
+    console.log(notifications)
+
     useEffect(() => {
         if(socket) {
             socket.on("receive-notification", (data) => {
