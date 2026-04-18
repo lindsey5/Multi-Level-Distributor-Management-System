@@ -42,6 +42,7 @@ export default function TransferLogsControls ({
     const clear = () => {
         setStartDate('');
         setEndDate('');
+        setStatus('');
     }
 
     return (
