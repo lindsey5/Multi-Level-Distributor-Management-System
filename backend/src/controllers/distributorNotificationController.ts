@@ -18,13 +18,17 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
         .populate([
             {
                 path: 'stockTransfer',
-                populate: {
-                    path: 'items',
-                    populate: {
-                        path: 'variant',
-                        populate: 'product'
+                populate: [
+                    { path: 'sender', select: '-password' },
+                    { path: 'receiver', select: '-password' },
+                    {
+                        path: 'items',
+                        populate: {
+                            path: 'variant',
+                            populate: 'product'
+                        }
                     }
-                }
+                ]
             },
             {
                 path: 'returnRequest',
@@ -38,7 +42,7 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
                         select: '-password'
                     }
                 ]
-            }
+            },
         ])
         .skip(skip)
         .limit(limit)

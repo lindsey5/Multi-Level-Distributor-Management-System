@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import { StockTransferItemAttributes } from "./StockTransferItem";
+import './User';
 
 export interface StockTransferAttributes extends Document {
     sender_id?: mongoose.Types.ObjectId | null;
@@ -31,6 +32,20 @@ const StockTransferSchema: Schema<StockTransferAttributes> = new Schema(
         timestamps: true,
     }
 );
+
+StockTransferSchema.virtual("sender", {
+    ref: "User",
+    localField: "sender_id",
+    foreignField: "_id",
+    justOne: true
+});
+
+StockTransferSchema.virtual("receiver", {
+    ref: "Distributor",
+    localField: "receiver_id",
+    foreignField: "_id",
+    justOne: true
+});
 
 StockTransferSchema.virtual("items", {
     ref: "StockTransferItem",          
