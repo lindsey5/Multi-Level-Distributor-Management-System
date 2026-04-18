@@ -59,7 +59,7 @@ export default function StockTransferItems ({ open, close, stockTransferLog, soc
     return (
         <Modal open={open} onClose={handleClose}>
             <Card className="">
-                <h2 className="text-md font-semibold mb-3">Items to Distribute</h2>
+                <h2 className="text-md font-semibold mb-3">Items to Receive</h2>
                 <div className="space-y-3 max-h-[50vh] overflow-y-auto">
                 {stockTransferLog?.items.map(item => (
                         <div
