@@ -38,6 +38,7 @@ export interface GetStockTransferLogsParams extends PaginationParams {
     search?: string;
     startDate: string;
     endDate: string;
+    status: string;
 }
 
 export interface UpdateStockTransferLogResponse {

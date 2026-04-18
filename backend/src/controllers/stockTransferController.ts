@@ -17,12 +17,9 @@ export const getStockTransferLogs = async (
         const limit = Number(req.query.limit) || 10;
         const skip = (page - 1) * limit;
         const search = (req.query.search as string) || "";
-        const startDate = req.query.startDate
-            ? setStartDate(req.query.startDate as string)
-            : null;
-        const endDate = req.query.endDate
-            ? setEndDate(req.query.endDate as string)
-            : null;
+        const startDate = req.query.startDate ? setStartDate(req.query.startDate as string) : null;
+        const endDate = req.query.endDate ? setEndDate(req.query.endDate as string) : null;
+        const status = req.query.status || "";
 
         const pipeline: any[] = [
             { $match: { receiver_id: req.user._id } },
@@ -110,6 +107,10 @@ export const getStockTransferLogs = async (
                 { "items.variant.sku": { $regex: search, $options: "i" } },
                 { "items.variant.product.product_name": { $regex: search, $options: "i" } },
             ];
+        }
+
+        if(status){
+            match.status = status;
         }
 
         if (startDate || endDate) {

@@ -3,6 +3,19 @@ import FiltersMenu from "../ui/FiltersMenu";
 import TextField from "../ui/Textfield";
 import DateInput from "../ui/DateInput";
 import type { PaginationState } from "@tanstack/react-table";
+import Dropdown from "../ui/Dropdown";
+
+const stockTransferStatus = [
+    { label: "All", value: "" },
+    { label: "Pending", value: "pending" },
+    { label: "Approved", value: "approved" },
+    { label: "Processing", value: "processing" },
+    { label: "Delivered", value: "delivered" },
+    { label: "Received", value: "received" },
+    { label: "Cancelled", value: "cancelled" },
+    { label: "Rejected", value: "rejected" },
+    { label: "Failed", value: "failed" },
+];
 
 interface TransferLogsControlsProps {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
@@ -11,6 +24,8 @@ interface TransferLogsControlsProps {
     endDate: string;
     setEndDate: React.Dispatch<React.SetStateAction<string>>;
     setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+    status: string;
+    setStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function TransferLogsControls ({
@@ -19,7 +34,9 @@ export default function TransferLogsControls ({
     setStartDate,
     endDate,
     setEndDate,
-    setPagination
+    setPagination,
+    status,
+    setStatus
 } : TransferLogsControlsProps) {
 
     const clear = () => {
@@ -28,10 +45,10 @@ export default function TransferLogsControls ({
     }
 
     return (
-        <div className="flex items-center justify-between gap-5" data-tour="stock-transfer-controls">
-            <div className="flex-1 flex-0 md:max-w-100">
+        <div className="flex items-center gap-3" data-tour="stock-transfer-controls">
+            <div className="flex-1 md:max-w-100">
                 <TextField 
-                    className="md:max-w-84"
+                    className="w-full"
                     icon={<Search className="text-gray-400"/>}
                     placeholder="Search by product name, variant name, sku..."
                     onChange={(e) => {
@@ -40,7 +57,7 @@ export default function TransferLogsControls ({
                     }}
                 />
             </div>
-            <FiltersMenu className="flex md:hidden" containerStyle="space-y-2 gap-3 w-[90vw] md:w-90 md:-right-1">
+            <FiltersMenu containerStyle="space-y-2 gap-3 w-[90vw] md:w-90 md:-right-1">
                 <h1 className="font-semibold">Filter</h1>
                 <div className="grid grid-cols-2 gap-3">
                     <DateInput 
@@ -53,6 +70,15 @@ export default function TransferLogsControls ({
                         onChange={setEndDate}
                         value={endDate}
                     />
+                    <Dropdown 
+                        options={stockTransferStatus.map(s => ({
+                            label: s.label,
+                            value: s.value
+                        }))}
+                        label="Status"
+                        onChange={(value) => setStatus(value as string)}
+                        value={status}
+                    />
                 </div>
                 <div className="flex justify-end">
                     <button
@@ -61,22 +87,6 @@ export default function TransferLogsControls ({
                     >Clear</button>
                 </div>
             </FiltersMenu>
-            <div className="hidden md:flex gap-3">
-                <DateInput 
-                    label="From"
-                    onChange={setStartDate}
-                    value={startDate}
-                />
-                <DateInput 
-                    label="To"
-                    onChange={setEndDate}
-                    value={endDate}
-                />
-                <button
-                    className="cursor-pointer text-xs md:text-sm mt-5"
-                    onClick={clear}
-                >Clear</button>
-            </div>
         </div>
     )
 }

@@ -23,10 +23,13 @@ export default function TransferLogs () {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
+    const [status, setStatus] = useState("");
+
     const params = {
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
         search: debouncedSearch,
+        status,
         startDate: startDate ? formatDate(startDate) :"",
         endDate: endDate ? formatDate(endDate) : "",
     }
@@ -90,6 +93,8 @@ export default function TransferLogs () {
                 socket={socket}
             />
             <TransferLogsControls 
+                setStatus={setStatus}
+                status={status}
                 startDate={startDate}
                 setStartDate={setStartDate}
                 endDate={endDate}
