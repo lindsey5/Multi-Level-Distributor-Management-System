@@ -9,6 +9,9 @@ import { useDebounce } from "../../hooks/useDebounce";
 import SalesControls from "../../components/sales/SalesControls";
 import Chip from "../../components/ui/Chip";
 import SalesTour from "../../components/ui/Tour/SalesTour";
+import Button from "../../components/ui/Button";
+import { Eye } from "lucide-react";
+import DistributorSalesModal from "../../components/distributorSale/DistributorSalesModal";
 
 export default function Sales () {
     const [sorting, setSorting] = useState<SortOption>({
@@ -20,6 +23,7 @@ export default function Sales () {
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [distributorSale, setDistributorSale] = useState<DistributorSale | null>(null);
 
     const { data, isFetching } = useGetSales({
         limit: pagination.pageSize,
@@ -83,10 +87,23 @@ export default function Sales () {
             cell: info => <span className="font-bold">{formatToPeso(info.getValue() as number)}</span>,
             meta: { align: 'center' }
         },
+        {
+        header: 'Action',
+        cell: ({ row }) => (
+            <Button className="px-2 py-1" onClick={() => setDistributorSale(row.original)}>
+                <Eye size={20} />
+            </Button>
+        ),
+        meta: { align: 'center' }
+    }
     ];
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <DistributorSalesModal 
+                distributorSale={distributorSale}
+                close={() => setDistributorSale(null)}
+            />
             <h1 className="block md:hidden text-gold font-bold text-lg">Your Sales</h1>
             <SalesTour />
             <SalesControls 

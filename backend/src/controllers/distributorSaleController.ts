@@ -188,6 +188,20 @@ export const getDistributorSales = async (
                 },
             },
             { $unwind: "$seller" },
+                        {
+                $lookup: {
+                    from: "distributors",
+                    localField: "seller.parent_distributor_id",
+                    foreignField: "_id",
+                    as: "parent_distributor",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$parent_distributor",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
         ];
 
         if (search) {
@@ -210,7 +224,7 @@ export const getDistributorSales = async (
             { $limit: limit },
             ]),
 
-            DistributorSale.aggregate([...pipeline, { $count: "total" }]),
+            DistributorSale.aggregate([...pipeline, { $count: "total"} ]),
         ]);
 
         const total = totalResult[0]?.total || 0;

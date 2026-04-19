@@ -5,7 +5,7 @@
   --color-main: var(--bg-main);
   --color-panel: var(--bg-panel);
   --color-gold: var(--accent-gold);
-  
+  --color-muted: var(--text-muted);
   /* Effects */
   --shadow-panel: var(--shadow-panel);
   --border-panel: var(--border-panel);
@@ -19,6 +19,7 @@
     --shadow-panel: 0 4px 12px rgba(0, 0, 0, 0.3);
     --border-panel: #c9c8c8;
     --accent-gold: #c2864a;
+    --text-muted: #888888;
   }
 }
 

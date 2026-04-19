@@ -13,7 +13,7 @@ export const getReturnRequests = async (req: AuthRequest, res: Response, next: N
         const endDate = req.query.endDate ? setEndDate(req.query.endDate as string) : null;
 
         const match : any = { distributor_id: req.user._id };
-        
+
         if (startDate || endDate) {
             match.createdAt = {};
             if (startDate) match.createdAt.$gte = startDate;
@@ -30,7 +30,8 @@ export const getReturnRequests = async (req: AuthRequest, res: Response, next: N
                     }
                 ])
                 .skip(skip)
-                .limit(limit),
+                .limit(limit)
+                .sort({ createdAt: -1 }),
             ReturnRequest.countDocuments(match)
         ])
 
