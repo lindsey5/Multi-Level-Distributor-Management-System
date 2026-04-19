@@ -12,5 +12,11 @@ export const notificationService = {
         apiAxios<{ message: string}>(`distributor-notifications/${id}`, {
             method: HttpMethod.PATCH,
         })
+    ),
+
+    readAllNotifications: () : Promise<{ message: string}> => (
+        apiAxios<{ message: string}>('distributor-notifications', {
+            method: HttpMethod.PATCH,
+        })
     )
 };

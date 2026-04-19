@@ -4,6 +4,7 @@ export interface DistributorNotificationAttributes extends Document {
     distributor_id: mongoose.Types.ObjectId;
     transfer_id: mongoose.Types.ObjectId;
     return_id: mongoose.Types.ObjectId;
+    sale_ids: mongoose.Types.ObjectId[];
     message: string;
     status: 'read' | 'unread'
 }
@@ -25,6 +26,11 @@ const DistributorNotificationSchema: Schema<DistributorNotificationAttributes> =
             type: Schema.Types.ObjectId,
             ref: 'ReturnRequest',
         },
+
+        sale_ids: [{
+            type: Schema.Types.ObjectId,
+            ref: 'DistributorSale'
+        }],
 
         message: {
             type: String,
@@ -50,13 +56,19 @@ DistributorNotificationSchema.virtual("stockTransfer", {
     justOne: true    
 });
 
+DistributorNotificationSchema.virtual("sales", {
+    ref: "DistributorSale",          
+    localField: "sale_ids", 
+    foreignField: "_id",   
+    justOne: true    
+});
+
 DistributorNotificationSchema.virtual("returnRequest", {
     ref: "ReturnRequest",          
     localField: "return_id", 
     foreignField: "_id",   
     justOne: true    
 });
-
 
 DistributorNotificationSchema.set("toObject", { virtuals: true });
 DistributorNotificationSchema.set("toJSON", { virtuals: true });

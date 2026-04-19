@@ -3,7 +3,7 @@ import { useGetNotifications } from "../../hooks/notification/use-get-notificati
 import { useState, useEffect } from "react";
 import { cn, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
-import { useReadNotification } from "../../hooks/notification/use-read-notification.hook";
+import { useReadAllNotifications, useReadNotification } from "../../hooks/notification/use-read-notification.hook";
 import ReturnDetailsModal from "../return-request/ReturnDetailsModal";
 import { useSocket } from "../../hooks/useSocket";
 import StockTransferItems from "../stockTransferLog/StockTransferItems";
@@ -20,6 +20,7 @@ export default function NotificationBell() {
     const [unread, setUnread] = useState(0);
 
     const readNotificationMutation = useReadNotification();
+    const readAllNotificationsMutation = useReadAllNotifications();
     const { data, isFetching } = useGetNotifications({
         page,
         limit,
@@ -41,8 +42,6 @@ export default function NotificationBell() {
         };
         document.addEventListener('click', handleClickOutside);
     }, [data])
-
-    console.log(notifications)
 
     useEffect(() => {
         if(socket) {
@@ -68,6 +67,16 @@ export default function NotificationBell() {
             )
             setUnread(prev => prev -1)
         }
+    }
+
+    const readAllNotifications = async () => {
+        setNotifications(prev => 
+            prev.map(notif => ({ ...notif, status: 'read' }))
+        )
+
+        setUnread(0);
+
+        await readAllNotificationsMutation.mutate();
     }
 
     const handleClose = () => {
@@ -102,9 +111,12 @@ export default function NotificationBell() {
             )}
             {showDropdown && (
                 <div className="w-[80vw] md:w-70 border border-gray-300 shadow-md absolute pb-5 -right-10 md:right-5 top-12 rounded-md bg-white">
-                    <h1 className="bg-white text-md xl:text-lg font-bold border-b border-gray-300 px-2 py-5">Notifications</h1>
+                    <div className="flex justify-between gap-3 px-2 py-5 border-b border-gray-300">
+                        <h1 className="bg-white text-md xl:text-lg font-bold">Notifications</h1>
+                        <button className="text-xs md:text-sm cursor-pointer" onClick={readAllNotifications}>Mark all as Read</button>
+                    </div>
                     {notifications.length === 0 && !isFetching && <p className="text-center mt-5 text-sm xl:text-md">No notifications yet</p>}
-                    <div className="max-h-[40vh] md:max-h-[30vh] overflow-y-auto">
+                    <div className="max-h-[50vh] md:max-h-[30vh] overflow-y-auto">
                     {notifications.map(notification => (
                         <div 
                             key={notification._id}

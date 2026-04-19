@@ -8,3 +8,9 @@ export const useReadNotification = () => {
             notificationService.readNotification(id)
     });
 };
+
+export const useReadAllNotifications = () => {
+    return useMutation({
+        mutationFn: () => notificationService.readAllNotifications()
+    })
+}

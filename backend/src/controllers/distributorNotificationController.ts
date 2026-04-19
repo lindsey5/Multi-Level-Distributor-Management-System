@@ -89,3 +89,17 @@ export const readNotification = async (req : AuthRequest, res: Response, next: N
         next(err)
     }
 }
+
+export const readAllNotifications = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        
+        await DistributorNotification.updateMany({ distributor_id: req.user._id }, { $set: { status: 'read' }});
+
+        res.status(200).json({
+            message: "All notifications successfully updated to read"
+        })
+
+    }catch(err){
+        next(err);
+    }
+}
