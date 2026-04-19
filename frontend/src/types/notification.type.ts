@@ -1,5 +1,6 @@
 import type { PaginationParams, PaginationResponse } from "./pagination.type";
 import type { ReturnRequest } from "./returnRequest.type";
+import type { DistributorSale } from "./sale.type";
 import type { StockTransferLog } from "./stock-transfer.type";
 
 export interface DistributorNotification {
@@ -9,6 +10,8 @@ export interface DistributorNotification {
     stockTransfer?: StockTransferLog | null;
     return_id?: string | null;
     returnRequest?: ReturnRequest | null;
+    sale_ids?: string[] | null;
+    sales?: DistributorSale[] | null;
     message: string;
     status: 'read' | 'unread';
     createdAt: string;

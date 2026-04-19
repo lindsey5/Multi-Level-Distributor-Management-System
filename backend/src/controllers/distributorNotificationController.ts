@@ -43,6 +43,16 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
                     }
                 ]
             },
+            {
+                path: 'sales',
+                populate: [
+                    {
+                        path: 'variant',
+                        populate: "product"
+                    },
+                    { path: 'seller' }
+                ]
+            }
         ])
         .skip(skip)
         .limit(limit)

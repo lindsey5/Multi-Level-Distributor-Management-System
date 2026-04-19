@@ -162,11 +162,17 @@ export const getStockTransferLogs = async (
     }
 };
 
-export const markStockTransferAsReceived = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const updateStockTransferStatus = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
 
     try {
         session.startTransaction();
+
+        if(!req.body.status) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(400).json({ message: 'Status is required' });
+        }
 
         const stockTransfer = await StockTransfer.findById(req.params.id).session(session);
 
@@ -182,13 +188,13 @@ export const markStockTransferAsReceived = async (req: AuthRequest, res: Respons
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        if (stockTransfer.status === "received") {
+        if (stockTransfer.status === req.body.status) {
             await session.abortTransaction();
             session.endSession();
-            return res.status(400).json({ message: "Stock transfer already received" });
+            return res.status(400).json({ message: `Stock transfer already ${req.body.status}` });
         }
 
-        stockTransfer.status = "received";
+        stockTransfer.status = req.body.status;
         await stockTransfer.save({ session });
 
         // populate items
@@ -231,7 +237,7 @@ export const markStockTransferAsReceived = async (req: AuthRequest, res: Respons
 
         return res.status(200).json({
             stockTransfer,
-            message: "Stock successfully marked as received",
+            message: `Stock successfully marked as ${req.body.status}`,
         });
 
     } catch (err) {

@@ -9,9 +9,10 @@ export const stockTransferLogService = {
         })
     ),
 
-    markStockTransferLogAsReceived: (id : string) => {
-        return apiAxios<UpdateStockTransferLogResponse>(`stock-transfer-logs/${id}/received`, {
+    updateStockTransferLogStatus: (id : string, status : string) => {
+        return apiAxios<UpdateStockTransferLogResponse>(`stock-transfer-logs/${id}`, {
             method: HttpMethod.PATCH,
+            data: { status }
         })
     }
 };

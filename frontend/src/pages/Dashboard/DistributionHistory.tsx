@@ -88,7 +88,6 @@ export default function TransferLogs () {
             <h1 className="block md:hidden text-gold font-bold text-lg">Stock Transfer History</h1>
             <StockTransferItems 
                 close={() => setStockTransfer(null)}
-                open={stockTransfer !== null}
                 stockTransferLog={stockTransfer}
                 socket={socket}
             />

@@ -3,7 +3,7 @@ import { stockTransferLogService } from "../../services/stockTransferService";
 
 export const useUpdateStockTransferStatus = () => {
     return useMutation({
-        mutationFn: ({ id }: { id : string }) =>
-            stockTransferLogService.markStockTransferLogAsReceived(id)
+        mutationFn: ({ id, status }: { id : string, status: string }) =>
+            stockTransferLogService.updateStockTransferLogStatus(id, status)
     });
 };

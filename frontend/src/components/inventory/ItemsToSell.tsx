@@ -1,4 +1,4 @@
-import { useMemo, type SetStateAction } from "react";
+import { useContext, useMemo, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
@@ -13,6 +13,7 @@ import { authService } from "../../services/authService";
 import { setAuth } from "../../lib/features/auth/authSlice";
 import Chip from "../ui/Chip";
 import type { Socket } from "socket.io-client";
+import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationSocket";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
@@ -26,6 +27,7 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
     const createSalesMutation = useCreateSales();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
+    const { socket : distributorNotificationSocket } = useContext(DistributorNotificationSocketContext);
 
     const handleSellItems = async () => {
         const isConfirmed = confirm(`Are you sure you want to sell ${items.length} item(s)?`);
@@ -52,6 +54,11 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
             socket.emit("send-sale-notification", {
                 distributor_id: data.sales[0].seller_id,
                 distributor_name: distributor?.distributor_name,
+                sales: data.sales
+            })
+
+            distributorNotificationSocket?.emit("parent-distributor-sale-notification", {
+                distributor_id: data.sales[0].seller_id,
                 sales: data.sales
             })
         }

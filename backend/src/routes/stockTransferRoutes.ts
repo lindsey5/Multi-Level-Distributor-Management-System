@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
-import { getStockTransferLogs, markStockTransferAsReceived } from "../controllers/stockTransferController";
+import { getStockTransferLogs, updateStockTransferStatus } from "../controllers/stockTransferController";
 const router = Router();
 
 router.get(
@@ -10,9 +10,9 @@ router.get(
 )
 
 router.patch(
-    '/:id/received',
+    '/:id',
     requireAuth,
-    markStockTransferAsReceived
+    updateStockTransferStatus
 )
 
 const stockTransferRoutes = router;

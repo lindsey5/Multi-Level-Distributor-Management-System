@@ -1,18 +1,19 @@
 import { Bell } from "lucide-react";
 import { useGetNotifications } from "../../hooks/notification/use-get-notifications.hook";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { cn, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
 import { useReadAllNotifications, useReadNotification } from "../../hooks/notification/use-read-notification.hook";
 import ReturnDetailsModal from "../return-request/ReturnDetailsModal";
 import { useSocket } from "../../hooks/useSocket";
 import StockTransferItems from "../stockTransferLog/StockTransferItems";
-
+import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationSocket";
+import SaleItems from "./SaleItems";
 
 export default function NotificationBell() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [notification, setNotification] = useState<DistributorNotification | null>(null);
-    const socket = useSocket({ namespace: "/distributor-notification" });
+    const { socket } = useContext(DistributorNotificationSocketContext);
     const userNotificationSocket = useSocket({ namespace: "/notification" })
     const limit = 10;
     const [page, setPage] = useState(1);
@@ -69,14 +70,14 @@ export default function NotificationBell() {
         }
     }
 
-    const readAllNotifications = async () => {
+    const readAllNotifications = () => {
         setNotifications(prev => 
             prev.map(notif => ({ ...notif, status: 'read' }))
         )
 
         setUnread(0);
 
-        await readAllNotificationsMutation.mutate();
+        readAllNotificationsMutation.mutate();
     }
 
     const handleClose = () => {
@@ -88,13 +89,19 @@ export default function NotificationBell() {
         <StockTransferItems 
             close={handleClose}
             stockTransferLog={notification?.stockTransfer || null}
-            open={notification !== null}
             socket={userNotificationSocket}
         />
         <ReturnDetailsModal 
             returnRequest={notification?.returnRequest || null}
             close={handleClose}
         />
+        
+        <SaleItems 
+            close={handleClose}
+            sales={notification?.sales || null}
+            open={(notification?.sales?.length || 0) > 0}
+        />
+
         <div className="relative" id="notification-bell">
             {/* Bell Button */}
             <button

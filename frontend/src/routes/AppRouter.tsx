@@ -14,6 +14,7 @@ import Withdraw from "../pages/Dashboard/Withdraw";
 import CommissionLogs from "../pages/Dashboard/CommissionLogs";
 import ChangePassword from "../pages/Dashboard/ChangePassword";
 import ReturnHistory from "../pages/Dashboard/ReturnHistory";
+import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationSocket";
 
 const router = createBrowserRouter([ 
     {
@@ -24,7 +25,9 @@ const router = createBrowserRouter([
         path: '/distributor',
         Component: () => (
             <ProtectedRoute requireAuthentication>
-                <DashboardLayout />
+                <DistributorNotificationSocketContextProvider>
+                    <DashboardLayout />
+                </DistributorNotificationSocketContextProvider>
             </ProtectedRoute>
         ),
         children: [

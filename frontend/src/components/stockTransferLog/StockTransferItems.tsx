@@ -14,25 +14,24 @@ import type { RootState } from "../../lib/features/store";
 import type { Socket } from "socket.io-client";
 
 interface StockTransferItemsProps {
-    open: boolean;
     close: () => void;
     stockTransferLog: StockTransferLog | null;
     socket: Socket | null;
 }
 
-export default function StockTransferItems ({ open, close, stockTransferLog, socket } : StockTransferItemsProps) {
+export default function StockTransferItems ({ close, stockTransferLog, socket } : StockTransferItemsProps) {
     const updateStockTransferMutation = useUpdateStockTransferStatus();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
 
-    const handleMarkAsReceived = async () => {
+    const handleUpdateStatus = async (status: string) => {
         if(!stockTransferLog) return;
 
-        const isConfirmed = confirm(`Are you sure you want to mark this as received?`);
+        const isConfirmed = confirm(`Are you sure you want to mark this as ${status}?`);
 
         if (!isConfirmed) return;
 
-        const data = await promiseToast(updateStockTransferMutation.mutateAsync({ id: stockTransferLog?._id }))
+        const data = await promiseToast(updateStockTransferMutation.mutateAsync({ id: stockTransferLog?._id, status }))
         
         if(socket && data.stockTransfer){
             const response = await authService.refreshAccessToken(refreshToken || "");
@@ -45,7 +44,8 @@ export default function StockTransferItems ({ open, close, stockTransferLog, soc
 
             socket.emit("send-stock-transfer-notification", {
                 distributor_name: distributor?.distributor_name,
-                stockTransfer: data.stockTransfer
+                stockTransfer: data.stockTransfer,
+                status
             })
         }
     }
@@ -57,7 +57,7 @@ export default function StockTransferItems ({ open, close, stockTransferLog, soc
     }
 
     return (
-        <Modal open={open} onClose={handleClose}>
+        <Modal open={stockTransferLog !== null} onClose={handleClose}>
             <Card className="">
                 <h2 className="text-md font-semibold mb-3">Items to Receive</h2>
                 <div className="space-y-3 max-h-[50vh] overflow-y-auto">
@@ -102,8 +102,14 @@ export default function StockTransferItems ({ open, close, stockTransferLog, soc
                         disabled={updateStockTransferMutation.isPending}
                     >Close</Button>
                     {stockTransferLog?.status === 'delivered' && (
-                        <Button className="py-2" onClick={handleMarkAsReceived} disabled={updateStockTransferMutation.isPending}>
+                        <Button className="py-2" onClick={() => handleUpdateStatus('received')} disabled={updateStockTransferMutation.isPending}>
                             Mark as Received
+                        </Button>
+                    )}
+
+                    {stockTransferLog?.status === 'pending' && (
+                        <Button className="py-2" onClick={() => handleUpdateStatus('approved')} disabled={updateStockTransferMutation.isPending}>
+                            Approved
                         </Button>
                     )}
                 </div>
