@@ -89,8 +89,11 @@ export default function StockTransferItems ({ close, stockTransferLog, socket } 
                 </div>
                 <h2 className="text-md font-semibold mt-4 mb-3">Distribution Details</h2>
                 <div className="border border-gray-300 p-2 rounded-lg shadow-lg">
-                    <p className="text-sm">Sent by: {`${stockTransferLog?.sender?.firstname} ${stockTransferLog?.sender?.lastname}`}</p>
-                    <p className="text-sm">Date: {formatDate(stockTransferLog?.createdAt)}</p>
+                    <p className="text-sm">Sender: {`${stockTransferLog?.sender?.firstname} ${stockTransferLog?.sender?.lastname}`}</p>
+                    <p className="text-sm">Date Requested: {formatDate(stockTransferLog?.createdAt)}</p>
+                    {stockTransferLog?.status === 'received' && (
+                        <p className="text-sm">Date Received: {formatDate(stockTransferLog.updatedAt)}</p>
+                    )}
                     <div className="flex justify-start mt-3">
                        <StockTransferStatusChip status={stockTransferLog?.status || ""} />
                     </div>

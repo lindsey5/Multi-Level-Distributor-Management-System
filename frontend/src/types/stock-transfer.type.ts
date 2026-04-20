@@ -20,6 +20,7 @@ export interface StockTransferLog {
     receiver?: Distributor;
     status: 'pending'| 'approved'| 'processing' | 'delivered' | 'received' |  'cancelled' | 'rejected'
     createdAt: string;
+    updatedAt: string;
 }
 
 export interface StockTransferItem {
