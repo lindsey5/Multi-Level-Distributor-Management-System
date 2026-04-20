@@ -6,7 +6,6 @@ export const useGetStocks = (params : GetStocksParams) => (
     useQuery<GetStocksResponse, Error>({
         queryKey: ['stocks', params],
         queryFn: () => stockService.getStocks(params),
-        placeholderData: (prev) => prev,
         refetchOnWindowFocus: false,
     })
 )

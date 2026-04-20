@@ -6,7 +6,6 @@ export const useGetCommissionsPerMonth = (year: number = 2024) => (
     useQuery<GetCommissionsPerMonthResponse, Error>({
         queryKey: [`commission-logs/monthly`, year],
             queryFn: () => commissionLogService.getCommissionsPerMonth(year),
-            placeholderData: (prev) => prev,
             refetchOnWindowFocus: false,
     })
 )

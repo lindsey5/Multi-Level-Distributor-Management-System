@@ -6,7 +6,6 @@ export const useGetStockTransferLogs = (params : GetStockTransferLogsParams) => 
     useQuery<GetStockTransferLogsResponse, Error>({
         queryKey: ['stocks', params],
         queryFn: () => stockTransferLogService.getStockTransferLogs(params),
-        placeholderData: (prev) => prev,
         refetchOnWindowFocus: false,
     })
 )

@@ -6,7 +6,6 @@ export const useGetCommissionLogs = (params : GetCommissionLogsParams) => (
     useQuery<GetCommissionLogsResponse, Error>({
         queryKey: ['commission-logs', params],
         queryFn: () => commissionLogService.getCommissionLogs(params),
-        placeholderData: (prev) => prev,
         refetchOnWindowFocus: false,
     })
 )

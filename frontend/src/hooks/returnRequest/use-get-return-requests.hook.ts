@@ -6,7 +6,6 @@ export const useGetReturnRequests = (params : GetReturnRequestsParams) => (
     useQuery<GetReturnRequestResponse, Error>({
         queryKey: ["return-requests", params],
         queryFn: () => returnRequestService.getReturnRequests(params),
-        placeholderData: (prev) => prev,
         refetchOnWindowFocus: false,
     })
 )

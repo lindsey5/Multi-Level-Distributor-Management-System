@@ -6,7 +6,6 @@ export const useGetSales = (params : GetDistributorSalesParams) => (
     useQuery<GetDistributorSalesResponse, Error>({
         queryKey: ['sales', params],
         queryFn: () => saleService.getDistributorSales(params),
-        placeholderData: (prev) => prev,
         refetchOnWindowFocus: false,
     })
 )

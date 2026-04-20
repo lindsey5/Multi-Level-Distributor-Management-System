@@ -6,7 +6,6 @@ export const useGetNotifications = (params : GetDistributorNotificationsParams) 
     useQuery<GetDistributorNotificationsResponse, Error>({
         queryKey: ['notifications', params],
         queryFn: () => notificationService.getNotifications(params),
-        placeholderData: (prev) => prev,
         refetchOnWindowFocus: false,
     })
 )
