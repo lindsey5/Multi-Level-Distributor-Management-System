@@ -4,7 +4,6 @@ import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
 import { Minus, Plus, X } from "lucide-react";
-import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { promiseToast } from "../../utils/sileo";
 import { useDispatch, useSelector } from "react-redux";
