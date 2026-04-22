@@ -8,7 +8,6 @@ import { Eye } from "lucide-react";
 import CustomTable from "../../components/ui/Table";
 import ReturnDetailsModal from "../../components/return-request/ReturnDetailsModal";
 import ReturnRequestControls from "../../components/return-request/ReturnRequestControls";
-import ReturnTour from "../../components/ui/Tour/ReturnTour";
 
 const getColumns = (setReturnRequest : React.Dispatch<SetStateAction<ReturnRequest | null>>) : ColumnDef<ReturnRequest>[] => [
     {
@@ -64,7 +63,6 @@ export default function ReturnHistory () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
-            <ReturnTour />
             <ReturnDetailsModal 
                 returnRequest={returnRequest}
                 close={() => setReturnRequest(null)}
@@ -74,6 +72,7 @@ export default function ReturnHistory () {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
+                setPagination={setPagination}
             />
             <CustomTable 
                 isLoading={isFetching}

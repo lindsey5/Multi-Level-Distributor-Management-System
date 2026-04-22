@@ -6,7 +6,6 @@ import Card from "./Card";
 import { cn } from "../../utils/helpers";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../lib/features/store";
-import MenuTour from "./Tour/MenuTour";
 
 interface DropdownMenuProps {
   menuItems: MenuItem[];
@@ -41,7 +40,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ menuItems, logout }) => {
       {/* Dropdown menu */}
       {isOpen && (
         <Card className="absolute right-5 top-10 mt-2 w-60 shadow-xl p-2 flex flex-col gap-1 z-50">
-          <MenuTour />
           <div className="px-2 pt-2 pb-3 border-b border-gray-300  flex gap-2">
               <div className="w-10 h-10 rounded-full bg-black flex items-center text-white justify-center font-semibold overflow-hidden">
                 <User size={20}/>

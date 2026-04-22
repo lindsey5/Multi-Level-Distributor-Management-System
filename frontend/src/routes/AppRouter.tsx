@@ -15,6 +15,7 @@ import CommissionLogs from "../pages/Dashboard/CommissionLogs";
 import ChangePassword from "../pages/Dashboard/ChangePassword";
 import ReturnHistory from "../pages/Dashboard/ReturnHistory";
 import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationSocket";
+import StockOrder from '../pages/Dashboard/StockOrder';
 
 const router = createBrowserRouter([ 
     {
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
                 Component: () => (
                     <PageContainer title="Inventory" description="Monitor your current stock levels">
                         <Inventory />
+                    </PageContainer>
+                )
+            },
+            {
+                path: 'stock-order',
+                Component: () => (
+                    <PageContainer title="Stock Order" description="Send stock order requests to the admin and monitor their status">
+                        <StockOrder />
                     </PageContainer>
                 )
             },

@@ -11,23 +11,23 @@ const options: Record<string, SortOption> = {
     'Oldest' : { sortBy: 'createdAt', order: 'asc' },
     'A-Z': { sortBy: 'product_name', order: 'asc' },
     'Z-A': { sortBy: 'product_name', order: 'desc' },
-    'Quantity (ASC)' : { sortBy: 'quantity', order: 'asc' },
-    'Quantity (DESC)' : { sortBy: 'quantity', order: 'desc' },
+    'Stock (ASC)' : { sortBy: 'quantity', order: 'asc' },
+    'Stock (DESC)' : { sortBy: 'quantity', order: 'desc' },
 };
 
-interface InventoryControlsProps {
+interface CreateStockOrderControlsProps {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     setSorting: React.Dispatch<React.SetStateAction<SortOption>>
     sorting: SortOption
     setPagination: React.Dispatch<React.SetStateAction<PaginationState>>
 }
 
-export default function InventoryControls ({
+export default function CreateStockOrderControls ({
     setSearch,
     setSorting,
     sorting,
     setPagination,
-} : InventoryControlsProps) {
+} : CreateStockOrderControlsProps) {
 
     return (
         <div className="flex items-end justify-between gap-5" data-tour="inventory-controls">

@@ -1,11 +1,13 @@
 import FiltersMenu from "../ui/FiltersMenu";
 import DateInput from "../ui/DateInput";
+import type { PaginationState } from "@tanstack/react-table";
 
 interface ReturnRequestControlsProps {
     startDate: string;
     setStartDate: React.Dispatch<React.SetStateAction<string>>;
     endDate: string;
     setEndDate: React.Dispatch<React.SetStateAction<string>>;
+    setPagination: React.Dispatch<React.SetStateAction<PaginationState>>
 }
 
 export default function ReturnRequestControls ({
@@ -13,6 +15,7 @@ export default function ReturnRequestControls ({
     setStartDate,
     endDate,
     setEndDate,
+    setPagination,
 } : ReturnRequestControlsProps) {
 
     const clear = () => {
@@ -27,12 +30,18 @@ export default function ReturnRequestControls ({
                 <div className="grid grid-cols-2 gap-3">
                     <DateInput 
                         label="From"
-                        onChange={setStartDate}
+                        onChange={(value) => {
+                            setPagination(prev => ({...prev, pageIndex: 0}))
+                            setStartDate(value);
+                        }}
                         value={startDate}
                     />
                     <DateInput 
                         label="To"
-                        onChange={setEndDate}
+                        onChange={(value) => {
+                            setPagination(prev => ({...prev, pageIndex: 0}))
+                            setEndDate(value)
+                        }}
                         value={endDate}
                     />
                 </div>
@@ -46,12 +55,18 @@ export default function ReturnRequestControls ({
             <div className="hidden md:flex gap-3">
                 <DateInput 
                     label="From"
-                    onChange={setStartDate}
+                    onChange={(value) => {
+                        setPagination(prev => ({...prev, pageIndex: 0}))
+                        setStartDate(value)
+                    }}
                     value={startDate}
                 />
                 <DateInput 
                     label="To"
-                    onChange={setEndDate}
+                    onChange={(value) => {
+                        setPagination(prev => ({...prev, pageIndex: 0}))
+                        setEndDate(value)
+                    }}
                     value={endDate}
                 />
                 <button

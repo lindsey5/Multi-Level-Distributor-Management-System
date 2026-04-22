@@ -2,7 +2,6 @@ import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import type { MenuItem } from "../../types/menu.type";
 import { cn } from "../../utils/helpers";
-import SidebarTour from "./Tour/SidebarTour";
 interface SidebarProps {
   items: MenuItem[];
   collapsed: boolean;
@@ -27,7 +26,6 @@ export default function Sidebar({
                 collapsed ? "w-20" : "w-72"
             )}
         >
-            <SidebarTour />
             {/* Logo */}
             <div
                 className={cn(

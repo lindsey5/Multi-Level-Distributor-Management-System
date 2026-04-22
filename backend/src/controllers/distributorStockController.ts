@@ -22,8 +22,8 @@ export const getDistributorStocks = async (
 
         const sortStage: any = {};
 
-        if (["variant_name", "sku", "price", "stock"].includes(sortBy)) {
-            sortStage[`variant.${sortBy}`] = order;
+        if (sortBy === 'product_name') {
+            sortStage[`variant.product.${sortBy}`] = order;
         } else {
             sortStage[sortBy] = order;
         }
@@ -31,7 +31,7 @@ export const getDistributorStocks = async (
         const basePipeline: any[] = [
         {
             $match: {
-            distributor_id: new mongoose.Types.ObjectId(distributorId as string),
+                distributor_id: new mongoose.Types.ObjectId(distributorId as string),
             },
         },
 
@@ -62,6 +62,9 @@ export const getDistributorStocks = async (
             $addFields: {
                 "variant.product": "$product",
             },
+        },
+        {
+            $match: { 'variant.status' : 'active' }
         },
 
         // remove root product

@@ -9,7 +9,6 @@ import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
 import TransferLogsControls from "../../components/stockTransferLog/TransferLogsControls";
 import StockTransferItems from "../../components/stockTransferLog/StockTransferItems";
-import StockTransferTour from "../../components/ui/Tour/StockTransferTour";
 import StockTransferStatusChip from "../../components/stockTransferLog/StockTransferStatusChip";
 import { useSocket } from "../../hooks/useSocket";
 
@@ -18,7 +17,7 @@ export default function TransferLogs () {
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     const socket = useSocket({ namespace: "/notification" })
     const [search, setSearch] = useState("");
-    const debouncedSearch = useDebounce(search, 300);
+    const debouncedSearch = useDebounce(search, 800);
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -84,7 +83,6 @@ export default function TransferLogs () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
-            <StockTransferTour />
             <h1 className="block md:hidden text-gold font-bold text-lg">Stock Transfer History</h1>
             <StockTransferItems 
                 close={() => setStockTransfer(null)}

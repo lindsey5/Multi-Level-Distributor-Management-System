@@ -143,7 +143,6 @@ export const getDistributorSales = async (
 
         if (!distributor) {
             return res.status(404).json({
-                success: false,
                 message: "Distributor not found.",
             });
         }

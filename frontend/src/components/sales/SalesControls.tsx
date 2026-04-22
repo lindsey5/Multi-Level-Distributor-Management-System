@@ -47,6 +47,10 @@ export default function SalesControls ({
         })
     }
 
+    const reset = () => {
+        setPagination(prev => ({ ...prev, pageIndex: 0}))
+    }
+
     return (
         <div className="flex gap-3 items-center" data-tour="sales-controls">
             <TextField 
@@ -54,7 +58,7 @@ export default function SalesControls ({
                 icon={<Search className="text-gray-400"/>}
                 placeholder="Search by product name, variant name or sku..."
                 onChange={(e) => {
-                    setPagination(prev => ({...prev, pageIndex: 0}))
+                    reset();
                     setSearch(e.target.value);
                 }}
             />
@@ -63,18 +67,27 @@ export default function SalesControls ({
                 <div className="grid grid-cols-2 gap-3">
                     <DateInput 
                         label="From"
-                        onChange={setStartDate}
+                        onChange={(value) => {
+                            reset();
+                            setStartDate(value);
+                        }}
                         value={startDate}
                     />
                     <DateInput 
                         label="To"
-                        onChange={setEndDate}
+                        onChange={(value) => {
+                            reset();
+                            setEndDate(value);
+                        }}
                         value={endDate}
                     />
                     <Dropdown 
                         label="Sort"
                         options={Object.keys(options).map(opt => ({ label: opt, value: opt }))}
-                        onChange={(value) => setSorting(options[value]) }
+                        onChange={(value) => {
+                            reset()
+                            setSorting(options[value])
+                        }}
                         value={getKeyByValue(options, sorting) || ""}
                     />
                 </div>

@@ -9,9 +9,8 @@ import CustomTable from "../../components/ui/Table";
 import InventoryControls from "../../components/inventory/InventoryControls";
 import type { Variant } from "../../types/variant.type";
 import Button from "../../components/ui/Button";
-import EnterQuantity from "../../components/inventory/EnterQuantity";
+import EnterQuantity from "../../components/ui/EnterQuantity";
 import Chip from "../../components/ui/Chip";
-import InventoryTour from "../../components/ui/Tour/InventoryTour";
 import { 
     Package, 
     Undo2 
@@ -34,7 +33,7 @@ export default function Inventory () {
     })
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     const [search, setSearch] = useState("");
-    const debouncedSearch = useDebounce(search, 200);
+    const debouncedSearch = useDebounce(search, 800);
     const [enableReturn, setEnableReturn] = useState(false);
     const socket = useSocket({
         namespace: "/notification",
@@ -132,7 +131,6 @@ export default function Inventory () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
-            <InventoryTour />
             <div className="flex gap-3 items-center" data-tour="inventory-mode-controls">
                 <Button 
                     className={cn(
@@ -166,7 +164,9 @@ export default function Inventory () {
                 close={() => setVariant(null)}
                 setItems={setItems}
                 variant={variant}
-                mode={enableReturn ? 'return' : 'sell'}
+                buttonClassName={enableReturn ? "bg-red-600 border-none" : ""}
+                buttonLabel={enableReturn ? "Return Items" : "Sell Items"}
+                label={`Enter Quantity to ${enableReturn ? 'return' : 'sell' }`}
             />
             {enableReturn ? (
                 <ItemsToReturn

@@ -1,22 +1,25 @@
 import { useState, type SetStateAction } from "react";
-import Card from "../ui/Card";
-import Modal from "../ui/Modal";
+import Card from "./Card";
+import Modal from "./Modal";
 import type { Variant } from "../../types/variant.type";
-import TextField from "../ui/Textfield";
+import TextField from "./Textfield";
 import { cn, formatToPeso } from "../../utils/helpers";
-import Button from "../ui/Button";
+import Button from "./Button";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
-import Chip from "../ui/Chip";
+import Chip from "./Chip";
 
 interface EnterQuantityProps {
     setItems: React.Dispatch<SetStateAction<VariantWithQuantity[]>>;
     open: boolean;
     close: () => void;
     variant: Variant | null;
-    mode: 'return' | 'sell';
+    label: string;
+    buttonClassName?: string;
+    showPrice?: boolean;
+    buttonLabel: string;
 }
 
-export default function EnterQuantity({ setItems, open, close, variant, mode }: EnterQuantityProps) {
+export default function EnterQuantity({ setItems, open, close, variant, label, buttonClassName, buttonLabel, showPrice = true }: EnterQuantityProps) {
   const [quantity, setQuantity] = useState<number>(1);
 
     const stock = variant?.stock || 0;
@@ -67,12 +70,12 @@ export default function EnterQuantity({ setItems, open, close, variant, mode }: 
                     <h1 className="mb-2 text-sm xl:text-md font-bold">{variant?.product?.product_name}</h1>
                     <Chip className="text-xs">{variant?.variant_name}</Chip>
                     <p className="mt-2 text-sm xl:text-md">Available Stock: {stock}</p>
-                    <p className="text-sm xl:text-md">Price: {formatToPeso(variant?.price || 0)}</p>
+                    {showPrice && <p className="text-sm xl:text-md">Price: {formatToPeso(variant?.price || 0)}</p>}
                 </div>
                 </div>
 
                 <TextField
-                    label={`Enter Quantity to ${mode === 'return' ? 'Return' : 'Sell'}`}
+                    label={label}
                     placeholder="Enter quantity"
                     type="number"
                     value={quantity ? quantity.toString() : ""}
@@ -89,12 +92,12 @@ export default function EnterQuantity({ setItems, open, close, variant, mode }: 
                 <Button
                     className={cn(
                         "py-2 px-10",
-                        mode === 'return' && 'bg-red-600 border-none'
+                        buttonClassName,
                     )}
                     disabled={!quantity || isInvalid || isExceedingStock}
                     onClick={handleSell}
                 >
-                    {mode === 'return' ? 'Return Item' : 'Sell Item'}
+                    {buttonLabel}
                 </Button>
                 </div>
             </Card>

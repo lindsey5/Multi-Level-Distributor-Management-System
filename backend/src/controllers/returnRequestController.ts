@@ -58,7 +58,7 @@ export const createReturnRequest = async (req: AuthRequest, res: Response, next:
             const isVariantExist = await Variant.findById(item.variant_id);
 
             if(!isVariantExist) {
-                return res.status(404).json({ success: false, message: `Variant ${item.variant_id} not found`})
+                return res.status(404).json({ message: `Variant ${item.variant_id} not found`})
             }
         }
 

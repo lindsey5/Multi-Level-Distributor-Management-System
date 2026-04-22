@@ -8,7 +8,6 @@ import CustomTable from "../../components/ui/Table";
 import { useDebounce } from "../../hooks/useDebounce";
 import SalesControls from "../../components/sales/SalesControls";
 import Chip from "../../components/ui/Chip";
-import SalesTour from "../../components/ui/Tour/SalesTour";
 import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
 import DistributorSalesModal from "../../components/distributorSale/DistributorSalesModal";
@@ -19,7 +18,7 @@ export default function Sales () {
         sortBy: 'createdAt'
     });
     const [search, setSearch] = useState('');
-    const debouncedSearch = useDebounce(search, 200);
+    const debouncedSearch = useDebounce(search, 800);
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -105,7 +104,6 @@ export default function Sales () {
                 close={() => setDistributorSale(null)}
             />
             <h1 className="block md:hidden text-gold font-bold text-lg">Your Sales</h1>
-            <SalesTour />
             <SalesControls 
                 sorting={sorting}
                 setSorting={setSorting}

@@ -11,6 +11,7 @@ interface DistributorSalesModalProps {
 }
 
 export default function DistributorSalesModal({ close, distributorSale }: DistributorSalesModalProps) {
+    
     return (
         <Modal open={distributorSale !== null} onClose={close}>
             <Card className="space-y-5">

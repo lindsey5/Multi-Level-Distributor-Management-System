@@ -63,12 +63,18 @@ export default function TransferLogsControls ({
                 <div className="grid grid-cols-2 gap-3">
                     <DateInput 
                         label="From"
-                        onChange={setStartDate}
+                        onChange={(value) => {
+                            setPagination(prev => ({...prev, pageIndex: 0}));
+                            setStartDate(value);
+                        }}
                         value={startDate}
                     />
                     <DateInput 
                         label="To"
-                        onChange={setEndDate}
+                        onChange={(value) => {
+                            setPagination(prev => ({...prev, pageIndex: 0}));
+                            setEndDate(value)
+                        }}
                         value={endDate}
                     />
                     <Dropdown 
@@ -77,7 +83,10 @@ export default function TransferLogsControls ({
                             value: s.value
                         }))}
                         label="Status"
-                        onChange={(value) => setStatus(value as string)}
+                        onChange={(value) => {
+                            setPagination(prev => ({...prev, pageIndex: 0}))
+                            setStatus(value as string);
+                        }}
                         value={status}
                     />
                 </div>
