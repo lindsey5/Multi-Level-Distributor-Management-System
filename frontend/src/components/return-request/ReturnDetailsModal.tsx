@@ -6,8 +6,46 @@ import Modal from "../ui/Modal";
 import Card from "../ui/Card";
 import ReturnRequestStatusChip from "./ReturnRequestStatusChip";
 import { formatDate } from "../../utils/helpers";
+import { useSocket } from "../../hooks/useSocket";
+import { useCancelReturnRequest } from "../../hooks/returnRequest/use-cancel-return-request.hook";
+import { promiseToast } from "../../utils/sileo";
+import { authService } from "../../services/authService";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../lib/features/store";
+import { setAuth } from "../../lib/features/auth/authSlice";
+import { useMemo } from "react";
 
 export default function ReturnDetailsModal ({ returnRequest, close } : { returnRequest: ReturnRequest | null, close: () => void }) {
+    const socket = useSocket({ namespace: "/notification" })
+    const cancelReturnRequestMutation = useCancelReturnRequest();
+    const { refreshToken } = useSelector((store : RootState) => store.auth);
+    const dispatch = useDispatch();
+
+    const handleCancel = async () => {
+        if(!returnRequest) return;
+
+        const isConfirmed = confirm(`Are you sure you want to cancel your return request?`);
+
+        if (!isConfirmed) return;
+
+        const data = await promiseToast(cancelReturnRequestMutation.mutateAsync({ id: returnRequest._id }))
+    
+        if(socket && data.returnRequest){
+            const response = await authService.refreshAccessToken(refreshToken || "");
+            
+            dispatch(setAuth({
+                accessToken: response.token.accessToken, 
+                refreshToken: response.token.refreshToken,
+                distributor: response.distributor
+            }))
+
+            socket.emit("send-cancel-return-notification", returnRequest)
+        }
+    }
+
+    const canCancel = useMemo(() => {
+        return returnRequest?.items.every(item => item.status === 'pending')
+    }, [returnRequest])
 
     return (
         <Modal
@@ -63,9 +101,15 @@ export default function ReturnDetailsModal ({ returnRequest, close } : { returnR
                 </div>
                 <div className="flex justify-end gap-3">
                     <Button
-                        className="md:px-4 lg:py-3"
+                        className="px-4 py-2 bg-white text-black border-gray-400"
                         onClick={close}  
                     >Close</Button>
+                    {canCancel && (
+                        <Button
+                            className="px-4 py-2"
+                            onClick={handleCancel}  
+                        >Cancel Request</Button>
+                    )}
                 </div>
             </Card>
         </Modal>

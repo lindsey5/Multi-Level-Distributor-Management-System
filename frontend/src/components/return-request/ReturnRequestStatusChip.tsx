@@ -26,6 +26,14 @@ const ReturnRequestStatusChip = ({ status } : { status: string }) => {
             </Chip>
         );
 
+        case "cancelled":
+        return (
+            <Chip className="flex items-center gap-2 capitalize text-sm bg-black text-white">
+                <span className="w-2 h-2 rounded-full bg-gray-600"></span>
+                Cancelled
+            </Chip>
+        );
+
         case "insufficient stock":
         return (
             <Chip className="flex items-center gap-2 capitalize text-sm bg-black text-white">

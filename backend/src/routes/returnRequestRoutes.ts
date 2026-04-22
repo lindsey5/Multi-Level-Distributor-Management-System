@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
-import { createReturnRequest, getReturnRequests } from "../controllers/returnRequestController";
+import { cancelReturnRequest, createReturnRequest, getReturnRequests } from "../controllers/returnRequestController";
 const router = Router();
 
 router.post(
@@ -13,6 +13,12 @@ router.get(
     '/',
     requireAuth,
     getReturnRequests
+)
+
+router.patch(
+    '/cancel/:id',
+    requireAuth,
+    cancelReturnRequest
 )
 
 const returnRequestRoutes = router;

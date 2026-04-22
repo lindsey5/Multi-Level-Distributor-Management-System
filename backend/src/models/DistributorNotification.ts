@@ -2,9 +2,10 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface DistributorNotificationAttributes extends Document {
     distributor_id: mongoose.Types.ObjectId;
-    transfer_id: mongoose.Types.ObjectId;
-    return_id: mongoose.Types.ObjectId;
-    sale_ids: mongoose.Types.ObjectId[];
+    transfer_id?: mongoose.Types.ObjectId;
+    return_id?: mongoose.Types.ObjectId;
+    sale_ids?: mongoose.Types.ObjectId[];
+    stock_order_id?: mongoose.Types.ObjectId;
     message: string;
     status: 'read' | 'unread'
 }
@@ -65,6 +66,13 @@ DistributorNotificationSchema.virtual("sales", {
 DistributorNotificationSchema.virtual("returnRequest", {
     ref: "ReturnRequest",          
     localField: "return_id", 
+    foreignField: "_id",   
+    justOne: true    
+});
+
+DistributorNotificationSchema.virtual("stockOrder", {
+    ref: "StockOrder",          
+    localField: "stock_order_id", 
     foreignField: "_id",   
     justOne: true    
 });

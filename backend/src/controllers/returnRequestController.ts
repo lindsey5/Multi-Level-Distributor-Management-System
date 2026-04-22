@@ -73,11 +73,34 @@ export const createReturnRequest = async (req: AuthRequest, res: Response, next:
         })
 
         res.status(201).json({
-            succcess: true,
             returnRequest,
             message: "Return request submitted successfully"
         })
 
+    }catch(err){
+        next(err);
+    }
+}
+
+export const cancelReturnRequest = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const returnRequest = await ReturnRequest.findById(req.params.id).populate('distributor');
+
+        if(!returnRequest){
+            return res.status(404).json({ message: 'Return request not found.' })
+        }
+
+        if(returnRequest.distributor_id.toString() !== req.user._id.toString()){
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        for(const item of returnRequest.items){
+            item.status = 'cancelled';
+        }
+
+        await returnRequest.save();
+
+        res.status(200).json({ returnRequest, message: "Return request successfully cancelled" });
     }catch(err){
         next(err);
     }

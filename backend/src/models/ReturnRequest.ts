@@ -5,7 +5,7 @@ export interface ReturnRequestAttributes extends Document {
     items: {
         variant_id: mongoose.Types.ObjectId;
         quantity: number;
-        status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'insufficient stock'
+        status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'insufficient stock' | 'cancelled'
     }[];
     reason: string;
 }
@@ -30,7 +30,7 @@ const ReturnRequestSchema: Schema<ReturnRequestAttributes> = new Schema(
             },
             status: {
                 type: String,
-                enum: ['pending', 'accepted', 'rejected', 'expired', 'insufficient stock'],
+                enum: ['pending', 'accepted', 'rejected', 'expired', 'insufficient stock', 'cancelled'],
                 default: 'pending'
             }
         }],
