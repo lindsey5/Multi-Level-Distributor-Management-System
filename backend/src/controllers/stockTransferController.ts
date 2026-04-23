@@ -100,6 +100,7 @@ export const getStockTransferLogs = async (
 
         if (search) {
             match.$or = [
+                { transfer_no: { $regex: search, $options: "i" } },
                 { "sender.firstname": { $regex: search, $options: "i" } },
                 { "sender.lastname": { $regex: search, $options: "i" } },
                 { "sender.email": { $regex: search, $options: "i" } },

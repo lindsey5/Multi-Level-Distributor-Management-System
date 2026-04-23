@@ -11,9 +11,9 @@ export default function Header ({ title, description } : { title: string, descri
                         className="w-full h-full object-contain"
                     />
                 </div>
-                <div className="md:block hidden break-words">
+                <div className="break-words">
                     <h1 className="text-md sm:text-lg xl:text-xl font-semibold text-gold mb-1">{title}</h1>
-                    {description && <p className="hidden md:block text-xs xl:text-sm text-gray-500">{description}</p>}
+                    {description && <p className="text-[10px] sm:text-xs xl:text-sm text-gray-500">{description}</p>}
                 </div>
             </div>
             <DistributorHeaderMenu />

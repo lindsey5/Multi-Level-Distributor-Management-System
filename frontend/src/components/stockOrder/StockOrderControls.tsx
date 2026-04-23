@@ -17,7 +17,7 @@ const stockTransferStatus = [
     { label: "Failed", value: "failed" },
 ];
 
-interface TransferLogsControlsProps {
+interface StockOrderControlsProps {
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     startDate: string;
     setStartDate: React.Dispatch<React.SetStateAction<string>>;
@@ -28,7 +28,7 @@ interface TransferLogsControlsProps {
     setStatus: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function TransferLogsControls ({
+export default function StockOrderControls ({
     setSearch,
     startDate,
     setStartDate,
@@ -37,7 +37,7 @@ export default function TransferLogsControls ({
     setPagination,
     status,
     setStatus
-} : TransferLogsControlsProps) {
+} : StockOrderControlsProps) {
 
     const clear = () => {
         setStartDate('');
@@ -51,7 +51,7 @@ export default function TransferLogsControls ({
                 <TextField 
                     className="w-full"
                     icon={<Search className="text-gray-400"/>}
-                    placeholder="Search by transfer no, product name, variant, sku..."
+                    placeholder="Search by stock order id..."
                     onChange={(e) => {
                         setPagination(prev => ({...prev, pageIndex: 0}))
                         setSearch(e.target.value);

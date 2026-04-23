@@ -31,39 +31,38 @@ export default function CommissionLogs () {
                 close={() => setCommissionLog(null)}
                 commissionLog={commissionLog}
             />
-             <h1 className="font-bold text-lg mb-3">Commission Logs</h1>
-             <div className="flex flex-col space-y-2">
-                {isFetching && !commissionLogs.length ? (
-                    Array.from({ length: 5}).map((_, i) => (
-                        <Card key={i} className="py-10 flex justify-between gap-5 md:gap-10">
-                            <div className="flex-1 bg-gray-400 h-5 animate-pulse"></div>
-                            <div className="w-30 bg-gray-400 h-5 animate-pulse"></div>
-                        </Card>
-                    ))
-                ) : commissionLogs.map(log => (
-                    <button className="cursor-pointer" onClick={() => setCommissionLog(log)}>
-                        <Card key={log._id} className="flex items-center justify-between py-10 hover:bg-gray-200">
-                            <div className="flex items-center gap-3 flex-wrap">
-                                <Wallet />
-                                <p className="text-xs md:text-sm text-gray-400">Date: {formatDate(log.createdAt)}</p>
-                            </div>
-                            <p className="min-w-20 font-bold text-sm md:text-lg text-green-600">
-                                + {formatToPeso(log.commission_amount)}
-                            </p>
-                        </Card>
-                    </button>
-                ))}
-                {isFetching && data?.commissionLogs.length && <p className="w-full text-center my-3">Loading...</p>}
-                {page < (data?.pagination.totalPages || 1) && !isFetching && (
-                    <div className="flex justify-center mt-2">
-                        <Button
-                            disabled={isFetching}
-                            className="disabled:cursor-not-allowed cursor-pointer bg-black text-white text-sm py-2 rounded-md"
-                            onClick={() => setPage(prev => prev + 1)}
-                        >See more</Button>
-                    </div>
-                )}
-             </div>
+            <div className="flex flex-col space-y-2">
+            {isFetching && !commissionLogs.length ? (
+                Array.from({ length: 5}).map((_, i) => (
+                    <Card key={i} className="py-10 flex justify-between gap-5 md:gap-10">
+                        <div className="flex-1 bg-gray-400 h-5 animate-pulse"></div>
+                        <div className="w-30 bg-gray-400 h-5 animate-pulse"></div>
+                    </Card>
+                ))
+            ) : commissionLogs.map(log => (
+                <button className="cursor-pointer" onClick={() => setCommissionLog(log)}>
+                    <Card key={log._id} className="flex items-center justify-between py-10 hover:bg-gray-200">
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <Wallet />
+                            <p className="text-xs md:text-sm text-gray-400">Date: {formatDate(log.createdAt)}</p>
+                        </div>
+                        <p className="min-w-20 font-bold text-sm md:text-lg text-green-600">
+                            + {formatToPeso(log.commission_amount)}
+                        </p>
+                    </Card>
+                </button>
+            ))}
+            {isFetching && data?.commissionLogs.length && <p className="w-full text-center my-3">Loading...</p>}
+            {page < (data?.pagination.totalPages || 1) && !isFetching && (
+                <div className="flex justify-center mt-2">
+                    <Button
+                        disabled={isFetching}
+                        className="disabled:cursor-not-allowed cursor-pointer bg-black text-white text-sm py-2 rounded-md"
+                        onClick={() => setPage(prev => prev + 1)}
+                    >See more</Button>
+                </div>
+            )}
+            </div>
         </div>
     )
 }

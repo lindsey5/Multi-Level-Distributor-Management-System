@@ -7,11 +7,11 @@ import Button from "../ui/Button";
 import Card from "../ui/Card";
 import Chip from "../ui/Chip";
 import Modal from "../ui/Modal";
-import StockTransferStatusChip from "./StockTransferStatusChip";
 import { authService } from "../../services/authService";
 import { setAuth } from "../../lib/features/auth/authSlice";
 import type { RootState } from "../../lib/features/store";
 import type { Socket } from "socket.io-client";
+import DeliveryStatusChip from "../ui/DeliveryChip";
 
 interface StockTransferItemsProps {
     close: () => void;
@@ -95,7 +95,7 @@ export default function StockTransferItems ({ close, stockTransferLog, socket } 
                         <p className="text-sm">Date Received: {formatDate(stockTransferLog.updatedAt)}</p>
                     )}
                     <div className="flex justify-start mt-3">
-                       <StockTransferStatusChip status={stockTransferLog?.status || ""} />
+                       <DeliveryStatusChip status={stockTransferLog?.status || ""} />
                     </div>
                 </div>
                 <div className="flex justify-end gap-3 mt-4">

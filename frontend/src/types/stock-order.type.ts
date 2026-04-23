@@ -1,4 +1,5 @@
 import type { Distributor } from "./distributor.type";
+import type { PaginationParams, PaginationResponse } from "./pagination.type";
 import type { Variant } from "./variant.type";
 
 export interface StockOrder {
@@ -21,4 +22,15 @@ export interface CreateStockOrderPayload {
 export interface CreateStockOrderResponse {
     message?: string;
     stockOrder: StockOrder
+}
+
+export interface GetStockOrdersParams extends PaginationParams {
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+}
+
+export interface GetStockOrdersResponse extends PaginationResponse {
+    stockOrders: StockOrder[];
 }

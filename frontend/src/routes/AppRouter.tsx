@@ -16,6 +16,7 @@ import ChangePassword from "../pages/Dashboard/ChangePassword";
 import ReturnHistory from "../pages/Dashboard/ReturnHistory";
 import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationSocket";
 import StockOrder from '../pages/Dashboard/StockOrder';
+import Orders from "../pages/Dashboard/Orders";
 
 const router = createBrowserRouter([ 
     {
@@ -49,9 +50,17 @@ const router = createBrowserRouter([
                 )
             },
             {
+                path: 'orders',
+                Component: () => (
+                    <PageContainer title="Your Orders" description="Monitor your stock order requests status">
+                        <Orders />
+                    </PageContainer>
+                )
+            },
+            {
                 path: 'stock-order',
                 Component: () => (
-                    <PageContainer title="Stock Order" description="Send stock order requests to the admin and monitor their status">
+                    <PageContainer title="Stock Order" description="Send stock order requests to the admin">
                         <StockOrder />
                     </PageContainer>
                 )

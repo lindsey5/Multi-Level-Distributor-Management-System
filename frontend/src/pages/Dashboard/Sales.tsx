@@ -103,7 +103,6 @@ export default function Sales () {
                 distributorSale={distributorSale}
                 close={() => setDistributorSale(null)}
             />
-            <h1 className="block md:hidden text-gold font-bold text-lg">Your Sales</h1>
             <SalesControls 
                 sorting={sorting}
                 setSorting={setSorting}

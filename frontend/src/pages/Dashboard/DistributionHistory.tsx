@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CustomTable from "../../components/ui/Table";
 import { useGetStockTransferLogs } from "../../hooks/stock/use-get-stock-transfer-logs.hook";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -9,8 +9,8 @@ import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
 import TransferLogsControls from "../../components/stockTransferLog/TransferLogsControls";
 import StockTransferItems from "../../components/stockTransferLog/StockTransferItems";
-import StockTransferStatusChip from "../../components/stockTransferLog/StockTransferStatusChip";
 import { useSocket } from "../../hooks/useSocket";
+import DeliveryStatusChip from "../../components/ui/DeliveryChip";
 
 export default function TransferLogs () {
     const [stockTransfer, setStockTransfer] = useState<StockTransferLog | null>(null);
@@ -24,14 +24,15 @@ export default function TransferLogs () {
 
     const [status, setStatus] = useState("");
 
-    const params = {
+    const params = useMemo(() => ({
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
         search: debouncedSearch,
         status,
         startDate: startDate ? formatDate(startDate) :"",
         endDate: endDate ? formatDate(endDate) : "",
-    }
+    }), [pagination, debouncedSearch, status, startDate, endDate])
+    
     const { data, isFetching } = useGetStockTransferLogs(params);
 
     const columns: ColumnDef<StockTransferLog>[] = [
@@ -55,7 +56,7 @@ export default function TransferLogs () {
             accessorKey: "status",
             cell: info => (
                 <div className="flex justify-center">
-                    <StockTransferStatusChip status={info.getValue() as string}/>
+                    <DeliveryStatusChip status={info.getValue() as string}/>
                 </div>
             ),
             meta: { align: 'center' }
@@ -83,7 +84,6 @@ export default function TransferLogs () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
-            <h1 className="block md:hidden text-gold font-bold text-lg">Stock Transfer History</h1>
             <StockTransferItems 
                 close={() => setStockTransfer(null)}
                 stockTransferLog={stockTransfer}
