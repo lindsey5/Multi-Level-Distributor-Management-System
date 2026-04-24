@@ -18,6 +18,7 @@ const stockTransferStatus = [
 ];
 
 interface StockOrderControlsProps {
+    search: string;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     startDate: string;
     setStartDate: React.Dispatch<React.SetStateAction<string>>;
@@ -29,6 +30,7 @@ interface StockOrderControlsProps {
 }
 
 export default function StockOrderControls ({
+    search,
     setSearch,
     startDate,
     setStartDate,
@@ -52,6 +54,7 @@ export default function StockOrderControls ({
                     className="w-full"
                     icon={<Search className="text-gray-400"/>}
                     placeholder="Search by stock order id..."
+                    value={search}
                     onChange={(e) => {
                         setPagination(prev => ({...prev, pageIndex: 0}))
                         setSearch(e.target.value);

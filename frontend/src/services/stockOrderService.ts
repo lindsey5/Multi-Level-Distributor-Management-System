@@ -1,5 +1,5 @@
 import { apiAxios, HttpMethod } from "../lib/api/apiAxios";
-import { type GetStockOrdersResponse, type CreateStockOrderPayload, type CreateStockOrderResponse, type GetStockOrdersParams, type GetStockOrderResponse } from "../types/stock-order.type";
+import { type GetStockOrdersResponse, type CreateStockOrderPayload, type CreateStockOrderResponse, type GetStockOrdersParams, type GetStockOrderResponse, type UpdateStockOrderResponse } from "../types/stock-order.type";
 
 export const stockOrderService = {
     createStockOrder: (items: CreateStockOrderPayload[]) =>
@@ -20,7 +20,7 @@ export const stockOrderService = {
         }),
 
     updateStockOrder: (id : string, status : string) => 
-        apiAxios<GetStockOrderResponse>(`stock-orders/${id}`, {
+        apiAxios<UpdateStockOrderResponse>(`stock-orders/${id}`, {
             method: HttpMethod.PATCH,
             data: { status }
         })

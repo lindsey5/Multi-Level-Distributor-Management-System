@@ -1,4 +1,4 @@
-import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { useGetStockOrders } from "../../hooks/stock-order/use-get-stock-orders.hook"
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -10,6 +10,7 @@ import DeliveryStatusChip from "../../components/ui/DeliveryChip";
 import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
 import StockOrderDetails from "../../components/stockOrder/StockOrderDetails";
+import { useSearchParams } from "react-router-dom";
 
 const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) : ColumnDef<StockOrder>[] => [
     {
@@ -46,8 +47,12 @@ const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) :
 ]
 
 export default function Orders () {
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const id = searchParams.get("id");
+    
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(id || "");
     const debouncedSearch = useDebounce(search, 800);
 
     const [startDate, setStartDate] = useState("");
@@ -71,6 +76,16 @@ export default function Orders () {
 
     const columns = getColumns(setStockOrderId);
 
+     useEffect(() => {
+        const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+
+        const isReload = navEntry?.type === "reload";
+
+        if (isReload && id) {
+            setSearchParams({}, { replace: true });
+        }
+    }, [id]);
+
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
             <StockOrderDetails 
@@ -84,6 +99,7 @@ export default function Orders () {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
+                search={search}
                 setSearch={setSearch}
                 setPagination={setPagination}
             />

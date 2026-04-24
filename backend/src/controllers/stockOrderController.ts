@@ -152,8 +152,8 @@ export const updateStockOrder = async (req: AuthRequest, res: Response, next: Ne
 
         // Allowed transitions (prevents going back or invalid jumps)
         const allowedTransitions: Record<string, string[]> = {
-            pending: ["rejected"],
-            accepted: ["cancelled"],
+            pending: ["cancelled"],
+            approved: ["cancelled"],
             processing: [],
             delivered: [],
             received: [],

@@ -7,6 +7,13 @@ import Chip from "../ui/Chip";
 import Button from "../ui/Button";
 import { formatDate } from "../../utils/helpers";
 import { useMemo } from "react";
+import { useUpdateStockOrder } from "../../hooks/stock-order/use-update-stock-order.hook";
+import { promiseToast } from "../../utils/sileo";
+import { useSocket } from "../../hooks/useSocket";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../lib/features/store";
+import { setAuth } from "../../lib/features/auth/authSlice";
+import { authService } from "../../services/authService";
 
 interface StockOrderDetailsProps {
     stockOrderId: string | null;
@@ -46,6 +53,10 @@ function StockOrderDetailsSkeleton() {
 
 export default function StockOrderDetails({ stockOrderId, close }: StockOrderDetailsProps) {
     const { data, isFetching } = useGetStockOrderById(stockOrderId || "");
+    const updateStockOrderMutation = useUpdateStockOrder();
+    const socket = useSocket({ namespace: '/notification' });
+    const { refreshToken } = useSelector((store : RootState) => store.auth);
+    const dispatch = useDispatch();
 
     const canCancel = useMemo(() => {
         if(!data?.stockOrder) return false;
@@ -53,6 +64,33 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
         return data.stockOrder.status === 'pending' || data.stockOrder.status === 'approved'
 
     }, [data])
+
+    const handleCancel = async () => {
+        if(!stockOrderId) return;
+
+        const isConfirmed = confirm(`Are you sure you want to cancel your stock order?`);
+
+        if (!isConfirmed) return;
+
+        const data = await promiseToast(
+            updateStockOrderMutation.mutateAsync({ 
+                id: stockOrderId, 
+                status: 'cancelled'
+            }),
+        )
+
+        if(socket && data.stockOrder){
+            const response = await authService.refreshAccessToken(refreshToken || "");
+            
+            dispatch(setAuth({
+                accessToken: response.token.accessToken, 
+                refreshToken: response.token.refreshToken,
+                distributor: response.distributor
+            }))
+
+            socket.emit("send-cancel-stock-order", data.stockOrder)
+        }
+    }
 
     return (
         <Modal onClose={close} open={stockOrderId !== null}>
@@ -125,6 +163,11 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
                     >
                         Close
                     </Button>
+                    {canCancel && (
+                        <Button className="px-4 py-2" onClick={handleCancel}>
+                            Cancel Order
+                        </Button>
+                    )}
                 </div>
             </Card>
         </Modal>

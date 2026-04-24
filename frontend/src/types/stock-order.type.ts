@@ -41,3 +41,8 @@ export interface GetStockOrdersResponse extends PaginationResponse {
 export interface GetStockOrderResponse {
     stockOrder: StockOrder;
 }
+
+export interface UpdateStockOrderResponse {
+    stockOrder: StockOrder;
+    message?: string;
+}

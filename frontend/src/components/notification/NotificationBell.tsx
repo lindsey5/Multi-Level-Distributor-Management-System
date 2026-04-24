@@ -57,6 +57,11 @@ export default function NotificationBell() {
     }, [socket])
 
     const readNotification = (notification : DistributorNotification) => {
+        if(notification.stockOrder) {
+            window.location.href = `/distributor/orders?id=${notification.stockOrder.stock_order_id}`;
+            return;
+        }
+
         setNotification(notification);
 
         if(notification.status === 'unread'){
@@ -84,7 +89,6 @@ export default function NotificationBell() {
         setNotification(null)
     }
 
-    console.log(notifications);
 
     return (
         <>
