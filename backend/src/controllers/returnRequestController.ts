@@ -94,6 +94,12 @@ export const cancelReturnRequest = async (req: AuthRequest, res: Response, next:
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
+        if (!returnRequest.items.every(item => item.status === 'pending' || item.status === 'accepted')) {
+            return res.status(400).json({
+                message: "Return request cannot be cancelled. Please reload the page"
+            });
+        }
+
         for(const item of returnRequest.items){
             item.status = 'cancelled';
         }

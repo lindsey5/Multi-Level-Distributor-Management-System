@@ -8,7 +8,7 @@ export interface StockOrderAttributes extends Document {
         variant_id: mongoose.Types.ObjectId;
         quantity: number;
     };
-    status: 'pending' | 'accepted' | 'received' | 'rejected' | 'cancelled' | 'insufficient stock'
+    status: 'pending' | 'approved'| 'processing' | 'delivered' | 'received' | 'cancelled' | 'rejected' | 'failed';
 }
 
 const StockOrderSchema: Schema<StockOrderAttributes> = new Schema(
@@ -35,7 +35,7 @@ const StockOrderSchema: Schema<StockOrderAttributes> = new Schema(
         }],
         status: {
             type: String,
-            enum: ['pending', 'accepted', 'received', 'rejected', 'cancelled', 'insufficient stock'],
+            enum: ['pending', 'approved', 'processing', 'delivered', 'received', 'cancelled', 'rejected', 'failed'],
             default: 'pending'
         }
 

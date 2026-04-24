@@ -163,87 +163,91 @@ export const getStockTransferLogs = async (
     }
 };
 
-export const updateStockTransferStatus = async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const session = await mongoose.startSession();
-
+export const updateStockTransferStatus = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
-        session.startTransaction();
-
-        if(!req.body.status) {
-            await session.abortTransaction();
-            session.endSession();
-            return res.status(400).json({ message: 'Status is required' });
+        if (!req.body.status) {
+            return res.status(400).json({ message: "Status is required" });
         }
 
-        const stockTransfer = await StockTransfer.findById(req.params.id).session(session);
+        const stockTransfer = await StockTransfer.findById(req.params.id);
 
         if (!stockTransfer) {
-            await session.abortTransaction();
-            session.endSession();
             return res.status(404).json({ message: "Stock transfer not found" });
         }
 
         if (stockTransfer.receiver_id.toString() !== req.user._id.toString()) {
-            await session.abortTransaction();
-            session.endSession();
-            return res.status(401).json({ message: "Unauthorized" });
+            return res.status(401).json({ message: "Unauthorized access to this stock transfer" });
         }
 
-        if (stockTransfer.status === req.body.status) {
-            await session.abortTransaction();
-            session.endSession();
-            return res.status(400).json({ message: `Stock transfer already ${req.body.status}` });
+        const newStatus = req.body.status;
+        const currentStatus = stockTransfer.status;
+
+        if (currentStatus === newStatus) {
+            return res.status(400).json({
+                message: `Stock transfer is already "${newStatus}"`
+            });
         }
 
-        stockTransfer.status = req.body.status;
-        await stockTransfer.save({ session });
+        // Allowed transitions (prevents backward or invalid updates)
+        const allowedTransitions: Record<string, string[]> = {
+            pending: ["rejected", "approved"],
+            approved: [],
+            processing: [],
+            delivered: ["received"],
+            received: [],
+            cancelled: [],
+            rejected: []
+        };
+
+        const allowedNextStatuses = allowedTransitions[currentStatus] || [];
+
+        if (!allowedNextStatuses.includes(newStatus)) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot change stock transfer from "${currentStatus}" to "${newStatus}"`
+            });
+        }
+
+        stockTransfer.status = newStatus;
+        await stockTransfer.save();
 
         // populate items
         const items = await StockTransferItem.find({
             transfer_id: stockTransfer._id
-        }).session(session);
+        });
 
         for (const item of items) {
-            const variant = await Variant.findById(item.variant_id).session(session);
+            const variant = await Variant.findById(item.variant_id);
             if (!variant) continue;
 
-            const existingStock = await DistributorStock.findOne(
-                {
-                    distributor_id: stockTransfer.receiver_id,
-                    variant_id: item.variant_id,
-                }
-            ).session(session);
+            const existingStock = await DistributorStock.findOne({
+                distributor_id: stockTransfer.receiver_id,
+                variant_id: item.variant_id,
+            });
 
             if (existingStock) {
                 existingStock.quantity += item.quantity;
-                await existingStock.save({ session });
+                await existingStock.save();
                 continue;
             }
 
-            await DistributorStock.create(
-                [
-                    {
-                        distributor_id: stockTransfer.receiver_id,
-                        variant_id: item.variant_id,
-                        quantity: item.quantity,
-                    },
-                ],
-                { session }
-            );
-
+            await DistributorStock.create({
+                distributor_id: stockTransfer.receiver_id,
+                variant_id: item.variant_id,
+                quantity: item.quantity,
+            });
         }
 
-        await session.commitTransaction();
-        session.endSession();
-
         return res.status(200).json({
+            message: `Stock transfer successfully updated to ${newStatus}`,
             stockTransfer,
-            message: `Stock successfully marked as ${req.body.status}`,
         });
 
     } catch (err) {
-        await session.abortTransaction();
-        session.endSession();
         next(err);
     }
 };

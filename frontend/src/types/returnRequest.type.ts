@@ -7,7 +7,7 @@ interface ReturnItem {
     variant_id: string;
     quantity: number;
     variant: Variant;
-    status: 'pending' | 'rejected' | 'expired' | 'insufficient stock' | 'cancelled'
+    status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'insufficient stock' | 'cancelled'
 }
 
 export interface ReturnRequest {

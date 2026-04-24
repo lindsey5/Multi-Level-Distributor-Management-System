@@ -44,7 +44,7 @@ export default function ReturnDetailsModal ({ returnRequest, close } : { returnR
     }
 
     const canCancel = useMemo(() => {
-        return returnRequest?.items.every(item => item.status === 'pending')
+        return returnRequest?.items.every(item => item.status === 'pending' || item.status === 'accepted')
     }, [returnRequest])
 
     return (

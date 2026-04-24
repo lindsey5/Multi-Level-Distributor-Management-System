@@ -84,6 +84,8 @@ export default function NotificationBell() {
         setNotification(null)
     }
 
+    console.log(notifications);
+
     return (
         <>
         <StockTransferItems 

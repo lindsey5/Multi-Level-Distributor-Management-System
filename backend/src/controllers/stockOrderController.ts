@@ -110,7 +110,10 @@ export const getStockOrders = async (req: AuthRequest, res: Response, next: Next
 
 export const getStockOrderById = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
-        const stockOrder = await StockOrder.findById(req.params.id);
+        const stockOrder = await StockOrder.findById(req.params.id).populate({
+            path: 'items.variant',
+            populate: 'product'
+        });
 
         if(!stockOrder) return res.status(404).json({ message: "Stock Order not found"});
 
@@ -122,3 +125,61 @@ export const getStockOrderById = async (req: AuthRequest, res: Response, next: N
         next(err);
     }
 }
+
+export const updateStockOrder = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+        const stockOrder = await StockOrder.findById(req.params.id).populate([
+            { path: 'items.variant', populate: 'product' },
+            { path: 'distributor', select: '-password' }
+        ]);
+
+        if (!stockOrder) {
+            return res.status(404).json({ message: "Stock order not found" });
+        }
+
+        if (stockOrder.distributor_id.toString() !== req.user._id.toString()) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const newStatus = req.body.status;
+        const currentStatus = stockOrder.status;
+
+        if (currentStatus === newStatus) {
+            return res.status(400).json({
+                message: `Stock order is already "${newStatus}"`
+            });
+        }
+
+        // Allowed transitions (prevents going back or invalid jumps)
+        const allowedTransitions: Record<string, string[]> = {
+            pending: ["rejected"],
+            accepted: ["cancelled"],
+            processing: [],
+            delivered: [],
+            received: [],
+            cancelled: [],
+            rejected: [],
+            failed: [],
+        };
+
+        const allowedNextStatuses = allowedTransitions[currentStatus] || [];
+
+        if (!allowedNextStatuses.includes(newStatus)) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot change status from ${currentStatus} to ${newStatus}. Please reload the page`
+            });
+        }
+
+        stockOrder.status = newStatus;
+        await stockOrder.save();
+
+        return res.status(200).json({
+            message: `Stock order successfully updated to ${newStatus}`,
+            stockOrder
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};

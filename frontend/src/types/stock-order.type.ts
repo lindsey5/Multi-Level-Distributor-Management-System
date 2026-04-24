@@ -4,14 +4,17 @@ import type { Variant } from "./variant.type";
 
 export interface StockOrder {
     _id: string;
+    stock_order_id: string;
     distributor_id: string;
     distributor: Distributor;
     items: {
         variant: Variant;
         variant_id: string;
         quantity: number;
-        status: 'pending' | 'accepted' | 'received' | 'rejected' | 'cancelled' | 'insufficient stock'
-    }
+    }[];
+    status: 'pending' | 'approved'| 'processing' | 'delivered' | 'received' | 'cancelled' | 'rejected' | 'failed';
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface CreateStockOrderPayload {
@@ -33,4 +36,8 @@ export interface GetStockOrdersParams extends PaginationParams {
 
 export interface GetStockOrdersResponse extends PaginationResponse {
     stockOrders: StockOrder[];
+}
+
+export interface GetStockOrderResponse {
+    stockOrder: StockOrder;
 }

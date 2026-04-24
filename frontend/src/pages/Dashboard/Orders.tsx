@@ -9,6 +9,7 @@ import type { StockOrder } from "../../types/stock-order.type";
 import DeliveryStatusChip from "../../components/ui/DeliveryChip";
 import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
+import StockOrderDetails from "../../components/stockOrder/StockOrderDetails";
 
 const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) : ColumnDef<StockOrder>[] => [
     {
@@ -72,6 +73,10 @@ export default function Orders () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <StockOrderDetails 
+                close={() => setStockOrderId(null)}
+                stockOrderId={stockOrderId}
+            />
             <StockOrderControls 
                 setStatus={setStatus}
                 status={status}

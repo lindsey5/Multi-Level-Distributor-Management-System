@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
-import { createStockOrder, getStockOrderById, getStockOrders } from "../controllers/stockOrderController";
+import { createStockOrder, getStockOrderById, getStockOrders, updateStockOrder } from "../controllers/stockOrderController";
 const router = Router();
 
 router.post(
@@ -19,6 +19,12 @@ router.get(
     '/:id',
     requireAuth,
     getStockOrderById
+)
+
+router.patch(
+    '/:id',
+    requireAuth,
+    updateStockOrder
 )
 
 const stockOrderRoutes = router;
