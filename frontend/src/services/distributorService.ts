@@ -1,16 +1,27 @@
 import { apiAxios, HttpMethod } from "../lib/api/apiAxios";
-import type { UpdateDistributorPayload, UpdateDistributorResponse } from "../types/distributor.type";
+import type { AddWithdrawalMethodPayload, AddWithdrawalMethodResponse, UpdateDistributorPayload, UpdateDistributorResponse } from "../types/distributor.type";
 
 export const distributorService = {
-    updateDistributor: (data : UpdateDistributorPayload) : Promise<UpdateDistributorResponse> => (
+    updateDistributor: (data : UpdateDistributorPayload) => (
         apiAxios<UpdateDistributorResponse> ("distributors", {
             method: HttpMethod.PUT,
             data
         })
     ),
 
-    getDistributorBalance: (): Promise<{ wallet_balance: number }> =>
+    getDistributorBalance: () =>
         apiAxios<{ wallet_balance: number }>("distributors/balance", {
             method: HttpMethod.GET,
+        }),
+
+    addWithdrawalMethod: (data : AddWithdrawalMethodPayload) => 
+        apiAxios<AddWithdrawalMethodResponse>("distributors/withdrawal-method", {
+            method: HttpMethod.POST,
+            data
+        }),
+    
+    deleteWithdrawalMethod: (id: string) => 
+        apiAxios<{ message?: string; id: string}>(`distributors/withdrawal-method/${id}`, {
+            method: HttpMethod.DELETE,
         }),
 };

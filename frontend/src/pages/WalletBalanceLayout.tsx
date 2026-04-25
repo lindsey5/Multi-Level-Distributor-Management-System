@@ -1,7 +1,7 @@
 import { cn, formatToPeso } from "../utils/helpers";
 import { NavLink, Outlet } from "react-router-dom";
 import { Wallet } from "lucide-react";
-import { useGetBalance } from "../hooks/distributor/use-get-balance";
+import { useGetBalance } from "../hooks/distributor/use-get-balance.hook";
 
 export default function WalletBalanceLayout () {
     const { data, isFetching } = useGetBalance();

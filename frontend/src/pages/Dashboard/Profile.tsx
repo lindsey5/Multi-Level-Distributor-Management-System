@@ -7,7 +7,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { distributorSchema, type DistributorFormData } from "../../schemas/distributorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../components/ui/Button";
-import { useUpdateDistributor } from "../../hooks/distributor/use-update-distributor";
+import { useUpdateDistributor } from "../../hooks/distributor/use-update-distributor.hook";
 import { promiseToast } from "../../utils/sileo";
 
 

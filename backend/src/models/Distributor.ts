@@ -2,12 +2,22 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
 import { hashPassword } from "../utils/auth";
 
+interface WithdrawalMethod extends Document{
+    type: "bank" | "gcash" | "maya";
+    account_name: string;
+    account_number: string;
+    bank_name?: string;
+    is_default: boolean;
+    createdAt?: Date;
+}
+
 export interface DistributorAttributes extends Document {
     distributor_id: string;
     parent_distributor_id: mongoose.Types.ObjectId | null;
     distributor_name: string;
     commission_rate: number;
     wallet_balance: number;
+    withdrawal_methods: WithdrawalMethod[];
     email: string;
     password: string;
     status: "active" | "deleted";
@@ -46,6 +56,41 @@ const DistributorSchema: Schema<DistributorAttributes> = new Schema(
             required: true,
             default: 0,
         },
+
+        withdrawal_methods: [
+            {
+                type: {
+                    type: String,
+                    enum: ["bank", "gcash", "maya"],
+                    required: true,
+                },
+
+                account_name: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+
+                account_number: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+
+                bank_name: {
+                    type: String,
+                    required: function (this: any) {
+                        return this.type === "bank";
+                    },
+                    trim: true,
+                },
+
+                is_default: {
+                    type: Boolean,
+                    default: false,
+                },
+            },
+        ],
 
         email: {
             type: String,

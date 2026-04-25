@@ -3,6 +3,7 @@ import { cn } from "../../utils/helpers";
 type Option = {
     value: string | number;
     label: string;
+    disabled?: boolean;
 };
 
 type DropdownProps = {
@@ -42,6 +43,7 @@ export default function Dropdown({
                     <option 
                         key={option.value} 
                         value={option.value}
+                        disabled={option.disabled}
                     >
                         {option.label}
                     </option>

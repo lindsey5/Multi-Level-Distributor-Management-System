@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useGetCommissionLogs } from "../../hooks/commissionLog/use-get-commission-logs"
+import { useGetCommissionLogs } from "../../hooks/commissionLog/use-get-commission-logs..hook"
 import { formatDate, formatToPeso } from "../../utils/helpers";
 import Card from "../../components/ui/Card";
 import { Wallet } from "lucide-react";
@@ -52,7 +52,7 @@ export default function CommissionLogs () {
                     </Card>
                 </button>
             ))}
-            {isFetching && data?.commissionLogs.length && <p className="w-full text-center my-3">Loading...</p>}
+            {isFetching && <p className="w-full text-center my-3">Loading...</p>}
             {page < (data?.pagination.totalPages || 1) && !isFetching && (
                 <div className="flex justify-center mt-2">
                     <Button

@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Distributor } from "../../../types/distributor.type";
+import type { Distributor, WithdrawalMethod } from "../../../types/distributor.type";
 
 interface DistributorAuthState {
     distributor: Distributor | null;
@@ -27,6 +27,12 @@ const authSlice = createSlice({
             state.distributor = action.payload.distributor;
         },
 
+        setWithdrawalMethod(state, action: PayloadAction<{ methods: WithdrawalMethod[]}>) {
+            if(state.distributor){
+                state.distributor.withdrawal_methods = action.payload.methods
+            }
+        },
+
         logout(state) {
             state.accessToken = null;
             state.refreshToken = null;
@@ -35,7 +41,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout, setAuth, setDistributor } = authSlice.actions;
+export const { logout, setAuth, setDistributor, setWithdrawalMethod } = authSlice.actions;
 
 const authReducer = authSlice.reducer
 

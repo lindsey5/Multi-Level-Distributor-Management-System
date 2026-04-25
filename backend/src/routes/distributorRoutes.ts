@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
-import { getDistributorBalance, updateDistributor } from "../controllers/distributorController";
+import { addWithdrawalMethod, deleteWithdrawalMethod, getDistributorBalance, updateDistributor } from "../controllers/distributorController";
 import createRateLimiter from "../utils/rate-limit";
 const router = Router();
 
@@ -16,6 +16,20 @@ router.put(
     createRateLimiter(60 * 1000, 20),
     requireAuth,
     updateDistributor
+)
+
+router.post(
+    '/withdrawal-method',
+    createRateLimiter(60 * 1000, 20),
+    requireAuth,
+    addWithdrawalMethod
+)
+
+router.delete(
+    '/withdrawal-method/:id',
+    createRateLimiter(60 * 1000, 20),
+    requireAuth,
+    deleteWithdrawalMethod
 )
 
 const distributorRoutes = router;

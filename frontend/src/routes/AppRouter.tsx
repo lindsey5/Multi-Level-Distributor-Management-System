@@ -17,6 +17,8 @@ import ReturnHistory from "../pages/Dashboard/ReturnHistory";
 import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationSocket";
 import StockOrder from '../pages/Dashboard/StockOrder';
 import Orders from "../pages/Dashboard/Orders";
+import SponsoredItems from "../pages/Dashboard/SponsoredItems";
+import WithdrawalMethods from "../pages/Dashboard/WithdrawalMethods";
 
 const router = createBrowserRouter([ 
     {
@@ -96,6 +98,17 @@ const router = createBrowserRouter([
                 )
             },
             {
+                path: 'sponsored-items',
+                Component: () => (
+                    <PageContainer
+                        title="Sponsored Products"
+                        description="View and manage all your sponsored products"
+                    >
+                        <SponsoredItems />
+                    </PageContainer>
+                )
+            },
+            {
                 path: 'profile',
                 Component: () => (
                     <PageContainer
@@ -123,6 +136,10 @@ const router = createBrowserRouter([
                                 Component: () => <CommissionLogs />
                             }
                         ]
+                    },
+                    {
+                        path: 'withdrawal-methods',
+                        Component: () => <WithdrawalMethods />
                     },
                     {
                         path: 'change-password',

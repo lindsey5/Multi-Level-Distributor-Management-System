@@ -1,4 +1,4 @@
-import { User, Wallet, Lock, LogOut, ChevronRight, MoreHorizontal } from "lucide-react";
+import { User, Wallet, Lock, LogOut, ChevronRight, MoreHorizontal, Banknote } from "lucide-react";
 import Card from "../components/ui/Card";
 import { MenuButton } from "../components/ui/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,19 +20,21 @@ export default function ProfileLayout() {
         <MenuButton 
             icon={<User size={20} />} 
             label="My Profile" 
-            dataTour="profile-my-profile"
             path="/distributor/profile" 
         />
         <MenuButton
             icon={<Wallet size={20} />}
             label="Wallet Balance"
-            dataTour="profile-wallet-balance"
             path="/distributor/profile/wallet-balance/withdraw"
+        />
+        <MenuButton
+            icon={<Banknote size={20} />}
+            label="Withdrawal Methods"
+            path="/distributor/profile/withdrawal-methods"
         />
         <MenuButton
             icon={<Lock size={20} />}
             label="Change Password"
-            dataTour="profile-change-password"
             path="/distributor/profile/change-password"
         />
 
@@ -64,7 +66,7 @@ export default function ProfileLayout() {
 
     return (
         <div className="md:flex items-start gap-5 p-2 md:p-5 space-y-4 md:space-y-0">
-            <Card className="md:w-80 lg:w-100 px-0 py-3 relative">
+            <Card className="md:w-80 lg:w-100 px-0 py-3 relative md:sticky md:top-5">
                 <div className="flex items-center justify-between px-5 py-3">
                     <div className="flex items-start gap-3">
                         <div className="md:block hidden p-3 bg-black rounded-full text-white">

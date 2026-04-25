@@ -12,6 +12,7 @@ import distributorRoutes from "./routes/distributorRoutes";
 import commissionLogRoutes from "./routes/commissionLogRoutes";
 import returnRequestRoutes from "./routes/returnRequestRoutes";
 import stockOrderRoutes from "./routes/stockOrderRoutes";
+import sponsoredItemRoutes from "./routes/sponsoredItemRoutes";
 dotenv.config();
 
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/stock-transfer-logs', stockTransferRoutes);
 app.use('/api/commission-logs', commissionLogRoutes);
 app.use('/api/return-requests', returnRequestRoutes);
 app.use('/api/stock-orders', stockOrderRoutes);
+app.use('/api/sponsored-items', sponsoredItemRoutes);
 
 connectDB();
 
