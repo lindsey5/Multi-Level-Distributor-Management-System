@@ -92,18 +92,15 @@ export default function Chart({ title, labels, values, formatToPeso = false }: C
         },
         scales: {
         x: {
-            ticks: { maxRotation: 0, minRotation: 0 },
             grid: {
-                drawTicks: true, // only draw ticks on y-axis
-                drawBorder: false, // optional: hide border line
-                color: "rgba(0,0,0,0.08)",
+                display: false, 
             },
+            ticks: { maxRotation: 0, minRotation: 0 },
         },
         y: {
             ticks: {
-            callback: (value: any) => (window.innerWidth < 768 ? "" : value),
+                callback: (value: any) => (window.innerWidth < 768 ? "" : value),
             },
-            grid: { color: "rgba(0,0,0,0.08)" },
         },
         },
     };

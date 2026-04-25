@@ -5,7 +5,7 @@ import { DistributorItemsSoldThisMonth, DistributorItemsSoldThisWeek, Distributo
 
 export default function Dashboard () {
     return (
-        <div className="space-y-5 p-5">
+        <div className="space-y-5 p-3 md:p-5">
             <div className="space-y-3 md:space-y-5">
                 <div className="flex flex-col gap-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
                     <DistributorSalesToday  />
@@ -18,10 +18,8 @@ export default function Dashboard () {
                     <DistributorItemsSoldThisYear />
                 </div>
                 <CommissionsPerMonth />
-                <div className="grid lg:grid-cols-2 gap-3">
-                    <DistributorMonthlySales />
-                    <DistributorItemsSoldPerMonth />
-                </div>
+                <DistributorMonthlySales />
+                <DistributorItemsSoldPerMonth />
             </div>
         </div>
     )

@@ -70,7 +70,7 @@ export default function StockOrder() {
     };
 
     return (
-        <div className="p-5 space-y-5">
+        <div className="p-3 md:p-5 space-y-5">
             <Cart 
                 close={() => setShowCart(false)}
                 items={cart}

@@ -53,7 +53,7 @@ export default function Sales () {
             header: "Variant",
             accessorKey: "variant.variant_name",
             cell: info => (
-                <div className="min-w-80">
+                <div className="min-w-60">
                     <Chip>{info.getValue() as string}</Chip>
                 </div>
             ),
@@ -83,7 +83,7 @@ export default function Sales () {
         {
             header: "Sales",
             accessorKey: 'total_amount',
-            cell: info => <span className="font-bold">{formatToPeso(info.getValue() as number)}</span>,
+            cell: info => <div className="font-bold min-w-30">{formatToPeso(info.getValue() as number)}</div>,
             meta: { align: 'center' }
         },
         {
@@ -98,7 +98,7 @@ export default function Sales () {
     ];
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+        <div className="flex flex-col flex-1 min-h-0 gap-5 p-3 md:p-5">
             <DistributorSalesModal 
                 distributorSale={distributorSale}
                 close={() => setDistributorSale(null)}

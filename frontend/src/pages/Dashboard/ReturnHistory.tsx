@@ -60,9 +60,8 @@ export default function ReturnHistory () {
         setReturnRequest(row)
     }
 
-
     return (
-        <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+        <div className="flex flex-col flex-1 min-h-0 gap-5 p-3 md:p-5">
             <ReturnDetailsModal 
                 returnRequest={returnRequest}
                 close={() => setReturnRequest(null)}

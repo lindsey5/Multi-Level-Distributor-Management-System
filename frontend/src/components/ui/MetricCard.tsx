@@ -27,7 +27,7 @@ export default function MetricCard({
             >
             <div className="flex flex-col gap-2">
                 <span className="text-gray-500 text-xs md:text-sm">{title}</span>
-                <span className="text-md sm:text-lg font-bold">{content}</span>
+                <span className="text-sm md:text-md sm:text-lg font-bold">{content}</span>
             </div>
 
             <span

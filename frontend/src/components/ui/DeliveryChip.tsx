@@ -4,7 +4,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
     switch (status) {
         case "pending":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
                     Pending
                 </Chip>
@@ -12,7 +12,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "approved":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                     Approved
                 </Chip>
@@ -20,7 +20,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "processing":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                     Processing
                 </Chip>
@@ -28,7 +28,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "delivered":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-purple-500"></span>
                     Delivered
                 </Chip>
@@ -36,7 +36,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "received":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-green-500"></span>
                     Received
                 </Chip>
@@ -44,7 +44,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "cancelled":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-gray-500"></span>
                     Cancelled
                 </Chip>
@@ -52,7 +52,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "rejected":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-red-600"></span>
                     Rejected
                 </Chip>
@@ -60,7 +60,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         case "failed":
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-red-600"></span>
                     Failed
                 </Chip>
@@ -68,7 +68,7 @@ const DeliveryStatusChip = ({ status }: { status: string }) => {
 
         default:
             return (
-                <Chip className="flex items-center gap-2 capitalize text-sm">
+                <Chip className="flex items-center gap-2 capitalize text-xs md:text-sm">
                     <span className="w-2 h-2 rounded-full bg-green-500"></span>
                     {status}
                 </Chip>

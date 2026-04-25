@@ -30,7 +30,7 @@ export default function InventoryControls ({
 } : InventoryControlsProps) {
 
     return (
-        <div className="flex items-end justify-between gap-5" data-tour="inventory-controls">
+        <div className="flex flex-col-reverse md:flex-row md:items-end justify-between gap-5" data-tour="inventory-controls">
             <div className="flex-1 flex-0 md:max-w-100">
                 <TextField 
                     className="md:max-w-84"

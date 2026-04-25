@@ -67,7 +67,7 @@ export default function Inventory () {
             header: "Variant",
             accessorKey: 'variant.variant_name',
             cell: info => (
-                <div className="min-w-80">
+                <div className="min-w-50">
                     <Chip>{info.getValue() as string}</Chip>
                 </div>
             ),
@@ -85,14 +85,18 @@ export default function Inventory () {
         },
         {
             header: "Price",
-            cell: ({ row }) => formatToPeso(row.original.variant.price),
+            cell: ({ row }) => (
+                <div className="min-w-30">
+                    {formatToPeso(row.original.variant.price)}
+                </div>
+            ),
             meta: { align: 'center' }
         },
         {
             header: 'Date Created',
             accessorKey: 'createdAt',
             cell: info => (
-                <div className="min-w-50">
+                <div className="min-w-30">
                     {formatDate(info.getValue() as string)}
                 </div>
             ),
@@ -130,27 +134,27 @@ export default function Inventory () {
     const handleClose = () => setShowModal(false);
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+        <div className="flex flex-col flex-1 min-h-0 gap-5 p-3 md:p-5">
             <div className="flex gap-3 items-center" data-tour="inventory-mode-controls">
                 <Button 
                     className={cn(
-                        "flex gap-2 px-6 py-2 text-black bg-white border border-gray-300 shadow-none",
+                        "flex items-center gap-2 px-6 py-2 text-black bg-white border border-gray-300 shadow-none",
                         !enableReturn && 'bg-black text-white'
                     )}
                     onClick={() => setEnableReturn(prev => !prev)}
                 >
                     <Package size={20} />
-                    Sell Items
+                    <p className="text-xs md:text-base">Sell Items</p>
                 </Button>
                 <Button 
                     className={cn(
-                        "flex gap-2 px-6 py-2 text-black bg-white border border-gray-300 shadow-none",
+                        "flex items-center gap-2 px-6 py-2 text-black bg-white border border-gray-300 shadow-none",
                         enableReturn && 'bg-black text-white'
                     )}
                     onClick={() => setEnableReturn(prev => !prev)}
                 >
                     <Undo2 size={20} />
-                    Return Items
+                    <p className="text-xs md:text-base">Return Items</p>
                 </Button>
             </div>
             <InventoryControls 

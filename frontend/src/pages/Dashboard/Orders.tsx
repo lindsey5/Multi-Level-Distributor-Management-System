@@ -16,6 +16,11 @@ const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) :
     {
         header: "Stock Order ID",
         accessorKey: 'stock_order_id',
+        cell: info => (
+            <div className="min-w-30">
+                {info.getValue() as string}
+            </div>
+        ),
         meta: { align: 'center' },
     },
     {
@@ -31,7 +36,11 @@ const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) :
     {
         header: 'Date',
         accessorKey: 'createdAt',
-        cell: info => formatDate(info.getValue() as string),
+        cell: info => (
+            <div className="min-w-30">
+                {formatDate(info.getValue() as string)}
+            </div>
+        ),
         meta: { align: 'center' },
     },
     {
@@ -87,7 +96,7 @@ export default function Orders () {
     }, [id]);
 
     return (
-        <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+        <div className="flex flex-col flex-1 min-h-0 gap-5 p-3 md:p-5">
             <StockOrderDetails 
                 close={() => setStockOrderId(null)}
                 stockOrderId={stockOrderId}

@@ -80,7 +80,7 @@ const router = createBrowserRouter([
                 Component: () => (
                     <PageContainer
                         title="Distribution History"
-                        description="View and manage the complete history of your stock distributions"
+                        description="View complete history of your stock distributions"
                     >
                         <DistributionHistory />
                     </PageContainer>

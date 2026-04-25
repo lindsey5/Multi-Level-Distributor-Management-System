@@ -6,15 +6,22 @@ import type { MenuItem } from "../types/menu.type";
 import DistributorSidebar from "../components/distributor/DistributorSidebar";
 
 export const MenuItems: MenuItem[] = [
-    { label: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/distributor" },
-    { label: "Sales", icon: <BarChartBig size={18} />, path: "/distributor/sales" },
-    { label: "Inventory", icon: <Archive size={18} />, path: "/distributor/inventory" },
-    { label: "Your Orders", icon: <Package size={18} />, path: "/distributor/orders" },
-    { label: "Order Stock", icon: <PackagePlus size={18} />, path: "/distributor/stock-order" },
-    { label: "Distribution History", icon: <Repeat size={18} />, path: "/distributor/distribution-history" },
-    { label: "Return History", icon: <Undo2 size={18} />, path: "/distributor/return-history" },
-    { label: "Sponsored Products", icon: <Star size={18} />, path: "/distributor/sponsored-items" },
-    { label: "Profile", icon: <User size={18} />, path: "/distributor/profile" },
+    // ================= Analytics
+    { label: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/distributor", category: "Analytics" },
+    { label: "Sales", icon: <BarChartBig size={18} />, path: "/distributor/sales", category: "Analytics" },
+
+    // ================= Inventory
+    { label: "Inventory", icon: <Archive size={18} />, path: "/distributor/inventory", category: "Inventory" },
+    { label: "Order Stock", icon: <PackagePlus size={18} />, path: "/distributor/stock-order", category: "Inventory" },
+    { label: "Your Orders", icon: <Package size={18} />, path: "/distributor/orders", category: "Inventory" },
+    { label: "Distribution History", icon: <Repeat size={18} />, path: "/distributor/distribution-history", category: "Inventory" },
+    { label: "Return History", icon: <Undo2 size={18} />, path: "/distributor/return-history", category: "Inventory" },
+
+    // ================= Marketing
+    { label: "Sponsored Products", icon: <Star size={18} />, path: "/distributor/sponsored-items", category: "Sponsored Products" },
+
+    // ================= Account
+    { label: "Profile", icon: <User size={18} />, path: "/distributor/profile", category: "Account" },
 ];
 
 export default function DashboardLayout () {
