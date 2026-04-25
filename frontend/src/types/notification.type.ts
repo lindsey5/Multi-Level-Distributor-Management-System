@@ -13,8 +13,8 @@ export interface DistributorNotification {
     returnRequest?: ReturnRequest | null;
     sale_ids?: string[] | null;
     sales?: DistributorSale[] | null;
-    stock_order_id: string;
-    stockOrder: StockOrder;
+    stock_order_id?: string;
+    stockOrder?: StockOrder;
     message: string;
     status: 'read' | 'unread';
     createdAt: string;
