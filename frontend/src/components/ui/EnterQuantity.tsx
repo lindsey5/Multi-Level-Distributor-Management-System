@@ -31,7 +31,7 @@ export default function EnterQuantity({ setItems, open, close, variant, label, b
         stock === 0 
         ? "No stock available" 
         : isInvalid 
-        ? "Quantity must be greater than 0"
+        ? "Quantity is required"
         : isExceedingStock
         ? "Quantity exceeds available stock"
         : "";

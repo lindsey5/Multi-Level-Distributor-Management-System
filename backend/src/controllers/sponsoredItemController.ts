@@ -41,7 +41,7 @@ export const getSponsoredItems = async (req: AuthRequest, res: Response, next: N
 
         if(search){
             filter.$or = [
-                { "product.product_name" : { $regex: search, $options: "i" } },
+                { "variant.product.product_name" : { $regex: search, $options: "i" } },
                 { "variant.variant_name" : { $regex: search, $options: "i" } },
                 { "variant.sku" : { $regex: search, $options: "i" } },
             ]

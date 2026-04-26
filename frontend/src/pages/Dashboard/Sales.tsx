@@ -10,7 +10,7 @@ import SalesControls from "../../components/sales/SalesControls";
 import Chip from "../../components/ui/Chip";
 import Button from "../../components/ui/Button";
 import { Eye } from "lucide-react";
-import DistributorSalesModal from "../../components/distributorSale/DistributorSalesModal";
+import DistributorSalesModal from "../../components/sales/DistributorSalesModal";
 
 export default function Sales () {
     const [sorting, setSorting] = useState<SortOption>({
@@ -121,7 +121,7 @@ export default function Sales () {
                 setPagination={setPagination}
                 totalPages={data?.pagination.totalPages || 0}
                 showPagination
-                noDataMessage="No Available Stock"
+                noDataMessage="No Sales Found"
                 total={data?.pagination.total || 0}
                 dataTour="sales-table"
             />

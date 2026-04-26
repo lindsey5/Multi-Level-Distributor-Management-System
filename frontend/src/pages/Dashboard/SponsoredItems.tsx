@@ -1,7 +1,58 @@
 import { useState } from "react";
 import { useGetSponsoredItems } from "../../hooks/sponsored-item/use-get-sponsored-items.hook"
 import { useDebounce } from "../../hooks/useDebounce";
-import type { PaginationState } from "@tanstack/react-table";
+import type { ColumnDef, PaginationState } from "@tanstack/react-table";
+import Button from "../../components/ui/Button";
+import CreateSponsoredProduct from "../../components/sponsored-item/CreateSponsoredProduct";
+import type { SponsoredItem } from "../../types/sponsored-item.type";
+import CustomTable from "../../components/ui/Table";
+import Chip from "../../components/ui/Chip";
+import { formatDate } from "../../utils/helpers";
+import DeliveryStatusChip from "../../components/ui/DeliveryChip";
+import SponsoredItemControls from "../../components/sponsored-item/SponsoredItemControls";
+
+const columns: ColumnDef<SponsoredItem>[] = [
+    {
+        header: "Product",
+        cell: ({ row }) => (
+            <div className="min-w-50 flex gap-3 items-center">
+                <img 
+                    className="w-8 h-8 lg:w-10 lg:h-10 rounded-md object-cover" 
+                    src={row.original.variant.image_url} 
+                    alt={row.original.variant.variant_name}
+                />
+                <h1>{row.original.variant.product?.product_name}</h1>
+            </div>
+        )
+    },
+    {
+        header: "Variant",
+        accessorKey: "variant.variant_name",
+        cell: info => (
+            <div className="min-w-60">
+                <Chip>{info.getValue() as string}</Chip>
+            </div>
+        ),
+        meta: { align: 'center' },
+    },
+    {
+        header: "SKU",
+        accessorKey: 'variant.sku',
+        meta: { align: 'center' }
+    },
+    {
+        header: "Status",
+        accessorKey: 'status',
+        cell: (info) => <DeliveryStatusChip status={info.getValue() as string}/>,
+     meta: { align: 'center' }
+    },
+    {
+        header: 'Date',
+        accessorKey: 'createdAt',
+        cell: (info) => <div className="min-w-30">{formatDate(info.getValue() as string)}</div>,
+        meta: { align: 'center' }
+    },
+]
 
 export default function SponsoredItems () {
     const [search, setSearch] = useState("");
@@ -10,8 +61,9 @@ export default function SponsoredItems () {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
-    
-    const { data } = useGetSponsoredItems({
+    const [showModal, setShowModal] = useState(false);
+
+    const { data, isFetching } = useGetSponsoredItems({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
         search: debouncedSearch,
@@ -22,7 +74,35 @@ export default function SponsoredItems () {
 
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
+            <CreateSponsoredProduct 
+                close={() => setShowModal(false)}
+                open={showModal}
+            />
+            <SponsoredItemControls 
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                setPagination={setPagination}
+                setSearch={setSearch}
+                status={status}
+                setStatus={setStatus}
+            />
+            <CustomTable
+                isLoading={isFetching}
+                data={data?.sponsoredItems || []}
+                columns={columns}
+                pagination={pagination}
+                setPagination={setPagination}
+                totalPages={data?.pagination.totalPages || 0}
+                showPagination
+                noDataMessage="No Sponsored Items Found"
+                total={data?.pagination.total || 0}
+            />
 
+            <div className="flex justify-end">
+                <Button onClick={() => setShowModal(true)}>Sponsor a Product</Button>
+            </div>
         </div>
     )
 }

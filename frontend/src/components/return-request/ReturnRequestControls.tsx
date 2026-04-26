@@ -1,4 +1,3 @@
-import FiltersMenu from "../ui/FiltersMenu";
 import DateInput from "../ui/DateInput";
 import type { PaginationState } from "@tanstack/react-table";
 

@@ -10,7 +10,7 @@ export interface SponsoredItem {
     variant_id: string;
     variant: Variant;
     quantity: number;
-    status: 'pending' | 'approved' | 'rejected' | 'expired',
+    status: 'pending' | 'approved' | 'completed' |  'rejected' | 'expired' | 'cancelled',
 }
 
 export interface CreateSponsoredItemPayload {

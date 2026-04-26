@@ -9,7 +9,7 @@ export const sponsoredItemService = {
         }),
     createSponsoredItem: (data : CreateSponsoredItemPayload) =>
         apiAxios<CreateSponsoredItemResponse>("sponsored-items", {
-            method: HttpMethod.GET,
+            method: HttpMethod.POST,
             data
         }),
 };
