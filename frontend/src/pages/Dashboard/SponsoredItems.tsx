@@ -13,9 +13,19 @@ import SponsoredItemControls from "../../components/sponsored-item/SponsoredItem
 
 const columns: ColumnDef<SponsoredItem>[] = [
     {
+        header: 'Sponsored ID',
+        accessorKey: 'sponsored_id',
+        cell: info => (
+            <div className="min-w-30">
+                {info.getValue() as string}
+            </div>
+        ),
+        meta: { align: 'center' },
+    },
+    {
         header: "Product",
         cell: ({ row }) => (
-            <div className="min-w-50 flex gap-3 items-center">
+            <div className="min-w-50 flex gap-3 justify-center items-center">
                 <img 
                     className="w-8 h-8 lg:w-10 lg:h-10 rounded-md object-cover" 
                     src={row.original.variant.image_url} 
@@ -23,13 +33,14 @@ const columns: ColumnDef<SponsoredItem>[] = [
                 />
                 <h1>{row.original.variant.product?.product_name}</h1>
             </div>
-        )
+        ),
+        meta: { align: 'center' },
     },
     {
         header: "Variant",
         accessorKey: "variant.variant_name",
         cell: info => (
-            <div className="min-w-60">
+            <div className="min-w-40">
                 <Chip>{info.getValue() as string}</Chip>
             </div>
         ),
@@ -38,6 +49,11 @@ const columns: ColumnDef<SponsoredItem>[] = [
     {
         header: "SKU",
         accessorKey: 'variant.sku',
+        cell: info => (
+            <div className="min-w-30">
+                {info.getValue() as string}
+            </div>
+        ),
         meta: { align: 'center' }
     },
     {
