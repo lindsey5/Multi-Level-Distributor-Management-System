@@ -51,7 +51,7 @@ export default function TransferLogsControls ({
                 <TextField 
                     className="w-full"
                     icon={<Search className="text-gray-400"/>}
-                    placeholder="Search by transfer no, product name, variant, sku..."
+                    placeholder="Search by transfer no, product, variant, sku..."
                     onChange={(e) => {
                         setPagination(prev => ({...prev, pageIndex: 0}))
                         setSearch(e.target.value);

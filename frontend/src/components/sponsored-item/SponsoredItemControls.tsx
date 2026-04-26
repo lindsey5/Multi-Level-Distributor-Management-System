@@ -51,7 +51,7 @@ export default function SponsoredItemControls ({
             <TextField 
                 className="md:max-w-100"
                 icon={<Search className="text-gray-400"/>}
-                placeholder="Search by product name, variant name or sku..."
+                placeholder="Search by sponsored id, product, variant or sku..."
                 onChange={(e) => {
                     reset();
                     setSearch(e.target.value);
