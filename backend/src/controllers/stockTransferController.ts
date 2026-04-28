@@ -141,7 +141,15 @@ export const getStockTransferLogs = async (
         const countPipeline = [...pipeline, { $count: "total" }];
         const countResult = await StockTransfer.aggregate(countPipeline);
         const total = countResult[0]?.total || 0;
-
+        
+        pipeline.push({
+            $project: {
+                "sender.password": 0,
+                "sender.__v": 0,
+                "receiver.password": 0,
+                "receiver.__v": 0,
+            }
+        })
         // pagination
         pipeline.push({ $sort: { createdAt: -1 } });
         pipeline.push({ $skip: skip });

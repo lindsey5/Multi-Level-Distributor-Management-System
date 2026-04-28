@@ -201,6 +201,14 @@ export const getDistributorSales = async (
                     preserveNullAndEmptyArrays: true,
                 },
             },
+            {
+                $project: {
+                    "seller.password": 0,
+                    "seller.__v": 0,
+                    "parent_distributor.password": 0,
+                    "parent_distributor.__v": 0,
+                }
+            }
         ];
 
         if (search) {
