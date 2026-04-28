@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../lib/features/store";
-import HeaderMenu from "../ui/DropdownMenu";
+import RightSidebarMenu from "../ui/RightSidebarMenu";
 import { logout } from "../../lib/features/auth/authSlice";
 import { MenuItems } from "../../pages/DashboardLayout";
 import NotificationBell from "../notification/NotificationBell";
@@ -23,7 +23,7 @@ export default function DistributorHeaderMenu () {
                 <span className="text-xs text-gray-500">{email}</span>
             </div>
             <NotificationBell />
-            <HeaderMenu 
+            <RightSidebarMenu
                 menuItems={MenuItems || []}
                 logout={distributorLogout}
             />
