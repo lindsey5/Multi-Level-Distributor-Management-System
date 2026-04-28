@@ -10,6 +10,7 @@ import { cn, formatToPeso } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { useCreateWithdrawalRequest } from "../../hooks/withdrawalRequest/use-create-withdrawal-request.hook";
 import { errorToast, promiseToast } from "../../utils/sileo";
+import { useGetBalance } from "../../hooks/distributor/use-get-balance.hook";
 
 export default function Withdraw() {
     const navigate = useNavigate();
@@ -18,7 +19,9 @@ export default function Withdraw() {
 
     const auth = useSelector((store: RootState) => store.auth);
     const withdrawal_methods = auth.distributor?.withdrawal_methods || [];
-    const wallet_balance = auth.distributor?.wallet_balance || 0;
+
+    const { data } = useGetBalance();
+    const wallet_balance = data?.wallet_balance || 0;
 
     const createWithdrawalRequestMutation = useCreateWithdrawalRequest();
 
