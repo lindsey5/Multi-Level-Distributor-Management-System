@@ -128,11 +128,7 @@ export const getStockOrderById = async (req: AuthRequest, res: Response, next: N
     }
 }
 
-export const updateStockOrder = async (
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateStockOrder = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
 
     try {
