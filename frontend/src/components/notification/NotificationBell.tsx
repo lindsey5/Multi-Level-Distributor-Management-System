@@ -1,6 +1,6 @@
 import { Bell } from "lucide-react";
 import { useGetNotifications } from "../../hooks/notification/use-get-notifications.hook";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { cn, timeAgo } from "../../utils/helpers";
 import type { DistributorNotification } from "../../types/notification.type";
 import { useReadAllNotifications, useReadNotification } from "../../hooks/notification/use-read-notification.hook";
@@ -11,6 +11,7 @@ import { DistributorNotificationSocketContext } from "../../contexts/Distributor
 import SaleItems from "./SaleItems";
 
 export default function NotificationBell() {
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [notification, setNotification] = useState<DistributorNotification | null>(null);
     const { socket } = useContext(DistributorNotificationSocketContext);
@@ -36,12 +37,19 @@ export default function NotificationBell() {
         }
 
         const handleClickOutside = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            if (!target.closest('#notification-bell')) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(e.target as Node)
+            ) {
                 setShowDropdown(false);
             }
         };
-        document.addEventListener('click', handleClickOutside);
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, [data])
 
     useEffect(() => {
@@ -94,87 +102,127 @@ export default function NotificationBell() {
 
     return (
         <>
-        <StockTransferItems 
-            close={handleClose}
-            stockTransferLog={notification?.stockTransfer || null}
-            socket={userNotificationSocket}
-        />
-        <ReturnDetailsModal 
-            returnRequest={notification?.returnRequest || null}
-            close={handleClose}
-        />
-        
-        <SaleItems 
-            close={handleClose}
-            sales={notification?.sales || null}
-            open={(notification?.sales?.length || 0) > 0}
-        />
+            <StockTransferItems
+                close={handleClose}
+                stockTransferLog={notification?.stockTransfer || null}
+                socket={userNotificationSocket}
+            />
 
-        <div className="relative" id="notification-bell">
-            {/* Bell Button */}
-            <button
-                data-tour="header-notification"
-                onClick={() => setShowDropdown(prev => !prev)}
-                className="cursor-pointer flex items-center justify-center font-semibold relative"
-            >
-                <Bell className="text-md md:text-lg" fill="black" size={25}/>
-            </button>
-            {unread > 0 && (
-                <span className="absolute -top-2 -right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                    {unread}
-                </span>
-            )}
-            {showDropdown && (
-                <div className="w-[80vw] md:w-70 border border-gray-300 shadow-md absolute pb-5 -right-10 md:right-5 top-12 rounded-md bg-white">
-                    <div className="flex justify-between gap-3 px-2 py-5 border-b border-gray-300">
-                        <h1 className="bg-white text-md xl:text-lg font-bold">Notifications</h1>
-                        <button className="text-xs md:text-sm cursor-pointer" onClick={readAllNotifications}>Mark all as Read</button>
-                    </div>
-                    {notifications.length === 0 && !isFetching && <p className="text-center mt-5 text-sm xl:text-md">No notifications yet</p>}
-                    <div className="max-h-[50vh] md:max-h-[30vh] overflow-y-auto">
-                    {notifications.map(notification => (
-                        <div 
-                            key={notification._id}
-                            className={cn(
-                                "cursor-pointer hover:bg-gray-100 border-b border-gray-300 py-2",
-                                notification.status === 'read' && 'opacity-60'
-                            )}
-                            onClick={() => readNotification(notification)}
-                        >
-                            <div className="flex gap-3 items-center px-2 relative">
-                                <div className="relative">
-                                    <div className="cursor-pointer flex w-10 h-10 rounded-full bg-black items-center justify-center text-white font-semibold">
-                                        <Bell size={20} />
-                                    </div>
-                                    {/* Red dot */}
-                                    {notification.status === 'unread' && (
-                                        <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-white" />
-                                    )}
-                                </div>
+            <ReturnDetailsModal
+                returnRequest={notification?.returnRequest || null}
+                close={handleClose}
+            />
 
-                                <div className="flex flex-col">
-                                    <p className={cn("text-xs break-words", notification.status === 'unread' && 'font-bold')}>
-                                        {notification.message}
-                                    </p>
-                                    <span className="text-xs mt-1 text-gray-400">{timeAgo(notification.createdAt)}</span>
-                                </div>
-                            </div>
+            <SaleItems
+                close={handleClose}
+                sales={notification?.sales || null}
+                open={(notification?.sales?.length || 0) > 0}
+            />
+
+            <div className="relative" ref={dropdownRef}>
+                {/* Bell Button */}
+                <button
+                    data-tour="header-notification"
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                    className="relative p-2 rounded-full hover:bg-gray-100 transition cursor-pointer"
+                >
+                    <Bell className="text-black" size={22} />
+                </button>
+
+                {/* Badge */}
+                {unread > 0 && (
+                    <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 flex items-center justify-center text-[10px] font-bold text-white bg-black rounded-full">
+                        {unread}
+                    </span>
+                )}
+
+                {/* Dropdown */}
+                {showDropdown && (
+                    <div className="w-[340px] bg-white border border-gray-200 shadow-xl absolute right-0 top-12 rounded-xl overflow-hidden z-20">
+
+                        {/* Header */}
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+                            <h1 className="text-sm font-semibold text-black">
+                                Notifications
+                            </h1>
+
+                            <button
+                                onClick={readAllNotifications}
+                                className="cursor-pointer text-xs text-gray-600 hover:text-black transition"
+                            >
+                                Mark all as read
+                            </button>
                         </div>
-                    ))}
+
+                        {/* Empty state */}
+                        {notifications.length === 0 && !isFetching && (
+                            <div className="p-6 text-center text-sm text-gray-500">
+                                No notifications yet
+                            </div>
+                        )}
+
+                        {/* List */}
+                        <div className="max-h-[320px] overflow-y-auto">
+                            {notifications.map((notification) => (
+                                <div
+                                    key={notification._id}
+                                    onClick={() => readNotification(notification)}
+                                    className={cn(
+                                        "flex gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition",
+                                        notification.status === "read" && "opacity-60"
+                                    )}
+                                >
+                                    {/* Icon */}
+                                    <div className="relative flex-shrink-0">
+                                        <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center">
+                                            <Bell size={16} />
+                                        </div>
+
+                                        {notification.status === "unread" && (
+                                            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-black rounded-full border border-white" />
+                                        )}
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex flex-col flex-1">
+                                        <p
+                                            className={cn(
+                                                "text-xs text-gray-800 leading-snug",
+                                                notification.status === "unread" &&
+                                                    "font-semibold text-black"
+                                            )}
+                                        >
+                                            {notification.message}
+                                        </p>
+
+                                        <span className="text-[10px] text-gray-400 mt-1">
+                                            {timeAgo(notification.createdAt)}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Footer */}
+                        <div className="p-3 border-t border-gray-200 bg-white">
+                            {isFetching && (
+                                <p className="text-center text-xs text-gray-500 mb-2">
+                                    Loading...
+                                </p>
+                            )}
+
+                            {page < (data?.pagination.totalPages || 1) && !isFetching &&
+                                <button
+                                        onClick={() => setPage((prev) => prev + 1)}
+                                        className="cursor-pointer w-full py-2 text-xs font-medium bg-black text-white rounded-md hover:bg-gray-800 transition"
+                                    >
+                                    See more
+                                </button>
+                            }
+                        </div>
                     </div>
-                    {isFetching && <p className="w-full text-center text-xs md:text-sm my-3">Loading...</p>}
-                    <div className={cn(
-                        "justify-center mt-2",
-                        page < (data?.pagination.totalPages || 1) && !isFetching ? 'flex' : 'hidden'
-                    )}>
-                        <button
-                            className="disabled:cursor-not-allowed cursor-pointer bg-black text-white px-3 py-1 text-xs rounded-md"
-                            onClick={() => setPage(prev => prev + 1)}
-                        >See more</button>
-                    </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
         </>
     );
 }
