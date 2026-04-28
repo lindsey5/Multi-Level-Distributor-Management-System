@@ -52,7 +52,7 @@ function StockOrderDetailsSkeleton() {
 }
 
 export default function StockOrderDetails({ stockOrderId, close }: StockOrderDetailsProps) {
-    const { data, isFetching } = useGetStockOrderById(stockOrderId || "");
+    const { data, isFetching } = useGetStockOrderById(stockOrderId || "undefined");
     const updateStockOrderMutation = useUpdateStockOrder();
     const socket = useSocket({ namespace: '/notification' });
     const { refreshToken } = useSelector((store : RootState) => store.auth);
@@ -65,17 +65,17 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
 
     }, [data])
 
-    const handleCancel = async () => {
+    const handleUpdate =  async (status: string) => {
         if(!stockOrderId) return;
 
-        const isConfirmed = confirm(`Are you sure you want to cancel your stock order?`);
+        const isConfirmed = confirm(`Are you sure you want to mark your stock order as ${status}?`);
 
         if (!isConfirmed) return;
 
         const data = await promiseToast(
             updateStockOrderMutation.mutateAsync({ 
                 id: stockOrderId, 
-                status: 'cancelled'
+                status: status
             }),
         )
 
@@ -88,7 +88,7 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
                 distributor: response.distributor
             }))
 
-            socket.emit("send-cancel-stock-order", data.stockOrder)
+            socket.emit("send-stock-order-update", data.stockOrder)
         }
     }
 
@@ -146,7 +146,7 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
                             </p>
                             <Chip className="text-sm">{item.variant.variant_name}</Chip>
                             <p className="font-medium text-xs md:text-sm mt-3">
-                            Quantity to return: {item.quantity}
+                            Quantity: {item.quantity}
                             </p>
                         </div>
                         </div>
@@ -164,10 +164,16 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
                         Close
                     </Button>
                     {canCancel && (
-                        <Button className="px-4 py-2" onClick={handleCancel}>
+                        <Button className="px-4 py-2" onClick={() => handleUpdate('cancelled')}>
                             Cancel Order
                         </Button>
                     )}
+                    {data?.stockOrder.status === 'delivered' && (
+                        <Button className="px-4 py-2" onClick={() => handleUpdate('received')}>
+                            Mark as Received
+                        </Button>
+                        )
+                    }
                 </div>
             </Card>
         </Modal>

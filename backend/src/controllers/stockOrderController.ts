@@ -4,6 +4,7 @@ import Variant from "../models/Variant";
 import StockOrder from "../models/StockOrder";
 import mongoose from "mongoose";
 import { setEndDate, setStartDate } from "../utils/utils";
+import DistributorStock from "../models/DistributorStock";
 
 export const createStockOrder = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
@@ -126,18 +127,32 @@ export const getStockOrderById = async (req: AuthRequest, res: Response, next: N
     }
 }
 
-export const updateStockOrder = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const updateStockOrder = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+    const session = await mongoose.startSession();
+
     try {
-        const stockOrder = await StockOrder.findById(req.params.id).populate([
-            { path: 'items.variant', populate: 'product' },
-            { path: 'distributor', select: '-password' }
-        ]);
+        session.startTransaction();
+
+        const stockOrder = await StockOrder.findById(req.params.id)
+        .populate([
+            { path: "items.variant", populate: "product" },
+            { path: "distributor", select: "-password" },
+        ])
+        .session(session);
 
         if (!stockOrder) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(404).json({ message: "Stock order not found" });
         }
 
         if (stockOrder.distributor_id.toString() !== req.user._id.toString()) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(401).json({ message: "Unauthorized" });
         }
 
@@ -145,17 +160,18 @@ export const updateStockOrder = async (req: AuthRequest, res: Response, next: Ne
         const currentStatus = stockOrder.status;
 
         if (currentStatus === newStatus) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(400).json({
-                message: `Stock order is already "${newStatus}"`
+                message: `Stock order is already "${newStatus}"`,
             });
         }
 
-        // Allowed transitions (prevents going back or invalid jumps)
         const allowedTransitions: Record<string, string[]> = {
             pending: ["cancelled"],
             approved: ["cancelled"],
             processing: [],
-            delivered: [],
+            delivered: ["received"],
             received: [],
             cancelled: [],
             rejected: [],
@@ -165,21 +181,60 @@ export const updateStockOrder = async (req: AuthRequest, res: Response, next: Ne
         const allowedNextStatuses = allowedTransitions[currentStatus] || [];
 
         if (!allowedNextStatuses.includes(newStatus)) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(400).json({
                 success: false,
-                message: `Cannot change status from ${currentStatus} to ${newStatus}. Please reload the page`
+                message: `Cannot change status from ${currentStatus} to ${newStatus}. Please reload the page`,
             });
         }
 
         stockOrder.status = newStatus;
-        await stockOrder.save();
+        await stockOrder.save({ session });
+
+        if (stockOrder.status === "received") {
+            for (const item of stockOrder.items) {
+                const stock = await DistributorStock.findOne({
+                    variant_id: item.variant_id,
+                    distributor_id: req.user._id,
+                }).session(session);
+
+                if (!stock) {
+                    await session.abortTransaction();
+                    session.endSession();
+                    return res.status(404).json({
+                        message: "Distributor stock not found",
+                    });
+                }
+
+                stock.quantity += item.quantity;
+                await stock.save({ session });
+
+                const variant = await Variant.findById(item.variant_id).session(session);
+
+                if (!variant) {
+                    await session.abortTransaction();
+                    session.endSession();
+                    return res.status(404).json({
+                        message: "Variant not found",
+                    });
+                }
+
+                variant.stock -= item.quantity;
+                await variant.save({ session });
+            }
+        }
+
+        await session.commitTransaction();
+        session.endSession();
 
         return res.status(200).json({
             message: `Stock order successfully updated to ${newStatus}`,
-            stockOrder
+            stockOrder,
         });
-
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
         next(err);
     }
 };
