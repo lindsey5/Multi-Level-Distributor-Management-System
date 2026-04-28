@@ -1,5 +1,5 @@
 import { apiAxios, HttpMethod } from "../lib/api/apiAxios";
-import type { ReturnRequestResponse, GetReturnRequestsParams } from "../types/returnRequest.type";
+import type { ReturnRequestResponse } from "../types/returnRequest.type";
 import type { CreateWithdrawalRequestPayload } from "../types/withdrawalRequest.type";
 
 export const withdrawalRequestService = {
