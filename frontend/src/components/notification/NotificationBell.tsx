@@ -171,7 +171,7 @@ export default function NotificationBell() {
                                     key={notification._id}
                                     onClick={() => readNotification(notification)}
                                     className={cn(
-                                        "flex gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 hover:bg-gray-50 transition",
+                                        "flex gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 hover:bg-gray-200 transition",
                                         notification.status === "read" && "opacity-60"
                                     )}
                                 >
