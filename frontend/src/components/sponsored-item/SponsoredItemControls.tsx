@@ -9,7 +9,7 @@ const sponsoredItemStatus = [
     { label: "All", value: "" },
     { label: "Pending", value: "pending" },
     { label: "Approved", value: "approved" },
-    { label: "Completed", value: "received" },
+    { label: "Completed", value: "completed" },
     { label: "Cancelled", value: "cancelled" },
     { label: "Rejected", value: "rejected" },
     { label: "Expired", value: "expired" },
