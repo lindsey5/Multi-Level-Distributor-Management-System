@@ -16,6 +16,7 @@ const sponsoredItemStatus = [
 ];
 
 interface SponsoredItemControlsProps {
+    search: string,
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     startDate: string;
     setStartDate: React.Dispatch<React.SetStateAction<string>>;
@@ -27,6 +28,7 @@ interface SponsoredItemControlsProps {
 }
 
 export default function SponsoredItemControls ({
+    search,
     setSearch,
     startDate,
     setStartDate,
@@ -52,6 +54,7 @@ export default function SponsoredItemControls ({
                 className="md:max-w-100"
                 icon={<Search className="text-gray-400"/>}
                 placeholder="Search by sponsored id, product, variant or sku..."
+                value={search}
                 onChange={(e) => {
                     reset();
                     setSearch(e.target.value);

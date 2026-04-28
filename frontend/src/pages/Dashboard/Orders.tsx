@@ -85,7 +85,7 @@ export default function Orders () {
 
     const columns = getColumns(setStockOrderId);
 
-     useEffect(() => {
+    useEffect(() => {
         const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
 
         const isReload = navEntry?.type === "reload";

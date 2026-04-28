@@ -62,6 +62,16 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
                     },
                     { path: 'distributor', select: '-password' }
                 ]
+            },
+            {
+                path: 'sponsoredItem',
+                populate: [
+                    {
+                        path: 'variant',
+                        populate: 'product'
+                    },
+                    { path: 'distributor', select: '-password' }
+                ]
             }
         ])
         .skip(skip)

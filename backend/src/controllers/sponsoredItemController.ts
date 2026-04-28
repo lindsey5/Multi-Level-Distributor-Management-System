@@ -2,9 +2,27 @@ import { NextFunction, Response } from "express";
 import { AuthRequest } from "../types/types";
 import SponsoredItem from "../models/SponsoredItem";
 import { setEndDate, setStartDate } from "../utils/utils";
+import DistributorStock from "../models/DistributorStock";
 
 export const createSponsoredItem = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
+        const stock = await DistributorStock.findOne({
+            variant_id: req.body.variant_id,
+            distributor_id: req.user._id
+        });
+
+        if(!stock){
+            return res.status(404).json({
+                message: `Variant not exist in your inventory`
+            })
+        }
+
+        if (stock.quantity < req.body.quantity) {
+            return res.status(400).json({
+                message: `Insufficient stock. You only have ${stock.quantity} available in your inventory.`
+            });
+        }
+
         const sponsoredItem = await SponsoredItem.create({
             ...req.body,
             distributor_id: req.user._id
@@ -41,6 +59,7 @@ export const getSponsoredItems = async (req: AuthRequest, res: Response, next: N
 
         if(search){
             filter.$or = [
+                { sponsored_id: { $regex: search, $options: "i" } },
                 { "variant.product.product_name" : { $regex: search, $options: "i" } },
                 { "variant.variant_name" : { $regex: search, $options: "i" } },
                 { "variant.sku" : { $regex: search, $options: "i" } },

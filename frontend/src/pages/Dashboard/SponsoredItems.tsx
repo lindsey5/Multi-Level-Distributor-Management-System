@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetSponsoredItems } from "../../hooks/sponsored-item/use-get-sponsored-items.hook"
 import { useDebounce } from "../../hooks/useDebounce";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
@@ -10,6 +10,7 @@ import Chip from "../../components/ui/Chip";
 import { formatDate } from "../../utils/helpers";
 import DeliveryStatusChip from "../../components/ui/DeliveryChip";
 import SponsoredItemControls from "../../components/sponsored-item/SponsoredItemControls";
+import { useSearchParams } from "react-router-dom";
 
 const columns: ColumnDef<SponsoredItem>[] = [
     {
@@ -71,7 +72,11 @@ const columns: ColumnDef<SponsoredItem>[] = [
 ]
 
 export default function SponsoredItems () {
-    const [search, setSearch] = useState("");
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const id = searchParams.get("id");
+
+    const [search, setSearch] = useState(id || "");
     const debouncedSearch = useDebounce(search, 800);
     const [status, setStatus] = useState("");
     const [startDate, setStartDate] = useState('');
@@ -88,6 +93,16 @@ export default function SponsoredItems () {
         endDate
     });
 
+    useEffect(() => {
+        const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+
+        const isReload = navEntry?.type === "reload";
+
+        if (isReload && id) {
+            setSearchParams({}, { replace: true });
+        }
+    }, [id]);
+
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-5">
             <CreateSponsoredProduct 
@@ -100,6 +115,7 @@ export default function SponsoredItems () {
                 endDate={endDate}
                 setEndDate={setEndDate}
                 setPagination={setPagination}
+                search={search}
                 setSearch={setSearch}
                 status={status}
                 setStatus={setStatus}

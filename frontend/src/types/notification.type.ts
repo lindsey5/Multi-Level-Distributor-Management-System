@@ -1,6 +1,7 @@
 import type { PaginationParams, PaginationResponse } from "./pagination.type";
 import type { ReturnRequest } from "./returnRequest.type";
 import type { DistributorSale } from "./sale.type";
+import type { SponsoredItem } from "./sponsored-item.type";
 import type { StockOrder } from "./stock-order.type";
 import type { StockTransferLog } from "./stock-transfer.type";
 
@@ -15,6 +16,8 @@ export interface DistributorNotification {
     sales?: DistributorSale[] | null;
     stock_order_id?: string;
     stockOrder?: StockOrder;
+    sponsored_id?: string;
+    sponsoredItem: SponsoredItem;
     message: string;
     status: 'read' | 'unread';
     createdAt: string;

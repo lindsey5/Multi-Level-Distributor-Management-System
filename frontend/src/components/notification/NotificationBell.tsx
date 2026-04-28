@@ -60,6 +60,8 @@ export default function NotificationBell() {
         if(notification.stockOrder) {
             window.location.href = `/distributor/orders?id=${notification.stockOrder.stock_order_id}`;
             return;
+        }else if(notification.sponsoredItem) {
+            window.location.href = `/distributor/sponsored-items?id=${notification.sponsoredItem.sponsored_id}`
         }
 
         setNotification(notification);

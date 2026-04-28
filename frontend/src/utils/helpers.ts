@@ -43,9 +43,7 @@ export function timeAgo(date: Date | string): string {
     if (diffMs < 0) diffMs = 0; // prevent negative time
 
     const diffSecs = Math.floor(diffMs / 1000);
-    if (diffSecs < 1) return "Just now";
-    if (diffSecs === 1) return "1 second ago";
-    if (diffSecs < 60) return `${diffSecs} seconds ago`;
+    if (diffSecs < 60) return 'Just now';
 
     const diffMins = Math.floor(diffSecs / 60);
     if (diffMins === 1) return "1 minute ago";
