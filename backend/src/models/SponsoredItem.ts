@@ -47,7 +47,6 @@ SponsoredItemSchema.index({ createdAt: -1 });
 SponsoredItemSchema.index({ status: 1, createdAt: -1 });
 SponsoredItemSchema.index({ distributor_id: 1, createdAt: -1 });
 SponsoredItemSchema.index({ variant_id: 1 });
-SponsoredItemSchema.index({ sponsored_id: 1 });
 SponsoredItemSchema.index({ status: 1, distributor_id: 1 });
 
 SponsoredItemSchema.pre("save", async function (next) {
