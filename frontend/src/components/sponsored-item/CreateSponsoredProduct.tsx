@@ -115,12 +115,13 @@ export default function CreateSponsoredProduct ({ close, open } : CreateSponsore
                 <div className="flex justify-end gap-3">
                     <Button
                         className="py-2 px-6 bg-white text-black"
+                        disabled={!quantity || isInvalid || isExceedingStock || createSponsoredItemMutation.isPending}
                         onClick={close}
                     >Close</Button>
                     {selectedStock && (
                         <Button
                             onClick={handleSubmit}
-                            disabled={!quantity || isInvalid || isExceedingStock}
+                            disabled={!quantity || isInvalid || isExceedingStock || createSponsoredItemMutation.isPending}
                         >
                             Sponsor Product
                         </Button>

@@ -35,6 +35,11 @@ const DistributorSaleSchema: Schema<DistributorSaleAttributes> = new Schema(
     }
 );
 
+DistributorSaleSchema.index({ seller_id: 1 });
+DistributorSaleSchema.index({ variant_id: 1 });
+DistributorSaleSchema.index({ createdAt: -1 });
+DistributorSaleSchema.index({ seller_id: 1, createdAt: -1 });
+
 DistributorSaleSchema.virtual("variant", {
     ref: "Variant",
     localField: "variant_id",

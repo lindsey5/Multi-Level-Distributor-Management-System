@@ -5,7 +5,7 @@ export interface SponsoredItemAttributes extends Document {
     distributor_id: mongoose.Types.ObjectId;
     variant_id: mongoose.Types.ObjectId;
     quantity: number;
-    status: 'pending' | 'approved' | 'cancelled' | 'rejected' | 'expired',
+    status: 'pending' | 'approved' | 'completed' | 'cancelled' | 'rejected' | 'expired',
 }
 
 const SponsoredItemSchema: Schema<SponsoredItemAttributes> = new Schema(
@@ -14,13 +14,11 @@ const SponsoredItemSchema: Schema<SponsoredItemAttributes> = new Schema(
             type: String,
             unique: true
         },
-        
         distributor_id: {
             type: Schema.Types.ObjectId,
             ref: 'Distributor',
             required: true
         },
-
         variant_id: {
             type: Schema.Types.ObjectId,
             ref: "Variant",
@@ -35,7 +33,7 @@ const SponsoredItemSchema: Schema<SponsoredItemAttributes> = new Schema(
 
         status: {
             type: String,
-            enum: ['pending', 'approved', 'cancelled', 'rejected', 'expired'],
+            enum: ['pending', 'approved', 'completed', 'cancelled', 'rejected', 'expired'],
             default: 'pending',
             required: true
         }
@@ -44,6 +42,13 @@ const SponsoredItemSchema: Schema<SponsoredItemAttributes> = new Schema(
         timestamps: true,
     }
 );
+
+SponsoredItemSchema.index({ createdAt: -1 });
+SponsoredItemSchema.index({ status: 1, createdAt: -1 });
+SponsoredItemSchema.index({ distributor_id: 1, createdAt: -1 });
+SponsoredItemSchema.index({ variant_id: 1 });
+SponsoredItemSchema.index({ sponsored_id: 1 });
+SponsoredItemSchema.index({ status: 1, distributor_id: 1 });
 
 SponsoredItemSchema.pre("save", async function (next) {
     if (!this.sponsored_id) {

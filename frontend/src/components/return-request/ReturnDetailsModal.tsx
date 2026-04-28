@@ -103,11 +103,13 @@ export default function ReturnDetailsModal ({ returnRequest, close } : { returnR
                     <Button
                         className="px-4 py-2 bg-white text-black border-gray-400"
                         onClick={close}  
+                        disabled={cancelReturnRequestMutation.isPending}
                     >Close</Button>
                     {canCancel && (
                         <Button
                             className="px-4 py-2"
                             onClick={handleCancel}  
+                            disabled={cancelReturnRequestMutation.isPending}
                         >Cancel Request</Button>
                     )}
                 </div>

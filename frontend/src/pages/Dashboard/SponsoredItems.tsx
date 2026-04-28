@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useGetSponsoredItems } from "../../hooks/sponsored-item/use-get-sponsored-items.hook"
 import { useDebounce } from "../../hooks/useDebounce";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
@@ -11,8 +11,10 @@ import { formatDate } from "../../utils/helpers";
 import DeliveryStatusChip from "../../components/ui/DeliveryChip";
 import SponsoredItemControls from "../../components/sponsored-item/SponsoredItemControls";
 import { useSearchParams } from "react-router-dom";
+import SponsoredItemDetails from "../../components/sponsored-item/SponsoredItemDetails";
+import { Eye } from "lucide-react";
 
-const columns: ColumnDef<SponsoredItem>[] = [
+const columns = (setSponsoredId : Dispatch<SetStateAction<string | null>>) : ColumnDef<SponsoredItem>[] =>  [
     {
         header: 'Sponsored ID',
         accessorKey: 'sponsored_id',
@@ -69,12 +71,22 @@ const columns: ColumnDef<SponsoredItem>[] = [
         cell: (info) => <div className="min-w-30">{formatDate(info.getValue() as string)}</div>,
         meta: { align: 'center' }
     },
+    {
+        header: 'Action',
+        cell: ({ row }) => (
+            <Button className="px-2 py-1" onClick={() => setSponsoredId(row.original._id)}>
+                <Eye size={20} />
+            </Button>
+        ),
+        meta: { align: 'center' },
+    },
 ]
 
 export default function SponsoredItems () {
     const [searchParams, setSearchParams] = useSearchParams();
-
     const id = searchParams.get("id");
+
+    const [sponsoredId, setSponsoredId] = useState<string | null>(null);
 
     const [search, setSearch] = useState(id || "");
     const debouncedSearch = useDebounce(search, 800);
@@ -93,6 +105,8 @@ export default function SponsoredItems () {
         endDate
     });
 
+    const onRowClick = (row : SponsoredItem) => setSponsoredId(row._id)
+
     useEffect(() => {
         const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
 
@@ -109,6 +123,10 @@ export default function SponsoredItems () {
                 close={() => setShowModal(false)}
                 open={showModal}
             />
+            <SponsoredItemDetails 
+                close={() => setSponsoredId(null)}
+                sponsoredId={sponsoredId}
+            />
             <SponsoredItemControls 
                 startDate={startDate}
                 setStartDate={setStartDate}
@@ -123,13 +141,14 @@ export default function SponsoredItems () {
             <CustomTable
                 isLoading={isFetching}
                 data={data?.sponsoredItems || []}
-                columns={columns}
+                columns={columns(setSponsoredId)}
                 pagination={pagination}
                 setPagination={setPagination}
                 totalPages={data?.pagination.totalPages || 0}
                 showPagination
                 noDataMessage="No Sponsored Items Found"
                 total={data?.pagination.total || 0}
+                onRowClick={onRowClick}
             />
 
             <div className="flex justify-end">

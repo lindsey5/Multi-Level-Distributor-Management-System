@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
 import createRateLimiter from "../utils/rate-limit";
-import { createSponsoredItem, getSponsoredItems } from "../controllers/sponsoredItemController";
+import { createSponsoredItem, getSponsoredItemById, getSponsoredItems, updateSponsoredItemStatus } from "../controllers/sponsoredItemController";
 const router = Router();
 
 router.post(
@@ -17,6 +17,20 @@ router.get(
     requireAuth,
     getSponsoredItems
 );
+
+router.get(
+    '/:id',
+    createRateLimiter(5 * 60 * 1000, 100),
+    requireAuth,
+    getSponsoredItemById
+)
+
+router.patch(
+    '/:id',
+    createRateLimiter(60 * 1000, 20),
+    requireAuth,
+    updateSponsoredItemStatus
+)
 
 const sponsoredItemRoutes = router;
 

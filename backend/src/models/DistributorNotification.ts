@@ -63,6 +63,9 @@ const DistributorNotificationSchema: Schema<DistributorNotificationAttributes> =
     }
 );
 
+DistributorNotificationSchema.index({ distributor_id: 1, createdAt: -1 });
+DistributorNotificationSchema.index({ distributor_id: 1, status: 1 });
+
 DistributorNotificationSchema.virtual("stockTransfer", {
     ref: "StockTransfer",          
     localField: "transfer_id", 

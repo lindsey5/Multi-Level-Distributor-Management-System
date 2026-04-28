@@ -55,6 +55,7 @@ export const getStockOrders = async (req: AuthRequest, res: Response, next: Next
         }
 
         const pipeline : any = [
+            { $match: matchStage },
             {
                 $lookup: {
                     from: "distributors",

@@ -160,16 +160,25 @@ export default function StockOrderDetails({ stockOrderId, close }: StockOrderDet
                     <Button
                         className="px-4 py-2 bg-white text-black border-gray-400"
                         onClick={close}
+                        disabled={updateStockOrderMutation.isPending}
                     >
                         Close
                     </Button>
                     {canCancel && (
-                        <Button className="px-4 py-2" onClick={() => handleUpdate('cancelled')}>
+                        <Button 
+                            className="px-4 py-2" 
+                            onClick={() => handleUpdate('cancelled')}
+                            disabled={updateStockOrderMutation.isPending}
+                        >
                             Cancel Order
                         </Button>
                     )}
                     {data?.stockOrder.status === 'delivered' && (
-                        <Button className="px-4 py-2" onClick={() => handleUpdate('received')}>
+                        <Button 
+                            className="px-4 py-2" 
+                            onClick={() => handleUpdate('received')} 
+                            disabled={updateStockOrderMutation.isPending}
+                        >
                             Mark as Received
                         </Button>
                         )

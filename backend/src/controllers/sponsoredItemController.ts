@@ -3,6 +3,7 @@ import { AuthRequest } from "../types/types";
 import SponsoredItem from "../models/SponsoredItem";
 import { setEndDate, setStartDate } from "../utils/utils";
 import DistributorStock from "../models/DistributorStock";
+import mongoose from "mongoose";
 
 export const createSponsoredItem = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
@@ -118,6 +119,126 @@ export const getSponsoredItems = async (req: AuthRequest, res: Response, next: N
                 total
             }
         })
+    }catch(err){
+        next(err);
+    }
+}
+
+export const updateSponsoredItemStatus = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction();
+
+        const newStatus = req.body.status;
+
+        const sponsoredItem = await SponsoredItem.findById(req.params.id)
+        .populate([
+            {
+                path: "variant",
+                populate: "product",
+            },
+            { path: "distributor", select: "-password" },
+        ])
+        .session(session);
+
+        if (!sponsoredItem) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(404).json({
+                message: "Sponsored Item not found",
+            });
+        }
+
+        if(sponsoredItem.distributor_id.toString() !== req.user._id.toString()){
+            return res.status(401).json({
+                message: "Unauthorized"
+            })
+        }
+
+        const stock = await DistributorStock.findOne({
+            distributor_id: sponsoredItem.distributor_id,
+            variant_id: sponsoredItem.variant_id
+        })
+
+        if(!stock) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(404).json({
+                message: `Item not exist in your inventory`
+            })
+        }
+
+        if(stock.quantity < sponsoredItem.quantity){
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(404).json({
+                message: `Insufficient stock`
+            })
+        }
+
+        stock.quantity -= sponsoredItem.quantity;
+        await stock.save({ session });
+
+        const currentStatus = sponsoredItem.status;
+
+        const allowedTransitions: Record<string, string[]> = {
+            pending: ["cancelled"],
+            approved: ["cancelled", "completed"],
+            completed: [],
+            cancelled: [],
+            rejected: [],
+            expired: [],
+        };
+
+        const allowedNextStatuses = allowedTransitions[currentStatus] || [];
+
+        if (!allowedNextStatuses.includes(newStatus)) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(400).json({
+                message: `Cannot change status from ${currentStatus} to ${newStatus}. Please reload the page`,
+            });
+        }
+
+        sponsoredItem.status = newStatus;
+        await sponsoredItem.save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return res.status(200).json({
+            message: `Sponsored Item successfully marked as ${newStatus}`,
+            sponsoredItem
+        });
+
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        next(err);
+    }
+};
+
+export const getSponsoredItemById = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const sponsoredItem = await SponsoredItem.findById(req.params.id)
+        .populate([
+            { path: 'distributor', select: '-password' },
+            { path: 'variant', populate: 'product' }
+        ]);
+
+        if(!sponsoredItem){
+            return res.status(404).json({ message: "Sponsored Item not found." });
+        }
+
+        if(sponsoredItem.distributor_id.toString() !== req.user._id.toString()){
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        res.status(200).json({
+            sponsoredItem
+        })
+
     }catch(err){
         next(err);
     }

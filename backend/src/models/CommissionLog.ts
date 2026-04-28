@@ -38,6 +38,11 @@ const CommissionLogSchema: Schema<CommissionLogAttributes> = new Schema(
     }
 );
 
+CommissionLogSchema.index({ receiver_id: 1, createdAt: -1 });
+CommissionLogSchema.index({ createdAt: -1 });
+CommissionLogSchema.index({ receiver_id: 1 });
+CommissionLogSchema.index({ sale_ids: 1 });
+
 CommissionLogSchema.virtual("sales", {
     ref: "DistributorSale",          
     localField: "sale_ids", 

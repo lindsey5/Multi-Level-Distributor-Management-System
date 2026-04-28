@@ -10,7 +10,8 @@ export interface SponsoredItem {
     variant_id: string;
     variant: Variant;
     quantity: number;
-    status: 'pending' | 'approved' | 'completed' |  'rejected' | 'expired' | 'cancelled',
+    status: 'pending' | 'approved' | 'completed' |  'rejected' | 'expired' | 'cancelled';
+    createdAt: string;
 }
 
 export interface CreateSponsoredItemPayload {
@@ -34,4 +35,13 @@ export interface GetSponsoredItemsParams extends PaginationParams {
 
 export interface GetSponsoredItemsResponse extends PaginationResponse {
     sponsoredItems: SponsoredItem[];
+}
+
+export interface GetSponsoredItemResponse {
+    sponsoredItem: SponsoredItem;
+}
+
+export interface UpdateSponsoredItemResponse {
+    message?: string;
+    sponsoredItem: SponsoredItem;
 }
