@@ -198,7 +198,7 @@ export default function NotificationBell() {
                                             {notification.message}
                                         </p>
 
-                                        <span className="text-[10px] text-gray-400 mt-1">
+                                        <span className="text-[11px] text-gray-400 mt-1">
                                             {timeAgo(notification.createdAt)}
                                         </span>
                                     </div>
