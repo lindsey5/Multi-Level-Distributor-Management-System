@@ -97,6 +97,8 @@ export default function Sales () {
     }
     ];
 
+    const onRowClick = (row : DistributorSale) => setDistributorSale(row)
+
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-3 md:p-5">
             <DistributorSalesModal 
@@ -124,6 +126,7 @@ export default function Sales () {
                 noDataMessage="No Sales Found"
                 total={data?.pagination.total || 0}
                 dataTour="sales-table"
+                onRowClick={onRowClick}
             />
         </div>
     )

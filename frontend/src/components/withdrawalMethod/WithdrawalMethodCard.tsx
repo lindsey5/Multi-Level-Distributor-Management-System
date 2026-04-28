@@ -1,16 +1,10 @@
-import { Landmark, Smartphone, Wallet, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Card from "../ui/Card";
 import type { WithdrawalMethod } from "../../types/distributor.type";
 import { useDeleteWithdrawalMethod } from "../../hooks/distributor/use-delete-withdrawal-method";
 import Button from "../ui/Button";
 import { promiseToast } from "../../utils/sileo";
-
-const getIcon = (type: string) => {
-    if (type === "bank") return <Landmark size={18} />;
-    if (type === "gcash") return <Smartphone size={18} />;
-
-    return <Wallet size={18} />;
-};
+import WithdrawalMethodIcon from "../ui/WithdrawalMethodIcon";
 
 export default function WithdrawalMethodCard({ method, disabled }: { method: WithdrawalMethod, disabled: boolean }) {
     const deleteWithdrawalMethodMutation = useDeleteWithdrawalMethod();
@@ -27,7 +21,7 @@ export default function WithdrawalMethodCard({ method, disabled }: { method: Wit
         <Card className="flex items-center justify-between">
             <div className="flex items-center gap-3">
                 <div className="p-2 bg-gray-100 rounded-full">
-                    {getIcon(method.type)}
+                    <WithdrawalMethodIcon type={method.type} />
                 </div>
 
                 <div>

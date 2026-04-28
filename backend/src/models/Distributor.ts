@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
 import { hashPassword } from "../utils/auth";
 
-interface WithdrawalMethod extends Document{
+export interface WithdrawalMethod extends Document{
     type: "bank" | "gcash" | "maya";
     account_name: string;
     account_number: string;

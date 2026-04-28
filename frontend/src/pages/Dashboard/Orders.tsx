@@ -95,6 +95,8 @@ export default function Orders () {
         }
     }, [id]);
 
+    const onRowClick = (row : StockOrder) => setStockOrderId(row._id);
+
     return (
         <div className="flex flex-col flex-1 min-h-0 gap-5 p-3 md:p-5">
             <StockOrderDetails 
@@ -123,6 +125,7 @@ export default function Orders () {
                 noDataMessage="No Available Stock"
                 total={data?.pagination.total || 0}
                 dataTour="stock-transfer-table"
+                onRowClick={onRowClick}
             />
         </div>
     )
