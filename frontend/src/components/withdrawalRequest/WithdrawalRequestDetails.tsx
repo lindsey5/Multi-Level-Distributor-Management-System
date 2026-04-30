@@ -158,7 +158,7 @@ export default function WithdrawalRequestDetails({ withdrawalRequest, close } : 
                         disabled={updateWithdrawalRequestMutation.isPending}
                     >Close</Button>
 
-                    {withdrawalRequest?.status === 'pending' || withdrawalRequest?.status === 'approved' && (
+                    {(withdrawalRequest?.status === 'pending' || withdrawalRequest?.status === 'approved') && (
                         <Button
                             className="py-2"
                             onClick={() => handleUpdate("cancelled")}

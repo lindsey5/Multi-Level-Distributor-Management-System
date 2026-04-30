@@ -48,7 +48,7 @@ export default function StockOrderControls ({
     }
 
     return (
-        <div className="flex items-center gap-3" data-tour="stock-transfer-controls">
+        <div className="flex items-center gap-3">
             <div className="flex-1 md:max-w-100">
                 <TextField 
                     className="w-full"

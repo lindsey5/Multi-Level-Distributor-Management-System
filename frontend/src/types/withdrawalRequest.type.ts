@@ -1,4 +1,5 @@
 import type { Distributor } from "./distributor.type";
+import type { PaginationParams, PaginationResponse } from "./pagination.type";
 
 export interface WithdrawalRequestMethod {
     type: "cash" | "card" | "gcash" | "maya";
@@ -35,4 +36,14 @@ export interface UpdateWithdrawalRequestPayload {
 export interface UpdateWithdrawalRequestResponse {
     message?: string;
     withdrawalRequest: WithdrawalRequest;
+}
+
+export interface GetWithdrawalRequestsParams extends PaginationParams {
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+}
+
+export interface GetWithdrawalRequestsResponse extends PaginationResponse {
+    withdrawalRequests: WithdrawalRequest[]
 }

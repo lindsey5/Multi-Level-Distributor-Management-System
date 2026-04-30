@@ -19,6 +19,7 @@ import StockOrder from '../pages/Dashboard/StockOrder';
 import Orders from "../pages/Dashboard/Orders";
 import SponsoredItems from "../pages/Dashboard/SponsoredItems";
 import WithdrawalMethods from "../pages/Dashboard/WithdrawalMethods";
+import WithdrawalRequests from "../pages/Dashboard/WithdrawalRequests";
 
 const router = createBrowserRouter([ 
     {
@@ -105,6 +106,17 @@ const router = createBrowserRouter([
                         description="View and manage all your sponsored products"
                     >
                         <SponsoredItems />
+                    </PageContainer>
+                )
+            },
+            {
+                path: 'withdrawal-requests',
+                Component: () => (
+                    <PageContainer
+                        title="Withdrawal History"
+                        description="View and manage all your withdrawal requests"
+                    >
+                        <WithdrawalRequests />
                     </PageContainer>
                 )
             },

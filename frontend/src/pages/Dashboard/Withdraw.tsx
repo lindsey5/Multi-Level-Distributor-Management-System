@@ -51,7 +51,7 @@ export default function Withdraw() {
             amount,
             withdrawal_method: selectedMethod,
         };
-        const data = await promiseToast(createWithdrawalRequestMutation.mutateAsync(payload));
+        const data = await promiseToast(createWithdrawalRequestMutation.mutateAsync(payload), "top-center", () => window.location.href = '/distributor/withdrawal-requests');
 
         if(data.withdrawalRequest && socket){
             const response = await authService.refreshAccessToken(refreshToken || "");
