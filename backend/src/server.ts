@@ -14,7 +14,11 @@ import returnRequestRoutes from "./routes/returnRequestRoutes";
 import stockOrderRoutes from "./routes/stockOrderRoutes";
 import sponsoredItemRoutes from "./routes/sponsoredItemRoutes";
 import withdrawaRequestRoutes from "./routes/withdrawalRequestRoutes";
+import dns from "node:dns/promises";
+
 dotenv.config();
+
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
