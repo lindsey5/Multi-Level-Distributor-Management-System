@@ -37,9 +37,6 @@ export default function EnterQuantity({ setItems, open, close, variant, label, b
         : "";
 
     const handleSell = () => {
-        const isConfirmed = confirm(`Sell ${quantity} item(s) of ${variant?.variant_name}?`);
-        if (!isConfirmed) return;
-
         close();
         setItems(prev => {
             let found = false;
