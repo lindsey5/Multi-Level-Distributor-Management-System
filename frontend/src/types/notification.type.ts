@@ -4,6 +4,7 @@ import type { DistributorSale } from "./sale.type";
 import type { SponsoredItem } from "./sponsored-item.type";
 import type { StockOrder } from "./stock-order.type";
 import type { StockTransferLog } from "./stock-transfer.type";
+import type { WithdrawalRequest } from "./withdrawalRequest.type";
 
 export interface DistributorNotification {
     _id: string;
@@ -18,6 +19,8 @@ export interface DistributorNotification {
     stockOrder?: StockOrder;
     sponsored_id?: string;
     sponsoredItem: SponsoredItem;
+    withdrawal_id?: string;
+    withdrawalRequest: WithdrawalRequest;
     message: string;
     status: 'read' | 'unread';
     createdAt: string;

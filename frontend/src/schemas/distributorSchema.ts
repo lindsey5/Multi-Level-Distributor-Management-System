@@ -13,7 +13,7 @@ export const distributorSchema = z.object({
 
 export type DistributorFormData = z.infer<typeof distributorSchema>;
 
-const WithdrawalMethodTypes = ["bank", "gcash", "maya"] as const;
+const WithdrawalMethodTypes = ["card", "gcash", "maya"] as const;
 
 export const withdrawalMethodSchema = z.object({
     type: z.enum(WithdrawalMethodTypes),
@@ -32,7 +32,7 @@ export const withdrawalMethodSchema = z.object({
 
     is_default: z.boolean()
 }).superRefine((data, ctx) => {
-    if (data.type === "bank" && !data.bank_name) {
+    if (data.type === "card" && !data.bank_name) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "Bank name is required",

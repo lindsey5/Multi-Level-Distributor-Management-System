@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/ui/Button";
 import TextField from "../../components/ui/Textfield";
 import type { RootState } from "../../lib/features/store";
@@ -11,15 +11,21 @@ import { useNavigate } from "react-router-dom";
 import { useCreateWithdrawalRequest } from "../../hooks/withdrawalRequest/use-create-withdrawal-request.hook";
 import { errorToast, promiseToast } from "../../utils/sileo";
 import { useGetBalance } from "../../hooks/distributor/use-get-balance.hook";
+import { useSocket } from "../../hooks/useSocket";
+import { authService } from "../../services/authService";
+import { setAuth } from "../../lib/features/auth/authSlice";
 
 export default function Withdraw() {
     const navigate = useNavigate();
+    const socket = useSocket({ namespace: '/notification' });
     const [amount, setAmount] = useState<number>(0);
     const [selectedMethod, setSelectedMethod] = useState<WithdrawalRequestMethod | null>(null);
 
     const auth = useSelector((store: RootState) => store.auth);
+    const refreshToken = auth.refreshToken;
     const withdrawal_methods = auth.distributor?.withdrawal_methods || [];
-
+    const dispatch = useDispatch();
+    
     const { data } = useGetBalance();
     const wallet_balance = data?.wallet_balance || 0;
 
@@ -45,7 +51,19 @@ export default function Withdraw() {
             amount,
             withdrawal_method: selectedMethod,
         };
-        await promiseToast(createWithdrawalRequestMutation.mutateAsync(payload))
+        const data = await promiseToast(createWithdrawalRequestMutation.mutateAsync(payload));
+
+        if(data.withdrawalRequest && socket){
+            const response = await authService.refreshAccessToken(refreshToken || "");
+                        
+            dispatch(setAuth({
+                accessToken: response.token.accessToken, 
+                refreshToken: response.token.refreshToken,
+                distributor: response.distributor
+            }))
+
+            socket.emit("send-withdrawal-notification", data.withdrawalRequest)
+        }
        
     };
 

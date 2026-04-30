@@ -18,7 +18,7 @@ export default function AddWithdrawalMethodForm ({ handleAddMethod, close, disab
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<WithdrawalMethodFormData>({
         resolver: zodResolver(withdrawalMethodSchema),
         defaultValues: {
-            type: 'bank',
+            type: 'card',
             bank_name: '',
             is_default: false,
         },
@@ -35,7 +35,7 @@ export default function AddWithdrawalMethodForm ({ handleAddMethod, close, disab
                     <Dropdown 
                         label="Withdrawal Method"
                         value={watch('type')}
-                        options={['Bank', 'GCash', 'Maya'].map(option => ({ label: option, value: option.toLowerCase() }))}
+                        options={['Card', 'GCash', 'Maya'].map(option => ({ label: option, value: option.toLowerCase() }))}
                         error={errors.type?.message}
                         onChange={(value : any) => setValue("type", value)}
                     />
@@ -57,7 +57,7 @@ export default function AddWithdrawalMethodForm ({ handleAddMethod, close, disab
                         type="number"
                     />
 
-                    {watch('type') === 'bank' && (
+                    {watch('type') === 'card' && (
                         <Dropdown 
                             label="Bank Name"
                             value={bankName === 'Other' ? bankName : watch('bank_name')}
@@ -74,7 +74,7 @@ export default function AddWithdrawalMethodForm ({ handleAddMethod, close, disab
                             }}
                         />
                     )}
-                    {bankName === 'Other' && watch('type') === 'bank' && (
+                    {bankName === 'Other' && watch('type') === 'card' && (
                         <TextField 
                             label="Enter Bank Name"
                             placeholder="Enter your bank name"

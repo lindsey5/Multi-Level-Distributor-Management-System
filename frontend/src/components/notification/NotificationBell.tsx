@@ -10,6 +10,7 @@ import StockTransferItems from "../stockTransferLog/StockTransferItems";
 import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationSocket";
 import SaleItems from "./SaleItems";
 import { useNavigate } from "react-router-dom";
+import WithdrawalRequestDetails from "../withdrawalRequest/WithdrawalRequestDetails";
 
 export default function NotificationBell() {
     const navigate = useNavigate();
@@ -102,9 +103,13 @@ export default function NotificationBell() {
         setNotification(null)
     }
 
-
     return (
         <>
+            <WithdrawalRequestDetails 
+                close={handleClose}
+                withdrawalRequest={notification?.withdrawalRequest || null}
+            />
+
             <StockTransferItems
                 close={handleClose}
                 stockTransferLog={notification?.stockTransfer || null}

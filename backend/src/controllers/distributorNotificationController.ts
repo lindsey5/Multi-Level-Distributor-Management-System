@@ -72,6 +72,13 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
                     },
                     { path: 'distributor', select: '-password' }
                 ]
+            },
+            {
+                path: 'withdrawalRequest',
+                populate: {
+                    path: 'distributor',
+                    select: '-password'
+                }
             }
         ])
         .skip(skip)

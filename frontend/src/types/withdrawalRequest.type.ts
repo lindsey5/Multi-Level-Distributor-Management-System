@@ -1,7 +1,7 @@
 import type { Distributor } from "./distributor.type";
 
 export interface WithdrawalRequestMethod {
-    type: "cash" | "bank" | "gcash" | "maya";
+    type: "cash" | "card" | "gcash" | "maya";
     account_name?: string;
     account_number?: string;
     bank_name?: string;
@@ -20,4 +20,9 @@ export interface WithdrawalRequest {
 export interface CreateWithdrawalRequestPayload {
     amount: number;
     withdrawal_method: WithdrawalRequestMethod;
+}
+
+export interface CreateWithdrawalRequestResponse {
+    withdrawalRequest: WithdrawalRequest;
+    message?: string;
 }

@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { hashPassword } from "../utils/auth";
 
 export interface WithdrawalMethod extends Document{
-    type: "bank" | "gcash" | "maya";
+    type: "card" | "gcash" | "maya";
     account_name: string;
     account_number: string;
     bank_name?: string;
@@ -61,7 +61,7 @@ const DistributorSchema: Schema<DistributorAttributes> = new Schema(
             {
                 type: {
                     type: String,
-                    enum: ["bank", "gcash", "maya"],
+                    enum: ["card", "gcash", "maya"],
                     required: true,
                 },
 
