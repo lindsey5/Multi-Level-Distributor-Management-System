@@ -24,7 +24,7 @@ const WithdrawalRequestSchema: Schema<WithdrawalRequestAttributes> = new Schema(
         withdrawal_method: {
             type: {
                 type: String,
-                enum: ["card", "bank", "gcash", "maya"],
+                enum: ["card", "cash", "gcash", "maya"],
                 required: true,
             },
 

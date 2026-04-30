@@ -26,3 +26,13 @@ export interface CreateWithdrawalRequestResponse {
     withdrawalRequest: WithdrawalRequest;
     message?: string;
 }
+
+export interface UpdateWithdrawalRequestPayload {
+    id: string;
+    status: string;
+}
+
+export interface UpdateWithdrawalRequestResponse {
+    message?: string;
+    withdrawalRequest: WithdrawalRequest;
+}

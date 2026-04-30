@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
 import createRateLimiter from "../utils/rate-limit";
-import { createWithdrawalRequest } from "../controllers/withdrawalRequestController";
+import { createWithdrawalRequest, updateWithdrawalRequestStatus } from "../controllers/withdrawalRequestController";
 const router = Router();
 
 router.post(
@@ -10,6 +10,13 @@ router.post(
     requireAuth,
     createWithdrawalRequest
 );
+
+router.patch(
+    '/:id',
+    createRateLimiter(60 * 1000, 20),
+    requireAuth,
+    updateWithdrawalRequestStatus
+)
 
 const withdrawaRequestRoutes = router;
 

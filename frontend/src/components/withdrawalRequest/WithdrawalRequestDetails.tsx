@@ -5,6 +5,13 @@ import type { WithdrawalRequest } from "../../types/withdrawalRequest.type";
 import { formatDate, formatToPeso } from '../../utils/helpers';
 import DeliveryStatusChip from "../ui/DeliveryChip";
 import Button from "../ui/Button";
+import { useSocket } from "../../hooks/useSocket";
+import { useUpdateWithdrawalRequestStatus } from "../../hooks/withdrawalRequest/use-update-withdrawal-request-status.hook";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../lib/features/store";
+import { promiseToast } from "../../utils/sileo";
+import { authService } from "../../services/authService";
+import { setAuth } from "../../lib/features/auth/authSlice";
 
 interface WithdrawalRequestDetailsProps {
     withdrawalRequest: WithdrawalRequest | null;
@@ -12,6 +19,35 @@ interface WithdrawalRequestDetailsProps {
 }
 
 export default function WithdrawalRequestDetails({ withdrawalRequest, close } : WithdrawalRequestDetailsProps) {
+    const socket = useSocket({ namespace: "/notification" })
+    const updateWithdrawalRequestMutation = useUpdateWithdrawalRequestStatus();
+    const { refreshToken } = useSelector((store : RootState) => store.auth);
+    const dispatch = useDispatch();
+
+    const handleUpdate = async (status: string) => {
+        if(!withdrawalRequest) return;
+
+        const isConfirmed = confirm(`Are you sure you want to cancel your withdrawal request?`);
+
+        if (!isConfirmed) return;
+
+        const data = await promiseToast(updateWithdrawalRequestMutation.mutateAsync({ 
+            id: withdrawalRequest._id,
+            status
+        }))
+
+        if(data.withdrawalRequest && socket){
+            const response = await authService.refreshAccessToken(refreshToken || "");
+            
+            dispatch(setAuth({
+                accessToken: response.token.accessToken, 
+                refreshToken: response.token.refreshToken,
+                distributor: response.distributor
+            }))
+
+            socket.emit("send-withdrawal-update", data.withdrawalRequest)
+        }
+    }
 
     return (
         <Modal
@@ -117,8 +153,20 @@ export default function WithdrawalRequestDetails({ withdrawalRequest, close } : 
 
                 <div className="flex gap-3 justify-end mt-5">
                     <Button
+                        className="bg-white text-black py-2"
                         onClick={close}
+                        disabled={updateWithdrawalRequestMutation.isPending}
                     >Close</Button>
+
+                    {withdrawalRequest?.status === 'pending' || withdrawalRequest?.status === 'approved' && (
+                        <Button
+                            className="py-2"
+                            onClick={() => handleUpdate("cancelled")}
+                            disabled={updateWithdrawalRequestMutation.isPending}
+                        >
+                            Cancel Request
+                        </Button>
+                    )}
                 </div>
             </Card>
         </Modal>
