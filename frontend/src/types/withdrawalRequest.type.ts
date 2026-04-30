@@ -16,6 +16,7 @@ export interface WithdrawalRequest {
     amount: number;
     status: "pending" | "approved" | "completed" | "rejected" | "cancelled";
     createdAt: string;
+    updatedAt: string;
 }
 
 export interface CreateWithdrawalRequestPayload {

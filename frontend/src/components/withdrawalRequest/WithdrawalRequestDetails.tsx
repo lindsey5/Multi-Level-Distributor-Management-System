@@ -66,7 +66,7 @@ export default function WithdrawalRequestDetails({ withdrawalRequest, close } : 
                 </div>
 
                 {/* Status + Date */}
-                <div className="flex flex-col items-start gap-3 mb-5 pb-5 border-b border-gray-400">
+                <div className="flex flex-col items-start gap-3 mb-5">
                     <div className="w-full flex gap-3 flex-col md:flex-row md:items-center md:justify-between">
                         <div className="flex items-center gap-2">
                             <p className="text-xs">Status:</p>
@@ -79,33 +79,14 @@ export default function WithdrawalRequestDetails({ withdrawalRequest, close } : 
                             {formatDate(withdrawalRequest?.createdAt || "")}
                         </span>
                     </div>
-                </div>
-
-                <div className="mb-5">
-                    <p className="text-xs uppercase tracking-widest mb-3">
-                        Requested By
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                        <div>
-                            <p className="text-xs text-gray-400">Distributor Name</p>
-                            <p className="font-medium">
-                                {withdrawalRequest?.distributor.distributor_name}
-                            </p>
+                    {withdrawalRequest?.status === 'completed' && (
+                        <div className="text-xs">
+                            Completed At:{" "}
+                            <span className="font-medium">
+                                {formatDate(withdrawalRequest?.updatedAt || "")}
+                            </span>
                         </div>
-
-                        <div>
-                            <p className="text-xs text-gray-400">Distributor ID</p>
-                            <p className="font-medium">
-                                {withdrawalRequest?.distributor.distributor_id}
-                            </p>
-                        </div>
-
-                        <div className="md:col-span-2">
-                            <p className="text-xs text-gray-400">Email</p>
-                            <p className="font-medium">{withdrawalRequest?.distributor.email}</p>
-                        </div>
-                    </div>
+                    )}
                 </div>
 
                 <div className="border border-gray-300 rounded-lg p-4 mb-5 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
