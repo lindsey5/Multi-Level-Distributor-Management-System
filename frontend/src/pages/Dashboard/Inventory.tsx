@@ -2,7 +2,7 @@ import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import type { DistributorStock } from "../../types/stock.type";
 import { cn, formatDate, formatToPeso } from "../../utils/helpers";
 import { useGetStocks } from "../../hooks/stock/use-get-stocks.hook";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { SortOption } from "../../types/types.type";
 import { useDebounce } from "../../hooks/useDebounce";
 import CustomTable from "../../components/ui/Table";
@@ -40,13 +40,15 @@ export default function Inventory () {
         events: {}
     })
 
-    const { data, isFetching } = useGetStocks({
+    const params = useMemo(() => ({
         search: debouncedSearch,
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
         sortBy: sorting.sortBy,
         order: sorting.order
-    });
+    }), [debouncedSearch, pagination, sorting])
+
+    const { data, isFetching } = useGetStocks(params);
 
     const columns: ColumnDef<DistributorStock>[] = [
         {
@@ -169,7 +171,7 @@ export default function Inventory () {
                 setItems={setItems}
                 variant={variant}
                 buttonClassName={enableReturn ? "bg-red-600 border-none" : ""}
-                buttonLabel={enableReturn ? "Return Items" : "Sell Items"}
+                buttonLabel={enableReturn ? "Return Item" : "Sell Item"}
                 label={`Enter Quantity to ${enableReturn ? 'return' : 'sell' }`}
             />
             {enableReturn ? (
