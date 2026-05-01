@@ -1,6 +1,6 @@
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import type { DistributorStock } from "../../types/stock.type";
-import { formatDate, formatToPeso } from "../../utils/helpers";
+import { formatToPeso } from "../../utils/helpers";
 import { useGetStocks } from "../../hooks/stock/use-get-stocks.hook";
 import { useMemo, useState } from "react";
 import type { SortOption } from "../../types/types.type";
