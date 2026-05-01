@@ -30,10 +30,6 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
     const { socket : distributorNotificationSocket } = useContext(DistributorNotificationSocketContext);
 
     const handleSellItems = async () => {
-        const isConfirmed = confirm(`Are you sure you want to sell ${items.length} item(s)?`);
-
-        if (!isConfirmed) return;
-
         const itemsToSell = items.map(item => ({
             variant_id: item._id,
             quantity: item.quantity,
@@ -185,7 +181,7 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
                         disabled={items.length === 0 || createSalesMutation.isPending || !isValidItems}
                         className="py-2 px-6 mt-2"
                         onClick={handleSellItems}
-                    >{createSalesMutation.isPending ? "Loading..." : "Sell Items"}</Button>
+                    >{createSalesMutation.isPending ? "Loading..." : "Proceed Sell"}</Button>
                 </div>
             </Card>
         </Modal>

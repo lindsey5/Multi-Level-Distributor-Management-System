@@ -38,10 +38,6 @@ export default function ItemsToReturn ({ open, close, items, setItems, socket } 
     const [otherReason, setOtherReason] = useState("");
 
     const handleReturnItems = async () => {
-        const isConfirmed = confirm(`Are you sure you want to return ${items.length} item(s)?`);
-
-        if (!isConfirmed) return;
-
         const itemsToReturn = items.map(item => ({
             variant_id: item._id,
             quantity: item.quantity,
@@ -187,11 +183,11 @@ export default function ItemsToReturn ({ open, close, items, setItems, socket } 
                             !isValidItems ||
                             (!reason || (reason === "Others" && !otherReason))
                         }
-                        className="py-2 px-5 mt-2 flex gap-2"
+                        className="py-2 px-5 mt-2 flex gap-2 bg-red-600 border-none"
                         onClick={handleReturnItems}
                     >
                         <Undo2 size={20}/>
-                        {createReturnMutation.isPending ? "Loading..." : "Request Return"}
+                        {createReturnMutation.isPending ? "Loading..." : "Proceed Return"}
                     </Button>
                 </div>
             </Card>
