@@ -2,7 +2,7 @@ import { useContext, useMemo, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
-import { Minus, Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { useCreateSales } from "../../hooks/sale/use-create-sales.hook";
@@ -80,17 +80,6 @@ export default function ItemsToSell ({
     const commission = useMemo(() => {
         return totalAmount * 0.05;
     }, [totalAmount])
-
-    const handleQuantity = (quantity : number, variant: VariantWithQuantity) => {
-        if(quantity <= variant.stock){
-            setItems(prev => 
-                prev.map(item => 
-                    item._id === variant._id ? ({ ...item, quantity }) : 
-                    item
-                )
-            )
-        }
-    }
 
     const isValidItems = useMemo(() => {
         return items.every(item => item.quantity);
