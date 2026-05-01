@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
 import { cn, formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
-import Card from "../ui/Card";
 import Chip from "../ui/Chip";
 import { X } from "lucide-react";
 
@@ -21,8 +20,8 @@ const ActionPanel = ({
 
     return (
         <>
-            {/* 🔘 MOBILE TOGGLE BUTTON */}
-            <div className="lg:hidden fixed bottom-4 right-4 z-50">
+            {/* MOBILE TOGGLE BUTTON */}
+            <div className="lg:hidden fixed bottom-4 right-4 z-10">
                 <Button
                     onClick={() => setOpen(true)}
                     className="rounded-full px-4 py-3 shadow-lg bg-black text-white"
@@ -31,22 +30,22 @@ const ActionPanel = ({
                 </Button>
             </div>
 
-            {/* 🌑 BACKDROP */}
+            {/* BACKDROP */}
             {open && (
                 <div
                     onClick={() => setOpen(false)}
-                    className="lg:hidden fixed inset-0 bg-black/40 z-40"
+                    className="lg:hidden fixed inset-0 bg-black/40 z-10"
                 />
             )}
 
-            {/* 📦 PANEL */}
+            {/* PANEL */}
             <div
                 className={cn(
                     "bg-white border border-gray-300 flex flex-col min-h-0",
-                    "lg:w-96 lg:static lg:rounded-xl lg:shadow-sm",
+                    "lg:w-96 lg:static lg:rounded-xl lg:shadow-sm z-20",
 
                     // MOBILE DRAWER
-                    "fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl",
+                    "fixed bottom-0 left-0 right-0 rounded-t-2xl",
                     "transition-transform duration-300",
 
                     open ? "translate-y-0" : "translate-y-full lg:translate-y-0"
