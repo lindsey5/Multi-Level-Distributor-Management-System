@@ -182,7 +182,9 @@ export const updateStockTransferStatus = async (req: AuthRequest, res: Response,
             return res.status(400).json({ message: "Status is required" });
         }
 
-        const stockTransfer = await StockTransfer.findById(req.params.id).session(session);
+        const stockTransfer = await StockTransfer.findById(req.params.id)
+        .populate('items')
+        .session(session);
 
         if (!stockTransfer) {
             await session.abortTransaction();
@@ -202,7 +204,7 @@ export const updateStockTransferStatus = async (req: AuthRequest, res: Response,
         if (currentStatus === newStatus) {
             await session.abortTransaction();
             session.endSession();
-            return res.status(400).json({ message: `Stock transfer is already ${newStatus}` });
+            return res.status(400).json({ message: `Stock transfer is already ${newStatus}. Reload the page` });
         }
 
         const allowedTransitions: Record<string, string[]> = {
@@ -270,7 +272,10 @@ export const updateStockTransferStatus = async (req: AuthRequest, res: Response,
                 );
             }
         }
-
+        
+        await session.commitTransaction();
+        session.endSession();
+        
         return res.status(200).json({
             message: `Stock transfer successfully updated to ${newStatus}`,
             stockTransfer,
