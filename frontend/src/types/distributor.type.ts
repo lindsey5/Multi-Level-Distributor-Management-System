@@ -34,7 +34,7 @@ export interface UpdateDistributorResponse {
 }
 
 export interface AddWithdrawalMethodPayload {
-    type: "bank" | "gcash" | "maya";
+    type: "card" | "gcash" | "maya";
     account_name: string;
     account_number: string;
     bank_name?: string;
