@@ -33,3 +33,16 @@ export const generateRefreshToken = (user_id: mongoose.Types.ObjectId): string =
         { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN } as SignOptions
     );
 };
+
+// Generate JWT Reset Token
+export const generateResetToken = (user_id : mongoose.Types.ObjectId): string => {
+    if (!process.env.JWT_RESET_SECRET || !process.env.JWT_RESET_EXPIRES_IN) {
+        throw new Error('JWT_SECRET is not defined in environment variables');
+    }
+    
+    return jwt.sign(
+        { _id: user_id },
+        process.env.JWT_RESET_SECRET,
+        { expiresIn: process.env.JWT_RESET_EXPIRES_IN as SignOptions } as SignOptions
+    );
+};

@@ -1,8 +1,9 @@
 import type { NextFunction, Request, Response } from "express";
 import Distributor from "../models/Distributor";
-import { generateAccessToken, generateRefreshToken } from "../utils/auth";
+import { generateAccessToken, generateRefreshToken, generateResetToken } from "../utils/auth";
 import jwt from "jsonwebtoken";
 import { AuthRequest } from "../types/types";
+import EmailService from "../services/EmailService";
 
 export const login = async (req : Request, res : Response, next : NextFunction) => {
     try{
@@ -93,6 +94,31 @@ export const changePassword = async (req: AuthRequest, res: Response, next: Next
         res.status(200).json({ message: "Password successfully changed" })
 
     }catch(err) {
+        next(err);
+    }
+}
+
+export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const { email } = req.body;
+
+        if(!email) return res.status(400).json({ message: "Email is required" });
+
+        const distributor = await Distributor.findOne({ email });
+
+        if(!distributor) return res.status(404).json({ message: 'User not found.' });
+        const token = generateResetToken(distributor._id);
+
+        const resetLink = `${process.env.ORIGIN}/reset-password/${token}`;
+
+        const isSent = await EmailService.sendResetEmail(distributor.email, distributor.distributor_name, resetLink);
+
+        if(!isSent) return res.status(400).json({ message: "Error sending forgot password email" })
+
+        res.status(200).json({
+            message: "Password reset link has been sent to your email address. Please check your inbox."
+        });
+    }catch(err){
         next(err);
     }
 }
