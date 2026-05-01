@@ -54,7 +54,7 @@ export default function Login() {
                     error={errors.password?.message}
                 />
 
-                <a href="#" className="text-sm font-medium mb-8 mt-4">Forgot password?</a>
+                <a href="/forgot-password" className="text-sm font-medium mb-8 mt-4">Forgot password?</a>
 
                 <Button type='submit' disabled={loginMutation.isPending}>
                     {loginMutation.isPending ? 'Logging in...' : 'Log In'}
