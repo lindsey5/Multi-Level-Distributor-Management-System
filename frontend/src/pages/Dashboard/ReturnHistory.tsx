@@ -1,15 +1,13 @@
-import { useState, type SetStateAction } from "react";
+import { useState } from "react";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useGetReturnRequests } from "../../hooks/returnRequest/use-get-return-requests.hook";
 import type { ReturnRequest } from "../../types/returnRequest.type";
 import { formatDate } from "../../utils/helpers";
-import Button from "../../components/ui/Button";
-import { Eye } from "lucide-react";
 import CustomTable from "../../components/ui/Table";
 import ReturnDetailsModal from "../../components/return-request/ReturnDetailsModal";
 import ReturnRequestControls from "../../components/return-request/ReturnRequestControls";
 
-const getColumns = (setReturnRequest : React.Dispatch<SetStateAction<ReturnRequest | null>>) : ColumnDef<ReturnRequest>[] => [
+const getColumns = () : ColumnDef<ReturnRequest>[] => [
     {
         header: 'Date',
         accessorKey: 'createdAt',
@@ -32,15 +30,6 @@ const getColumns = (setReturnRequest : React.Dispatch<SetStateAction<ReturnReque
         cell: ({ row }) => row.original.items.map(item => item.status === 'pending' ? item : null).filter(item => item).length || 'N/A',
         meta: { align: 'center' }
     },
-    {
-        header: 'Action',
-        cell: ({ row }) => (
-            <Button className="px-2 py-1" onClick={() => setReturnRequest(row.original)}>
-                <Eye size={20} />
-            </Button>
-        ),
-        meta: { align: 'center' }
-    }
 ]
 
 export default function ReturnHistory () {
@@ -76,7 +65,7 @@ export default function ReturnHistory () {
             <CustomTable 
                 isLoading={isFetching}
                 data={data?.returnRequests || []}
-                columns={getColumns(setReturnRequest)}
+                columns={getColumns()}
                 pagination={pagination}
                 setPagination={setPagination}
                 totalPages={data?.pagination.totalPages || 0}

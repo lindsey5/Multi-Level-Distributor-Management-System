@@ -1,4 +1,4 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { useGetSponsoredItems } from "../../hooks/sponsored-item/use-get-sponsored-items.hook"
 import { useDebounce } from "../../hooks/useDebounce";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
@@ -12,9 +12,8 @@ import DeliveryStatusChip from "../../components/ui/DeliveryChip";
 import SponsoredItemControls from "../../components/sponsored-item/SponsoredItemControls";
 import { useSearchParams } from "react-router-dom";
 import SponsoredItemDetails from "../../components/sponsored-item/SponsoredItemDetails";
-import { Eye } from "lucide-react";
 
-const columns = (setSponsoredId : Dispatch<SetStateAction<string | null>>) : ColumnDef<SponsoredItem>[] =>  [
+const columns = () : ColumnDef<SponsoredItem>[] =>  [
     {
         header: 'Sponsored ID',
         accessorKey: 'sponsored_id',
@@ -70,15 +69,6 @@ const columns = (setSponsoredId : Dispatch<SetStateAction<string | null>>) : Col
         accessorKey: 'createdAt',
         cell: (info) => <div className="min-w-30">{formatDate(info.getValue() as string)}</div>,
         meta: { align: 'center' }
-    },
-    {
-        header: 'Action',
-        cell: ({ row }) => (
-            <Button className="px-2 py-1" onClick={() => setSponsoredId(row.original._id)}>
-                <Eye size={20} />
-            </Button>
-        ),
-        meta: { align: 'center' },
     },
 ]
 
@@ -141,7 +131,7 @@ export default function SponsoredItems () {
             <CustomTable
                 isLoading={isFetching}
                 data={data?.sponsoredItems || []}
-                columns={columns(setSponsoredId)}
+                columns={columns()}
                 pagination={pagination}
                 setPagination={setPagination}
                 totalPages={data?.pagination.totalPages || 0}

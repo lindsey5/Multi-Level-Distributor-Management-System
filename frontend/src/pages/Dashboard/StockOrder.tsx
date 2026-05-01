@@ -172,15 +172,14 @@ export default function StockOrder() {
                 onClick={() => setShowCart(true)}
                 className="
                     fixed z-10
-                    w-40
+                    w-40 bg-gold
                     flex justify-center items-center gap-2
                     rounded-full shadow-lg
 
                     right-4 bottom-4
+                    border-none
                     md:right-10 md:bottom-10
-
-                    bg-black text-white
-                    hover:bg-gray-900
+                    hover:bg-gold/90 hover:opacity-100
                 "
             >
                 <ShoppingCart size={20} />

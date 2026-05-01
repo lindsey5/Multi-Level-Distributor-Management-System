@@ -5,8 +5,6 @@ import { useDebounce } from "../../hooks/useDebounce";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { formatDate } from "../../utils/helpers";
 import type { StockTransferLog } from "../../types/stock-transfer.type";
-import Button from "../../components/ui/Button";
-import { Eye } from "lucide-react";
 import TransferLogsControls from "../../components/stockTransferLog/TransferLogsControls";
 import StockTransferItems from "../../components/stockTransferLog/StockTransferItems";
 import { useSocket } from "../../hooks/useSocket";
@@ -68,14 +66,6 @@ export default function TransferLogs () {
             cell: info => <div className="min-w-30">{formatDate(info.getValue() as string)}</div>,
             meta: { align: 'center' },
         },
-        {
-            header: 'Action',
-            cell: ({ row }) => (
-                <Button className="px-2 py-1" onClick={() => setStockTransfer(row.original)}>
-                    <Eye size={20}/>
-                </Button>
-            )
-        }
     ];
 
     const onRowClick = (row : StockTransferLog) => {

@@ -1,16 +1,14 @@
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
-import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { useMemo, useState } from "react";
 import { formatDate, formatToPeso } from "../../utils/helpers";
 import WithdrawalRequestControls from "../../components/withdrawalRequest/WithdrawalRequestControls";
 import { useGetWithdrawalRequests } from "../../hooks/withdrawalRequest/use-get-withdrawal-requests.hook";
 import type { WithdrawalRequest } from "../../types/withdrawalRequest.type";
 import WithdrawalRequestDetails from "../../components/withdrawalRequest/WithdrawalRequestDetails";
 import DeliveryStatusChip from "../../components/ui/DeliveryChip";
-import Button from "../../components/ui/Button";
-import { Eye } from "lucide-react";
 import CustomTable from "../../components/ui/Table";
 
-const getColumns = (setWithdrawalRequest : Dispatch<SetStateAction<WithdrawalRequest | null>>) : ColumnDef<WithdrawalRequest>[] => [
+const getColumns = () : ColumnDef<WithdrawalRequest>[] => [
     {
         header: 'Date Requested',
         accessorKey: 'createdAt',
@@ -39,18 +37,6 @@ const getColumns = (setWithdrawalRequest : Dispatch<SetStateAction<WithdrawalReq
         cell: info => formatToPeso(Number(info.getValue())),
         meta: { align: 'center' },
     },
-    {
-        header: 'Action',
-        cell: ({ row }) => (
-            <Button 
-                className="px-2 py-1"
-                onClick={() => setWithdrawalRequest(row.original)}
-            >
-                <Eye size={20}/>
-            </Button>
-        ),
-        meta: { align: 'center' },
-    },
 ]
 
 export default function WithdrawalRequests () {
@@ -72,7 +58,7 @@ export default function WithdrawalRequests () {
 
     const { data, isFetching } = useGetWithdrawalRequests(params);
 
-    const columns = getColumns(setWithdrawalRequest);
+    const columns = getColumns();
 
     const onRowClick = (row : WithdrawalRequest) => setWithdrawalRequest(row);
 

@@ -8,8 +8,6 @@ import CustomTable from "../../components/ui/Table";
 import { useDebounce } from "../../hooks/useDebounce";
 import SalesControls from "../../components/sales/SalesControls";
 import Chip from "../../components/ui/Chip";
-import Button from "../../components/ui/Button";
-import { Eye } from "lucide-react";
 import DistributorSalesModal from "../../components/sales/DistributorSalesModal";
 
 export default function Sales () {
@@ -86,15 +84,6 @@ export default function Sales () {
             cell: info => <div className="font-bold min-w-30">{formatToPeso(info.getValue() as number)}</div>,
             meta: { align: 'center' }
         },
-        {
-        header: 'Action',
-        cell: ({ row }) => (
-            <Button className="px-2 py-1" onClick={() => setDistributorSale(row.original)}>
-                <Eye size={20} />
-            </Button>
-        ),
-        meta: { align: 'center' }
-    }
     ];
 
     const onRowClick = (row : DistributorSale) => setDistributorSale(row)

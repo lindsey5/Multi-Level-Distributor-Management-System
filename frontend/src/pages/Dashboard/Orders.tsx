@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetStockOrders } from "../../hooks/stock-order/use-get-stock-orders.hook"
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -7,12 +7,10 @@ import StockOrderControls from "../../components/stockOrder/StockOrderControls";
 import CustomTable from "../../components/ui/Table";
 import type { StockOrder } from "../../types/stock-order.type";
 import DeliveryStatusChip from "../../components/ui/DeliveryChip";
-import Button from "../../components/ui/Button";
-import { Eye } from "lucide-react";
 import StockOrderDetails from "../../components/stockOrder/StockOrderDetails";
 import { useSearchParams } from "react-router-dom";
 
-const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) : ColumnDef<StockOrder>[] => [
+const getColumns = () : ColumnDef<StockOrder>[] => [
     {
         header: "Stock Order ID",
         accessorKey: 'stock_order_id',
@@ -43,16 +41,6 @@ const getColumns = (setStockOrderId : Dispatch<SetStateAction<string | null>>) :
         ),
         meta: { align: 'center' },
     },
-    {
-        header: 'Action',
-        cell: ({ row }) => (
-            <Button className="px-2 py-1" onClick={() => setStockOrderId(row.original._id)}>
-                <Eye size={20} />
-            </Button>
-        ),
-        meta: { align: 'center' },
-    },
-    
 ]
 
 export default function Orders () {
@@ -83,7 +71,7 @@ export default function Orders () {
 
     const [stockOrderId, setStockOrderId] = useState<string | null>(null);
 
-    const columns = getColumns(setStockOrderId);
+    const columns = getColumns();
 
     useEffect(() => {
         const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
