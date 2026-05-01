@@ -88,7 +88,7 @@ export default function SponsoredItemDetails({ close, sponsoredId,}: SponsoredIt
             {isFetching ? (
             <div className="space-y-5">
                 {/* Status + Date */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+                <div className="flex flex-col gap-3 mb-5">
                     <div className="flex items-center gap-2">
                         <div className="h-4 w-14 rounded bg-gray-300 animate-pulse" />
                         <div className="h-6 w-24 rounded bg-gray-300 animate-pulse" />
@@ -137,18 +137,16 @@ export default function SponsoredItemDetails({ close, sponsoredId,}: SponsoredIt
             ) : (
             <>
                 {/* Status + Date */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+                <div className="flex flex-col gap-3 mb-5">
                     <div className="flex items-center gap-2">
-                        <p className="text-xs text-gray-400">Status:</p>
+                        <p className="text-xs md:text-sm text-gray-400">Status:</p>
                         <DeliveryStatusChip status={sponsoredItem?.status || ""} />
                     </div>
 
-                    <div className="text-xs">
-                        <p className="text-gray-400">Requested on:{" "}</p>
-                        <span className="font-medium">
-                        {formatDate(sponsoredItem?.createdAt)}
-                        </span>
-                    </div>
+                    <p className="text-xs md:text-sm text-gray-400">Requested on:{formatDate(sponsoredItem?.createdAt)}</p>
+                    {sponsoredItem?.status === 'completed' && (
+                        <p className="text-xs md:text-sm text-gray-400">Completed At:{formatDate(sponsoredItem?.updatedAt)}</p>
+                    )}
                 </div>
 
                 {/* Distributor Info */}

@@ -2,7 +2,7 @@ import { useMemo, useState, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
-import { Minus, Plus, Undo2, X } from "lucide-react";
+import { Undo2, X } from "lucide-react";
 import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { promiseToast } from "../../utils/sileo";
@@ -15,13 +15,16 @@ import { useCreateReturnRequest } from "../../hooks/returnRequest/use-create-ret
 import TextField from "../ui/Textfield";
 import Dropdown from "../ui/Dropdown";
 import type { Socket } from "socket.io-client";
+import QuantitySelector from "./QuantitySelector";
 
 interface ItemsToReturnProps{
     items: VariantWithQuantity[];
     setItems: React.Dispatch<SetStateAction<VariantWithQuantity[]>>;
     open: boolean;
     close: () => void;
-    socket: Socket | null
+    socket: Socket | null;
+    updateQuantity: (variantId: string, quantity: number) => void;
+    handleRemove: (id : string) => void;
 }
 
 const returnReasons = [
@@ -30,7 +33,15 @@ const returnReasons = [
     "Others",
 ];
 
-export default function ItemsToReturn ({ open, close, items, setItems, socket } : ItemsToReturnProps) {
+export default function ItemsToReturn ({ 
+    open, 
+    close, 
+    items, 
+    setItems, 
+    socket,
+    updateQuantity,
+    handleRemove
+} : ItemsToReturnProps) {
     const createReturnMutation = useCreateReturnRequest();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
@@ -69,32 +80,6 @@ export default function ItemsToReturn ({ open, close, items, setItems, socket } 
         setItems([]);
     };
 
-    const updateQuantity = (variantId: string, change: number) => {
-        setItems(prev => prev.map(item => {
-            if (item._id === variantId) {
-                const newQty = Math.min(Math.max(item.quantity + change, 1), item.stock); // avoid <1 or >stock
-                return { ...item, quantity: newQty };
-            }
-            return item;
-        }));
-    };
-
-    const handleRemove = (id: string) => {
-        setItems(prev => prev.filter(item => item._id !== id));
-    }
-
-
-    const handleQuantity = (quantity : number, variant: VariantWithQuantity) => {
-        if(quantity <= variant.stock){
-            setItems(prev => 
-                prev.map(item => 
-                    item._id === variant._id ? ({ ...item, quantity }) : 
-                    item
-                )
-            )
-        }
-    }
-
     const isValidItems = useMemo(() => {
         return items.every(item => item.quantity);
     }, [items])
@@ -117,33 +102,7 @@ export default function ItemsToReturn ({ open, close, items, setItems, socket } 
                                 <p className="font-semibold mb-2 text-sm">{item.product?.product_name}</p>
                                 <Chip className="text-xs">{item.variant_name}</Chip>
                                 <p className="text-sm mt-4">Stock: {item.stock}</p>
-                                <div className="flex items-center gap-3 mt-2">
-                                    <button
-                                        onClick={() => updateQuantity(item._id, -1)}
-                                        disabled={item.quantity <= 1}
-                                        className="disabled:cursor-not-allowed cursor-pointer"
-                                    >
-                                        <Minus size={18}/>
-                                    </button>
-                                    <input 
-                                        type="number"
-                                        onKeyDown={(e) => {
-                                            if (e.key === "." || e.key === "," || e.key === "e" || e.key === "-") {
-                                            e.preventDefault();
-                                            }
-                                        }}
-                                        className="border border-gray-400 text-center w-15"
-                                        value={item.quantity ? item.quantity : ""}
-                                        onChange={(e) => handleQuantity(Number(e.target.value), item)}
-                                    />
-                                    <button
-                                        onClick={() => updateQuantity(item._id, 1)}
-                                        disabled={item.quantity >= item.stock}
-                                        className="disabled:cursor-not-allowed cursor-pointer"
-                                    >
-                                        <Plus size={18}/>
-                                    </button>
-                                </div>
+                                <QuantitySelector updateQuantity={updateQuantity} item={item}/>
                             </div>
                         </div>
                         <div className="flex flex-col items-center">

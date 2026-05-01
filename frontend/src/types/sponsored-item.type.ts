@@ -12,6 +12,7 @@ export interface SponsoredItem {
     quantity: number;
     status: 'pending' | 'approved' | 'completed' |  'rejected' | 'expired' | 'cancelled';
     createdAt: string;
+    updatedAt: string;
 }
 
 export interface CreateSponsoredItemPayload {

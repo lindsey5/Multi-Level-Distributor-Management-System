@@ -3,16 +3,21 @@ import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
 import { cn, formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import Chip from "../ui/Chip";
-import { X } from "lucide-react";
+import { Trash, X } from "lucide-react";
+import QuantitySelector from "./QuantitySelector";
 
 const ActionPanel = ({
     items,
     enableReturn,
     onOpen,
+    updateQuantity,
+    handleRemove
 }: {
     items: VariantWithQuantity[];
     enableReturn: boolean;
     onOpen: () => void;
+    updateQuantity: (variantId: string, quantity: number) => void;
+    handleRemove: (id: string) => void;
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -91,7 +96,7 @@ const ActionPanel = ({
                         {items.map((item, idx) => (
                             <div
                                 key={idx}
-                                className="flex items-start justify-between gap-3 p-3 rounded-xl border border-gray-300 hover:bg-gray-50 transition"
+                                className="flex justify-between gap-3 p-3 rounded-xl border border-gray-300 hover:bg-gray-50 transition"
                             >
                                 {/* LEFT */}
                                 <div className="flex flex-col gap-1">
@@ -102,23 +107,23 @@ const ActionPanel = ({
                                     <Chip className="w-fit text-xs">
                                         {item.variant_name}
                                     </Chip>
+
+                                    <QuantitySelector updateQuantity={updateQuantity} item={item}/>
                                 </div>
 
                                 {/* RIGHT */}
-                                <div className="text-right space-y-1">
-                                    <div className="text-xs text-gray-400">
-                                        Qty
-                                    </div>
-
-                                    <div className="font-semibold text-gray-800">
-                                        x{item.quantity}
-                                    </div>
-
-                                    <div className="text-xs text-gray-400">
+                                <div className="flex flex-col items-end space-y-3">
+                                    <p className="text-right">
                                         {formatToPeso(
                                             item.price * item.quantity
                                         )}
-                                    </div>
+                                    </p>
+                                    <button
+                                        onClick={() => handleRemove(item._id)}
+                                        className="hover:text-red-500 cursor-pointer"
+                                    >
+                                        <Trash size={16}/>
+                                    </button>
                                 </div>
                             </div>
                         ))}

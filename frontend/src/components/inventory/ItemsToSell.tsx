@@ -14,16 +14,27 @@ import { setAuth } from "../../lib/features/auth/authSlice";
 import Chip from "../ui/Chip";
 import type { Socket } from "socket.io-client";
 import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationSocket";
+import QuantitySelector from "./QuantitySelector";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
     setItems: React.Dispatch<SetStateAction<VariantWithQuantity[]>>;
     open: boolean;
     close: () => void;
-    socket: Socket | null
+    socket: Socket | null;
+    updateQuantity: (variantId: string, quantity: number) => void;
+    handleRemove: (id : string) => void;
 }
 
-export default function ItemsToSell ({ open, close, items, setItems, socket } : ItemsToSellProps) {
+export default function ItemsToSell ({ 
+    open, 
+    close, 
+    items, 
+    setItems, 
+    socket,
+    handleRemove,
+    updateQuantity,
+} : ItemsToSellProps) {
     const createSalesMutation = useCreateSales();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
     const dispatch = useDispatch();
@@ -61,20 +72,6 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
 
         setItems([]);
     };
-
-    const updateQuantity = (variantId: string, change: number) => {
-        setItems(prev => prev.map(item => {
-            if (item._id === variantId) {
-                const newQty = Math.min(Math.max(item.quantity + change, 1), item.stock); // avoid <1 or >stock
-                return { ...item, quantity: newQty };
-            }
-            return item;
-        }));
-    };
-
-    const handleRemove = (id: string) => {
-        setItems(prev => prev.filter(item => item._id !== id));
-    }
 
     const totalAmount = useMemo(() => {
         return items.reduce((total, item) => (item.price * item.quantity) + total, 0)
@@ -117,33 +114,7 @@ export default function ItemsToSell ({ open, close, items, setItems, socket } : 
                                 <p className="font-semibold mb-2 text-sm">{item.product?.product_name}</p>
                                 <Chip className="text-xs">{item.variant_name}</Chip>
                                 <p className="text-sm mt-4">Available Stock: {item.stock}</p>
-                                <div className="flex items-center gap-3 mt-2">
-                                    <button
-                                        onClick={() => updateQuantity(item._id, -1)}
-                                        disabled={item.quantity <= 1}
-                                        className="disabled:cursor-not-allowed cursor-pointer"
-                                    >
-                                        <Minus size={18}/>
-                                    </button>
-                                    <input 
-                                        type="number"
-                                        onKeyDown={(e) => {
-                                            if (e.key === "." || e.key === "," || e.key === "e" || e.key === "-") {
-                                            e.preventDefault();
-                                            }
-                                        }}
-                                        className="border border-gray-400 text-center w-15"
-                                        value={item.quantity ? item.quantity : ""}
-                                        onChange={(e) => handleQuantity(Number(e.target.value), item)}
-                                    />
-                                    <button
-                                        onClick={() => updateQuantity(item._id, 1)}
-                                        disabled={item.quantity >= item.stock}
-                                        className="disabled:cursor-not-allowed cursor-pointer"
-                                    >
-                                        <Plus size={18}/>
-                                    </button>
-                                </div>
+                                <QuantitySelector updateQuantity={updateQuantity} item={item}/>
                             </div>
                         </div>
                         <div className="flex flex-col items-center">

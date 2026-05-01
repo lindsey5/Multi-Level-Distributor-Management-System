@@ -94,7 +94,21 @@ export default function Inventory () {
     
     const handleClose = () => setShowModal(false);
 
-return (
+    const updateQuantity = (variantId: string, change: number) => {
+        setItems(prev => prev.map(item => {
+            if (item._id === variantId) {
+                const newQty = Math.min(Math.max(item.quantity + change, 1), item.stock); // avoid <1 or >stock
+                return { ...item, quantity: newQty };
+            }
+            return item;
+        }));
+    };
+
+    const handleRemove = (id: string) => {
+        setItems(prev => prev.filter(item => item._id !== id));
+    }
+
+    return (
         <div className="flex flex-col min-h-0 gap-5 p-3 md:p-5">
 
             {/* MODE */}
@@ -121,6 +135,8 @@ return (
                     items={items}
                     setItems={setItems}
                     socket={socket}
+                    updateQuantity={updateQuantity}
+                    handleRemove={handleRemove}
                 />
             ) : (
                 <ItemsToSell
@@ -129,6 +145,8 @@ return (
                     items={items}
                     setItems={setItems}
                     socket={socket}
+                    updateQuantity={updateQuantity}
+                    handleRemove={handleRemove}
                 />
             )}
 
@@ -166,6 +184,8 @@ return (
                     items={items}
                     enableReturn={enableReturn}
                     onOpen={() => setShowModal(true)}
+                    updateQuantity={updateQuantity}
+                    handleRemove={handleRemove}
                 />
 
             </div>

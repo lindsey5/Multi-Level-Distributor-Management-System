@@ -36,7 +36,7 @@ export default function EnterQuantity({ setItems, open, close, variant, label, b
         ? "Quantity exceeds available stock"
         : "";
 
-    const handleSell = () => {
+    const handleProceed = () => {
         close();
         setItems(prev => {
             let found = false;
@@ -56,6 +56,7 @@ export default function EnterQuantity({ setItems, open, close, variant, label, b
 
             return updated;
         });
+        setQuantity(1);
     };
 
     return (
@@ -92,7 +93,7 @@ export default function EnterQuantity({ setItems, open, close, variant, label, b
                         buttonClassName,
                     )}
                     disabled={!quantity || isInvalid || isExceedingStock}
-                    onClick={handleSell}
+                    onClick={handleProceed}
                 >
                     {buttonLabel}
                 </Button>
