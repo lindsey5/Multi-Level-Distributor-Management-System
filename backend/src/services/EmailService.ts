@@ -8,11 +8,8 @@ export default class EmailService {
             <div style="max-width: 500px; margin: auto; background: white; border-radius: 12px; padding: 30px; border: 1px solid #d1d5db;">
                 
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-                <div style="width: 55px; height: 55px; background: #111827; border-radius: 999px; display: flex; align-items: center; justify-content: center;">
-                    <img src="/logo.png" alt="logo" style="width: 35px; height: 35px;" />
-                </div>
 
-                <h2 style="margin: 0; font-size: 16px; color: #111827;">
+                <h2 style="margin: 0; font-size: 24px; color: #111827;">
                     Zhiyuan Enterprice Group Inc.
                 </h2>
                 </div>
