@@ -30,7 +30,7 @@ export default function SaleItems ({ sales, close, open } : { open: boolean, sal
                     <p className="text-xs font-bold">ID: {sales?.[0]?.seller.distributor_id}</p>
                 </div>
                 <h2 className="font-semibold">Items:</h2>
-                <div className="max-h-[50vh] overflow-y-auto">
+                <div className="max-h-[50vh] overflow-y-auto space-y-5">
                     {sales?.map(sale => (
                         <SaleItem sale={sale}/>
                     ))}
@@ -73,11 +73,11 @@ function SaleItem ({ sale } : {sale : DistributorSale}) {
                     <Chip className="text-sm">{sale.variant.variant_name}</Chip>
                 </div>
 
-                <p className="text-sm">Qty Sold: {sale.quantity}</p>
-                <p className="text-sm">Sales: {formatToPeso(sale.total_amount || 0)}</p>
+                <p className="text-sm text-muted">Qty Sold: {sale.quantity}</p>
+                <p className="text-sm text-muted">Sales: {formatToPeso(sale.total_amount || 0)}</p>
 
                 <p className="text-xs text-muted">Date Sold: {formatDate(sale.createdAt)}</p>
-                <p className="text-sm font-semibold">Your Commision ({sale.parent_commission_rate}% of total sales): {formatToPeso(sale.parent_commission)}</p>
+                <p className="text-xs font-semibold">Your Commision ({sale.parent_commission_rate}% of total sales): {formatToPeso(sale.parent_commission)}</p>
             </div>
         </div>
     )
