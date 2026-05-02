@@ -9,11 +9,9 @@ import { useSocket } from "../../hooks/useSocket";
 import StockTransferItems from "../stockTransferLog/StockTransferItems";
 import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationSocket";
 import SaleItems from "./SaleItems";
-import { useNavigate } from "react-router-dom";
 import WithdrawalRequestDetails from "../withdrawalRequest/WithdrawalRequestDetails";
 
 export default function NotificationBell() {
-    const navigate = useNavigate();
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [notification, setNotification] = useState<DistributorNotification | null>(null);
@@ -68,15 +66,11 @@ export default function NotificationBell() {
     }, [socket])
 
     const readNotification = (notification : DistributorNotification) => {
-        if(notification.stockOrder) {
-            navigate(`/distributor/orders?id=${notification.stockOrder.stock_order_id}`);
-            return;
-        }else if(notification.sponsoredItem) {
-            navigate(`/distributor/sponsored-items?id=${notification.sponsoredItem.sponsored_id}`);
-            return;
-        }
-
-        setNotification(notification);
+        if (notification.stockOrder) {
+            window.location.href = `/distributor/orders?id=${notification.stockOrder.stock_order_id}`;
+        } else if (notification.sponsoredItem) {
+            window.location.href = `/distributor/sponsored-items?id=${notification.sponsoredItem.sponsored_id}`;
+        }else setNotification(notification);
 
         if(notification.status === 'unread'){
             readNotificationMutation.mutate({ id: notification._id })
