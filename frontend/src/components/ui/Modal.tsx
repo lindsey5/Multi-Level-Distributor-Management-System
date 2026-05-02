@@ -13,7 +13,7 @@ export default function Modal({ open, onClose, children, className = "" }: Anima
         <AnimatePresence>
         {open && (
             <motion.div
-                className="min-h-screen fixed inset-0 flex items-center justify-center bg-black/70 z-30"
+                className="min-h-screen fixed inset-0 flex items-center justify-center bg-black/70 z-40"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

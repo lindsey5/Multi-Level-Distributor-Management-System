@@ -39,7 +39,7 @@ const ActionPanel = ({
             {open && (
                 <div
                     onClick={() => setOpen(false)}
-                    className="lg:hidden fixed inset-0 bg-black/40 z-50"
+                    className="lg:hidden fixed inset-0 bg-black/40 z-30"
                 />
             )}
 
@@ -47,7 +47,7 @@ const ActionPanel = ({
             <div
                 className={cn(
                     "bg-white border border-gray-300 flex flex-col min-h-0",
-                    "lg:w-96 lg:static lg:rounded-xl lg:shadow-sm z-50 md:z-10",
+                    "lg:w-96 lg:static lg:rounded-xl lg:shadow-sm z-30 lg:z-10",
 
                     // MOBILE DRAWER
                     "fixed bottom-0 left-0 right-0 rounded-t-2xl",

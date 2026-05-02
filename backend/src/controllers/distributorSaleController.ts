@@ -57,35 +57,37 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
             return res.status(404).json({ message: "Distributor not found" });
         }
 
+        // parent distributor
+        const parent_distributor = await Distributor.findById(distributor.parent_distributor_id).session(session);
+
+        // distributor commission
+        const distributorRate = (distributor.commission_rate || 0) / 100;
+        const parentRate = (parent_distributor?.child_commission_rate || 0) / 100;
+
         const distributorSales = await DistributorSale.insertMany(
-            sales.map((sale: any) => ({ ...sale, seller_id: req.user._id })),
+            sales.map((sale: any) => ({ 
+                ...sale, seller_id: req.user._id, 
+                commission: sale.total_amount * distributorRate,
+                parent_commission: sale.total_amount * parentRate
+            })),
             { session }
         );
 
         const total_amount = distributorSales.reduce((acc, sale) => acc + sale.total_amount, 0);
-
-        // distributor commission
-        const distributorRate = (distributor.commission_rate || 0) / 100;
         const distributorCommission = total_amount * distributorRate;
 
-        // parent commission
-        if (distributor.parent_distributor_id) {
-            const parent_distributor = await Distributor.findById(distributor.parent_distributor_id).session(session);
+        if (parent_distributor) {
+            const parentCommission = total_amount * parentRate;
+            const newBalance = parent_distributor.wallet_balance + parentCommission;
+            parent_distributor.set({ wallet_balance: newBalance})
+            await parent_distributor.save({ session });
 
-            if (parent_distributor) {
-                const parentRate = parent_distributor.child_commission_rate; // 2%
-                const parentCommission = total_amount * parentRate;
-                const newBalance = parent_distributor.wallet_balance + parentCommission;
-                parent_distributor.set({ wallet_balance: newBalance})
-                await parent_distributor.save({ session });
-
-                await CommissionLog.create([{ 
-                    receiver_id: parent_distributor._id, 
-                    sale_ids: distributorSales.map(sale => sale._id),
-                    commission_rate: parentRate * 100, 
-                    commission_amount: parentCommission 
-                }],{ session });
-            }
+            await CommissionLog.create([{ 
+                receiver_id: parent_distributor._id, 
+                sale_ids: distributorSales.map(sale => sale._id),
+                commission_rate: parentRate, 
+                commission_amount: parentCommission 
+            }],{ session });
         }
         const newBalance = distributor.wallet_balance + distributorCommission;
         distributor.set({ wallet_balance: newBalance })

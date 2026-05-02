@@ -50,7 +50,14 @@ export const getDistributorNotifications = async (req: AuthRequest, res: Respons
                         path: 'variant',
                         populate: "product"
                     },
-                    { path: 'seller', select: '-password' }
+                    {
+                        path: 'seller', 
+                        populate: {
+                            path: 'parent_distributor',
+                            select: '-password'
+                        },
+                        select: '-password' 
+                    }
                 ]
             },
             {

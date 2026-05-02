@@ -11,11 +11,14 @@ export default function SaleItems ({ sales, close, open } : { open: boolean, sal
     const totalSales = useMemo(() => {
         if(!sales) return 0;
 
-        return sales.reduce((total, sale) => total + sale.total_amount, 0)
-
+        return sales.reduce((total, sale) => total + sale.total_amount, 0);
     }, [sales])
 
-    const totalCommission = useMemo(() => totalSales * 0.02, [totalSales]);
+    const totalCommission = useMemo(() => {
+        if(!sales) return 0;
+
+        return sales.reduce((total, sale) => total + sale.parent_commission, 0);
+    }, [totalSales]);
 
     return (
         <Modal open={open} onClose={close}>
@@ -54,8 +57,6 @@ export default function SaleItems ({ sales, close, open } : { open: boolean, sal
 
 function SaleItem ({ sale } : {sale : DistributorSale}) {
 
-    const commission = useMemo(() => sale.total_amount * 0.02, [sale])
-
     return (
         <div className="flex gap-5 items-start">
             <img
@@ -76,7 +77,7 @@ function SaleItem ({ sale } : {sale : DistributorSale}) {
                 <p className="text-sm">Sales: {formatToPeso(sale.total_amount || 0)}</p>
 
                 <p className="text-xs text-muted">Date Sold: {formatDate(sale.createdAt)}</p>
-                <p className="text-sm font-semibold">Your Commision (2% of Sales): {formatToPeso(commission)}</p>
+                <p className="text-sm font-semibold">Your Commision: {formatToPeso(sale.parent_commission)}</p>
             </div>
         </div>
     )

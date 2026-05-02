@@ -11,7 +11,7 @@ interface DistributorSalesModalProps {
 }
 
 export default function DistributorSalesModal({ close, distributorSale }: DistributorSalesModalProps) {
-    
+        console.log(distributorSale)
     return (
         <Modal open={distributorSale !== null} onClose={close}>
             <Card className="space-y-5">
@@ -62,7 +62,7 @@ export default function DistributorSalesModal({ close, distributorSale }: Distri
                             <p className="text-xs text-muted">{distributorSale?.seller?.email || ""}</p>
                             <p className="text-xs font-bold">ID: {distributorSale?.seller.distributor_id}</p>
                         </div>
-                        <p className="font-bold">{formatToPeso((distributorSale?.total_amount || 0) * 0.05)}</p>
+                        <p className="font-bold">{formatToPeso(distributorSale?.commission || 0)}</p>
                      </div>
                      {distributorSale?.parent_distributor && (
                         <div className="flex justify-between items-center border border-[var(--border-ui)] px-3 py-2 rounded-lg">
@@ -72,7 +72,7 @@ export default function DistributorSalesModal({ close, distributorSale }: Distri
                                 <p className="text-xs text-muted">{distributorSale?.parent_distributor?.email || ""}</p>
                                 <p className="text-xs font-bold">ID: {distributorSale?.parent_distributor?.distributor_id}</p>
                             </div>
-                            <p className="font-bold">{formatToPeso((distributorSale?.total_amount || 0) * 0.02)}</p>
+                            <p className="font-bold">{formatToPeso(distributorSale?.parent_commission || 0)}</p>
                         </div>
                      )}
                 </div>

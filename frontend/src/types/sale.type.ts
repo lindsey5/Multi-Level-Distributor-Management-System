@@ -13,6 +13,8 @@ export interface DistributorSale {
     variant: Variant;
     quantity: number;
     total_amount: number;
+    commission: number;
+    parent_commission: number;
     createdAt: string;
     parent_distributor: Distributor;
 }

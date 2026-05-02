@@ -3,6 +3,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface DistributorSaleAttributes extends Document {
     seller_id: mongoose.Types.ObjectId; 
     variant_id: mongoose.Types.ObjectId;
+    commission: number;
+    parent_commission: number;
     quantity: number;
     total_amount: number;
 }
@@ -18,6 +20,16 @@ const DistributorSaleSchema: Schema<DistributorSaleAttributes> = new Schema(
         variant_id: {
             type: Schema.Types.ObjectId,
             ref: 'Variant'
+        },
+
+        commission: {
+            type: Number,
+            required: true,
+        },
+
+        parent_commission: {
+            type: Number,
+            required: true,
         },
 
         quantity: {

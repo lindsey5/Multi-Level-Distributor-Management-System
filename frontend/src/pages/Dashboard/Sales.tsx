@@ -83,7 +83,8 @@ export default function Sales () {
         },
         {
             header: 'Commission',
-            cell: ({ row }) => formatToPeso(row.original.total_amount * 0.05),
+            accessorKey: 'commission',
+            cell: info => formatToPeso(Number(info.getValue() as string) || 0),
             meta: { align: 'center' }
         },
         {
