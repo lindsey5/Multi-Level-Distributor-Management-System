@@ -9,8 +9,11 @@ export const login = async (req : Request, res : Response, next : NextFunction) 
     try{
         const { email, password } = req.body;
 
-        const distributor = await Distributor.findOne({ email, status: 'active' });
-
+        const distributor = await Distributor.findOne({ email, status: "active" })
+        .populate({
+            path: "parent_distributor",
+            select: "-password -_id",
+        });
         if(!distributor) return res.status(404).json({ message: 'User not found.' });
 
         const isMatch = await distributor.matchPassword(password);
@@ -45,7 +48,11 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
             process.env.JWT_REFRESH_SECRET || "test-jwt-refresh-secret-key"
         );
 
-        const distributor = await Distributor.findOne({ _id: decoded._id, status: 'active' });
+        const distributor = await Distributor.findOne({ _id: decoded._id, status: 'active' })
+        .populate({
+            path: "parent_distributor",
+            select: "-password -_id",
+        });
 
         if (!distributor) {
             return res.status(404).json({ message: "Distributor not found" });

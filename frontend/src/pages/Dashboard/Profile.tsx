@@ -41,6 +41,14 @@ export default function Profile () {
                         <p className="text-gray-400 text-sm">{distributor?.email}</p>
                     </div>
                 </div>
+                {distributor?.parent_distributor && (
+                    <div className="pb-3 border-b border-gray-300">
+                        <p className="text-sm">
+                            <span className="font-semibold">Parent Distributor: {" "}</span>
+                            {distributor?.parent_distributor.distributor_name}
+                        </p>
+                    </div>
+                )}
                 <div className="pb-3 border-b border-gray-300">
                     <p className="text-sm font-semibold">Commission Details:</p>
                     <p className="text-gray-400 text-sm">Commission Rate: {distributor?.commission_rate}%</p>
