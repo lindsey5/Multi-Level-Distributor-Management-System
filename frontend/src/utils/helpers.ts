@@ -26,6 +26,8 @@ export const formatDate = (date: Date | string | null | undefined): string => {
     return `${year}-${month}-${day} ${formattedHours}:${minutes} ${ampm}`;
 };
 
+export const formatInputDate = (date: Date) => date.toISOString().split("T")[0];
+
 export function formatToPeso (num : number) {
     const formatted = num.toLocaleString('en-us', {
         minimumFractionDigits: 2,

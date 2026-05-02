@@ -4,7 +4,7 @@ import FiltersMenu from "../ui/FiltersMenu";
 import DateInput from "../ui/DateInput";
 import Dropdown from "../ui/Dropdown";
 import type { SortOption } from "../../types/types.type";
-import { getKeyByValue } from "../../utils/helpers";
+import { formatInputDate, getKeyByValue } from "../../utils/helpers";
 import type { PaginationState } from "@tanstack/react-table";
 
 const options: Record<string, SortOption> = {
@@ -39,8 +39,10 @@ export default function SalesControls ({
  } : SalesControlsProps) {
 
     const clear = () => {
-        setStartDate('');
-        setEndDate('');
+        const date = new Date();
+        date.setDate(date.getDate() - 30);
+        setStartDate(formatInputDate(date));
+        setEndDate(formatInputDate(new Date()));
         setSorting({ 
             sortBy: 'createdAt',
             order: 'desc'

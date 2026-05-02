@@ -3,7 +3,7 @@ import { useGetSales } from "../../hooks/sale/use-get-sales.hook"
 import type { SortOption } from "../../types/types.type";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import type { DistributorSale } from "../../types/sale.type";
-import { formatDate, formatToPeso } from "../../utils/helpers";
+import { formatDate, formatInputDate, formatToPeso } from "../../utils/helpers";
 import CustomTable from "../../components/ui/Table";
 import { useDebounce } from "../../hooks/useDebounce";
 import SalesControls from "../../components/sales/SalesControls";
@@ -18,8 +18,16 @@ export default function Sales () {
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 800);
     const [pagination, setPagination] = useState<PaginationState>({ pageSize: 50, pageIndex: 0 });
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(() => {
+        const date = new Date();
+        date.setDate(date.getDate() - 30);
+        return formatInputDate(date);
+    });
+
+    const [endDate, setEndDate] = useState(() => {
+        return formatInputDate(new Date());
+    });
+
     const [distributorSale, setDistributorSale] = useState<DistributorSale | null>(null);
 
     const { data, isFetching } = useGetSales({

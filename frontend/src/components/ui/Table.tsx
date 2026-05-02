@@ -67,7 +67,7 @@ type TableSkeletonProps = { columns: number; rows?: number };
 export const TableSkeleton = ({ columns, rows = 10 }: TableSkeletonProps) => (
     <div className="min-h-0 flex-grow flex flex-col animate-pulse">
         <div className="overflow-auto flex-grow">
-            <table className="w-full text-sm border-collapse">
+            <table className="w-full border-collapse">
                 {/* Table Body */}
                 <tbody>
                     {Array.from({ length: rows }).map((_, rowIdx) => (
@@ -140,7 +140,7 @@ const CustomTable = <T,>({
             ) : (
                 <>
                     <div className="overflow-auto min-h-0 flex-grow border-x border-gray-300">
-                        <table className="w-full text-xs xl:text-sm border-collapse">
+                        <table className="w-full text-xs border-collapse">
                             <TableColumns table={table} />
                             <TableRows table={table} onRowClick={onRowClick}/>
                         </table>
