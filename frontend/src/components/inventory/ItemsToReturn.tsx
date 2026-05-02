@@ -3,7 +3,6 @@ import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
 import { Undo2, X } from "lucide-react";
-import { formatToPeso } from "../../utils/helpers";
 import Button from "../ui/Button";
 import { promiseToast } from "../../utils/sileo";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +14,6 @@ import { useCreateReturnRequest } from "../../hooks/returnRequest/use-create-ret
 import TextField from "../ui/Textfield";
 import Dropdown from "../ui/Dropdown";
 import type { Socket } from "socket.io-client";
-import QuantitySelector from "./QuantitySelector";
 
 interface ItemsToReturnProps{
     items: VariantWithQuantity[];
@@ -23,8 +21,6 @@ interface ItemsToReturnProps{
     open: boolean;
     close: () => void;
     socket: Socket | null;
-    updateQuantity: (variantId: string, quantity: number) => void;
-    handleRemove: (id : string) => void;
 }
 
 const returnReasons = [
@@ -39,8 +35,6 @@ export default function ItemsToReturn ({
     items, 
     setItems, 
     socket,
-    updateQuantity,
-    handleRemove
 } : ItemsToReturnProps) {
     const createReturnMutation = useCreateReturnRequest();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
@@ -95,24 +89,12 @@ export default function ItemsToReturn ({
                 </div>
                 <div className="max-h-[30vh] overflow-y-auto">
                 {items?.map(item => (
-                    <div key={item._id} className="flex flex-col md:flex-row justify-between items-start gap-3 py-2 border-b border-gray-300">
-                        <div className="flex flex-col md:flex-row gap-3">
-                            <img className="w-15 h-15 md:w-18 md:h-18" src={item.image_url} alt="item-image"/>
-                            <div className="space-y-1">
-                                <p className="font-semibold mb-2 text-sm">{item.product?.product_name}</p>
-                                <Chip className="text-xs">{item.variant_name}</Chip>
-                                <p className="text-sm mt-4">Stock: {item.stock}</p>
-                                <QuantitySelector updateQuantity={updateQuantity} item={item}/>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <p className="text-sm font-semibold">{formatToPeso(item.price * item.quantity)}</p>
-                            <button
-                                className="shadow-md shadow-gray-400 cursor-pointer text-sm bg-red-500 px-3 py-1 mt-2 text-white rounded-md"
-                                onClick={() => handleRemove(item._id)}
-                            >
-                                Remove
-                            </button>
+                    <div key={item._id} className="flex flex-col md:flex-row gap-3">
+                        <img className="w-15 h-15 md:w-18 md:h-18" src={item.image_url} alt="item-image"/>
+                        <div className="space-y-1">
+                            <p className="font-semibold mb-2 text-sm">{item.product?.product_name}</p>
+                            <Chip className="text-xs">{item.variant_name}</Chip>
+                            <p className="text-sm mt-4">Quantity: {item.quantity}</p>
                         </div>
                     </div>
                 ))}

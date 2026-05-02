@@ -14,7 +14,6 @@ import { setAuth } from "../../lib/features/auth/authSlice";
 import Chip from "../ui/Chip";
 import type { Socket } from "socket.io-client";
 import { DistributorNotificationSocketContext } from "../../contexts/DistributorNotificationSocket";
-import QuantitySelector from "./QuantitySelector";
 
 interface ItemsToSellProps{
     items: VariantWithQuantity[];
@@ -22,8 +21,6 @@ interface ItemsToSellProps{
     open: boolean;
     close: () => void;
     socket: Socket | null;
-    updateQuantity: (variantId: string, quantity: number) => void;
-    handleRemove: (id : string) => void;
 }
 
 export default function ItemsToSell ({ 
@@ -32,8 +29,6 @@ export default function ItemsToSell ({
     items, 
     setItems, 
     socket,
-    handleRemove,
-    updateQuantity,
 } : ItemsToSellProps) {
     const createSalesMutation = useCreateSales();
     const { distributor, refreshToken } = useSelector((store : RootState) => store.auth);
@@ -102,18 +97,9 @@ export default function ItemsToSell ({
                             <div className="space-y-1">
                                 <p className="font-semibold mb-2 text-sm">{item.product?.product_name}</p>
                                 <Chip className="text-xs">{item.variant_name}</Chip>
-                                <p className="text-sm mt-4">Available Stock: {item.stock}</p>
-                                <QuantitySelector updateQuantity={updateQuantity} item={item}/>
+                                <p className="text-sm mt-4">Quantity: {item.stock}</p>
+                                <p className="text-sm">Amount: {formatToPeso(item.price * item.quantity)}</p>
                             </div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <p className="text-sm font-semibold">{formatToPeso(item.price * item.quantity)}</p>
-                            <button
-                                className="shadow-md shadow-gray-400 cursor-pointer text-sm bg-red-500 px-3 py-1 mt-2 text-white rounded-md"
-                                onClick={() => handleRemove(item._id)}
-                            >
-                                Remove
-                            </button>
                         </div>
                     </div>
                 ))}

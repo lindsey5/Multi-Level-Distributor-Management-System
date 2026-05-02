@@ -145,8 +145,6 @@ export default function Inventory () {
                     items={items}
                     setItems={setItems}
                     socket={socket}
-                    updateQuantity={updateQuantity}
-                    handleRemove={handleRemove}
                 />
             )}
 
