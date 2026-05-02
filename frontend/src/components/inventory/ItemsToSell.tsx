@@ -88,7 +88,7 @@ export default function ItemsToSell ({
 
     const commission = useMemo(() => {
         return totalAmount * (distributor?.commission_rate || 0) / 100;
-    }, [totalAmount])
+    }, [totalAmount, distributor])
 
     const isValidItems = useMemo(() => {
         return items.every(item => item.quantity);
