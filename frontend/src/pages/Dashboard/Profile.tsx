@@ -39,10 +39,14 @@ export default function Profile () {
                         <h1 className="font-bold">{distributor?.distributor_name}</h1>
                         <p className="font-semibold text-sm">ID: {distributor?.distributor_id}</p>
                         <p className="text-gray-400 text-sm">{distributor?.email}</p>
-                        <p className="text-gray-400 text-sm">Commission Rate: {distributor?.commission_rate}%</p>
-                        <p className="text-gray-400 text-sm">Commission from Downline Distributor: {distributor?.child_commission_rate}%</p>
                     </div>
                 </div>
+                <div className="pb-3 border-b border-gray-300">
+                    <p className="text-sm font-semibold">Commission Details:</p>
+                    <p className="text-gray-400 text-sm">Commission Rate: {distributor?.commission_rate}%</p>
+                    <p className="text-gray-400 text-sm">Commission from Downline Distributor: {distributor?.child_commission_rate}%</p>
+                </div>
+                <h1 className="text-md font-semibold">Edit Information</h1>
                 <TextField 
                     label="Name"
                     registration={register("distributor_name")}
