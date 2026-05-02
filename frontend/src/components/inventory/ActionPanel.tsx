@@ -141,12 +141,10 @@ const ActionPanel = ({
                         disabled={items.length === 0}
                         onClick={onOpen}
                         className={cn(
-                            "w-full py-2 text-sm rounded-xl",
-                            items.length === 0
-                                ? "bg-gray-200 text-gray-400"
-                                : enableReturn
-                                    ? "bg-red-600 hover:bg-red-700 text-white"
-                                    : "bg-black hover:bg-gray-900 text-white"
+                            "w-full py-2 text-sm rounded-xl border-none",
+                            enableReturn
+                                ? "bg-red-600 hover:bg-red-700 text-white"
+                                : "bg-black hover:bg-gray-900 text-white"
                         )}
                     >
                         {enableReturn ? "Confirm Return" : "Confirm Sell"}
