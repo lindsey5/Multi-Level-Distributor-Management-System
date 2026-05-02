@@ -128,7 +128,7 @@ export default function ItemsToReturn ({
                         onClick={handleReturnItems}
                     >
                         <Undo2 size={20}/>
-                        {createReturnMutation.isPending ? "Loading..." : "Proceed Return"}
+                        {createReturnMutation.isPending ? "Loading..." : "Return"}
                     </Button>
                 </div>
             </Card>
