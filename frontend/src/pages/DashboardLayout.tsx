@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "../utils/helpers";
-import { LayoutDashboard, Archive, Repeat, User, BarChartBig, Undo2, PackagePlus, Package, Star, Banknote } from "lucide-react";
+import { LayoutDashboard, Archive, Repeat, User, BarChartBig, Undo2, PackagePlus, Package, Star, Banknote, Network } from "lucide-react";
 import type { MenuItem } from "../types/menu.type";
 import DistributorSidebar from "../components/distributor/DistributorSidebar";
 
@@ -19,6 +19,7 @@ export const MenuItems: MenuItem[] = [
     { label: "Return History", icon: <Undo2 size={18} />, path: "/distributor/return-history", category: "History" },
     { label: "Withdrawal History", icon: <Banknote size={18} />, path: "/distributor/withdrawal-requests", category: "History" },
 
+    { label: "Downline Distributors", icon: <Network size={18}/>, path: "/distributors/downline", category: "Account" },
     { label: "Profile", icon: <User size={18} />, path: "/distributor/profile", category: "Account" },
 ];
 

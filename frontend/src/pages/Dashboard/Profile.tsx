@@ -10,7 +10,6 @@ import Button from "../../components/ui/Button";
 import { useUpdateDistributor } from "../../hooks/distributor/use-update-distributor.hook";
 import { promiseToast } from "../../utils/sileo";
 
-
 export default function Profile () {
     const auth = useSelector((store : RootState) => store.auth);
     const distributor = auth.distributor;
@@ -38,8 +37,10 @@ export default function Profile () {
                     </div>
                     <div className="space-y-1">
                         <h1 className="font-bold">{distributor?.distributor_name}</h1>
-                        <p className="text-gray-400 text-sm">{distributor?.email}</p>
                         <p className="font-semibold text-sm">ID: {distributor?.distributor_id}</p>
+                        <p className="text-gray-400 text-sm">{distributor?.email}</p>
+                        <p className="text-gray-400 text-sm">Commission Rate: {distributor?.commission_rate}%</p>
+                        <p className="text-gray-400 text-sm">Commission from Downline Distributor: {distributor?.child_commission_rate}%</p>
                     </div>
                 </div>
                 <TextField 

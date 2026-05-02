@@ -7,6 +7,7 @@ export interface Distributor {
     distributor_name: string;
     email: string;
     commission_rate: number;
+    child_commission_rate: number;
     wallet_balance: number;
     withdrawal_methods: WithdrawalMethod[];
     createdAt: string;

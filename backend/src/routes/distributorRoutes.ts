@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middlewares/authMiddleware";
-import { addWithdrawalMethod, deleteWithdrawalMethod, getDistributorBalance, updateDistributor } from "../controllers/distributorController";
+import { addWithdrawalMethod, deleteWithdrawalMethod, getDistributorBalance, getDownlineDistributors, updateDistributor } from "../controllers/distributorController";
 import createRateLimiter from "../utils/rate-limit";
 const router = Router();
 
@@ -9,6 +9,13 @@ router.get(
     createRateLimiter(5 * 60 * 1000, 100),
     requireAuth,
     getDistributorBalance   
+)
+
+router.get(
+    '/downline',
+    createRateLimiter(5 * 60 * 1000, 100),
+    requireAuth,
+    getDownlineDistributors
 )
 
 router.put(

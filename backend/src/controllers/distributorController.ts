@@ -19,6 +19,23 @@ export const getDistributorBalance = async (req: AuthRequest, res: Response, nex
     }
 }
 
+export const getDownlineDistributors = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try{
+        const distributor = await Distributor.findById(req.user._id);
+
+        if(!distributor) return res.status(404).json({ message: "Distributor not found" });
+
+        const downlineDistributors = await Distributor.find({ parent_distributor_id: distributor._id })
+            .populate('parent_distributor')
+            .select('-password');
+
+        res.status(200).json({downlineDistributors })
+
+    } catch (err) {
+        next(err);
+    }
+}
+
 export const updateDistributor = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try{
         const distributor = await Distributor.findById(req.user._id);
