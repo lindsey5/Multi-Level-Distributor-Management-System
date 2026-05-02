@@ -1,4 +1,4 @@
-import { useContext, useMemo, type SetStateAction } from "react";
+import { useContext, useEffect, useMemo, type SetStateAction } from "react";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import type { VariantWithQuantity } from "../../pages/Dashboard/Inventory";
@@ -67,6 +67,20 @@ export default function ItemsToSell ({
 
         setItems([]);
     };
+
+    useEffect(() => {
+        const refresh = async () => {
+            const response = await authService.refreshAccessToken(refreshToken || "");
+
+            dispatch(setAuth({
+                accessToken: response.token.accessToken, 
+                refreshToken: response.token.refreshToken,
+                distributor: response.distributor
+            }))
+        }
+
+        refresh();
+    }, [open])
 
     const totalAmount = useMemo(() => {
         return items.reduce((total, item) => (item.price * item.quantity) + total, 0)
