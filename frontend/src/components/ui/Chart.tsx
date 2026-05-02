@@ -55,8 +55,8 @@ export default function Chart({ title, labels, values, formatToPeso = false }: C
             borderColor: "#5e7cd4a2",
             borderWidth: 2,
             tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 4,
+            pointRadius: 0,
+            pointHoverRadius: 0,
             pointHoverBackgroundColor: "#5b7ce9",
             fill: true, 
             backgroundColor: (context: any) => {
