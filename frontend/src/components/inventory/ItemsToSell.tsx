@@ -73,7 +73,7 @@ export default function ItemsToSell ({
     }, [items])
 
     const commission = useMemo(() => {
-        return totalAmount * 0.05;
+        return totalAmount * (distributor?.commission_rate || 0) / 100;
     }, [totalAmount])
 
     const isValidItems = useMemo(() => {
@@ -112,8 +112,8 @@ export default function ItemsToSell ({
                         </p>
 
                         <p className="text-xs md:text-sm">
-                            <span className="font-semibold">5% of Total Sales:</span>{" "}
-                            {formatToPeso(totalAmount)} x 0.05
+                            <span className="font-semibold">{distributor?.commission_rate}% of Total Sales:</span>{" "}
+                            {formatToPeso(totalAmount)} x {(distributor?.commission_rate || 0) / 100}
                         </p>
 
                         <p className="font-bold">

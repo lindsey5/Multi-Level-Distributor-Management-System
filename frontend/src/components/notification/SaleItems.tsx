@@ -77,7 +77,7 @@ function SaleItem ({ sale } : {sale : DistributorSale}) {
                 <p className="text-sm">Sales: {formatToPeso(sale.total_amount || 0)}</p>
 
                 <p className="text-xs text-muted">Date Sold: {formatDate(sale.createdAt)}</p>
-                <p className="text-sm font-semibold">Your Commision: {formatToPeso(sale.parent_commission)}</p>
+                <p className="text-sm font-semibold">Your Commision ({sale.parent_commission_rate}% of total sales): {formatToPeso(sale.parent_commission)}</p>
             </div>
         </div>
     )

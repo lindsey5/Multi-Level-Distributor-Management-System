@@ -68,7 +68,9 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
             sales.map((sale: any) => ({ 
                 ...sale, seller_id: req.user._id, 
                 commission: sale.total_amount * distributorRate,
-                parent_commission: sale.total_amount * parentRate
+                commission_rate: distributor.commission_rate,
+                parent_commission: sale.total_amount * parentRate,
+                parent_commission_rate: parent_distributor ? parent_distributor.child_commission_rate : 0
             })),
             { session }
         );

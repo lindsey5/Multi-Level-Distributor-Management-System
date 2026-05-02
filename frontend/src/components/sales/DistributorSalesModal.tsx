@@ -61,6 +61,7 @@ export default function DistributorSalesModal({ close, distributorSale }: Distri
                             <p className="text-sm">{distributorSale?.seller?.distributor_name || "N/A"}</p>
                             <p className="text-xs text-muted">{distributorSale?.seller?.email || ""}</p>
                             <p className="text-xs font-bold">ID: {distributorSale?.seller.distributor_id}</p>
+                            <p className="text-xs">Commission Rate: {distributorSale?.commission_rate}%</p>
                         </div>
                         <p className="font-bold">{formatToPeso(distributorSale?.commission || 0)}</p>
                      </div>
@@ -71,6 +72,7 @@ export default function DistributorSalesModal({ close, distributorSale }: Distri
                                 <p className="text-sm">{distributorSale?.parent_distributor?.distributor_name || "N/A"}</p>
                                 <p className="text-xs text-muted">{distributorSale?.parent_distributor?.email || ""}</p>
                                 <p className="text-xs font-bold">ID: {distributorSale?.parent_distributor?.distributor_id}</p>
+                                <p className="text-xs">Commission Rate: {distributorSale.parent_commission_rate}%</p>
                             </div>
                             <p className="font-bold">{formatToPeso(distributorSale?.parent_commission || 0)}</p>
                         </div>

@@ -14,7 +14,9 @@ export interface DistributorSale {
     quantity: number;
     total_amount: number;
     commission: number;
+    commission_rate: number;
     parent_commission: number;
+    parent_commission_rate: number;
     createdAt: string;
     parent_distributor: Distributor;
 }

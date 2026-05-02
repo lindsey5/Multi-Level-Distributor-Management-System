@@ -4,7 +4,9 @@ export interface DistributorSaleAttributes extends Document {
     seller_id: mongoose.Types.ObjectId; 
     variant_id: mongoose.Types.ObjectId;
     commission: number;
+    commission_rate: number;
     parent_commission: number;
+    parent_commission_rate: number;
     quantity: number;
     total_amount: number;
 }
@@ -23,6 +25,16 @@ const DistributorSaleSchema: Schema<DistributorSaleAttributes> = new Schema(
         },
 
         commission: {
+            type: Number,
+            required: true,
+        },
+
+        commission_rate: {
+            type: Number,
+            required: true,
+        },
+
+        parent_commission_rate: {
             type: Number,
             required: true,
         },
