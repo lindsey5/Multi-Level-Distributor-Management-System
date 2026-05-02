@@ -149,7 +149,7 @@ const ActionPanel = ({
                                     : "bg-black hover:bg-gray-900 text-white"
                         )}
                     >
-                        {enableReturn ? "Confirm Return" : "Confirm Sale"}
+                        {enableReturn ? "Confirm Return" : "Confirm Sell"}
                     </Button>
 
                     <p className="text-xs text-gray-400 text-center mt-2">
