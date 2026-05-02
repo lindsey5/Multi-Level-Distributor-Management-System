@@ -117,6 +117,7 @@ export default function Sales () {
                 dataTour="sales-table"
                 onRowClick={onRowClick}
             />
+            <p className="font-bold">Total Sales: {formatToPeso(data?.totalSales || 0)}</p>
         </div>
     )
 }

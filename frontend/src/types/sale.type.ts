@@ -40,6 +40,7 @@ export interface GetDistributorSalesParams extends PaginationParams {
 
 export interface GetDistributorSalesResponse extends PaginationResponse {
     distributorSales: DistributorSale[];
+    totalSales: number;
 }
 
 export type Period = "today" | "this-week" | "this-month" | "this-year";
