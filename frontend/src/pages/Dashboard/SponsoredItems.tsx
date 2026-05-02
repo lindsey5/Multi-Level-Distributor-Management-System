@@ -61,8 +61,12 @@ const columns = () : ColumnDef<SponsoredItem>[] =>  [
     {
         header: "Status",
         accessorKey: 'status',
-        cell: (info) => <DeliveryStatusChip status={info.getValue() as string}/>,
-     meta: { align: 'center' }
+        cell: (info) => (
+            <div className="flex justify-center">
+                <DeliveryStatusChip status={info.getValue() as string}/>
+            </div>
+        ),
+        meta: { align: 'center' }
     },
     {
         header: 'Date',
