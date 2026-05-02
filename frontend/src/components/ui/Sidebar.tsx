@@ -19,9 +19,6 @@ export default function Sidebar({
     const location = useLocation();
     const pathname = location.pathname;
 
-    // =========================
-    // GROUP ITEMS BY CATEGORY
-    // =========================
     const groupedItems = items.reduce(
         (acc: Record<string, MenuItem[]>, item) => {
             const category = item.category || "Other";
@@ -43,9 +40,7 @@ export default function Sidebar({
                 collapsed ? "w-20" : "w-72"
             )}
         >
-            {/* ===================== */}
             {/* LOGO */}
-            {/* ===================== */}
             <div
                 className={cn(
                     "flex items-center h-16 px-5 border-b border-gray-100",
@@ -84,10 +79,7 @@ export default function Sidebar({
             </div>
 
             <div className="w-full h-[1px] bg-gray-300 my-2" />
-
-            {/* ===================== */}
             {/* NAVIGATION */}
-            {/* ===================== */}
             <nav className="flex-1 px-3 overflow-y-auto">
                 {Object.entries(groupedItems).map(([category, items]) => (
                     <div key={category} className="mb-4">
@@ -137,19 +129,17 @@ export default function Sidebar({
                 ))}
             </nav>
 
-            {/* ===================== */}
-            {/* FOOTER */}
-            {/* ===================== */}
+            {/* Expand button */}
+            {collapsed && (
+                <button
+                    onClick={() => setCollapsed(false)}
+                    className="absolute top-1/2 -right-5 transform -translate-y-1/2 bg-white p-2 rounded-full border border-gray-300 hover:bg-gray-200"
+                >
+                    <ChevronRight className="text-gold" />
+                </button>
+            )}
+
             <div className="px-3 pb-5 pt-3 border-t border-gray-100 relative">
-                {/* Expand button */}
-                {collapsed && (
-                    <button
-                        onClick={() => setCollapsed(false)}
-                        className="absolute top-1/2 -right-5 transform -translate-y-1/2 bg-white p-2 rounded-full border border-gray-300 hover:bg-gray-200"
-                    >
-                        <ChevronRight className="text-gold" />
-                    </button>
-                )}
 
                 {/* Logout */}
                 <button
