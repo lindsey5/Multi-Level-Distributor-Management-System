@@ -3,6 +3,7 @@ import { StockTransferItemAttributes } from "./StockTransferItem";
 import './User';
 
 export interface StockTransferAttributes extends Document {
+    transfer_no: string;
     sender_id?: mongoose.Types.ObjectId | null;
     receiver_id: mongoose.Types.ObjectId;
     items: StockTransferItemAttributes[];
@@ -11,6 +12,10 @@ export interface StockTransferAttributes extends Document {
 
 const StockTransferSchema: Schema<StockTransferAttributes> = new Schema(
     {
+        transfer_no: {
+            type: String,
+            unique: true,
+        },
         sender_id: {
             type: Schema.Types.ObjectId,
             ref: "Admin",

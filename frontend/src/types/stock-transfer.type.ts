@@ -13,6 +13,7 @@ export interface Sender {
 
 export interface StockTransferLog {
     _id: string;
+    transfer_no: string;
     items: StockTransferItem[];
     sender_id: string | null;
     receiver_id: string;

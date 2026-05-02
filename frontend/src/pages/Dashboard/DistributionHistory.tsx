@@ -35,6 +35,11 @@ export default function TransferLogs () {
 
     const columns: ColumnDef<StockTransferLog>[] = [
         {
+            header: "Distribution Id",
+            accessorKey: "transfer_no",
+            meta: { align: 'center' },
+        },
+        {
             header: "Sender",
             cell: ({ row }) => (
                 <div>
@@ -42,7 +47,7 @@ export default function TransferLogs () {
                     <p>{row.original.sender?.email}</p>
                 </div>
             ),
-            meta: { align: 'left' },
+            meta: { align: 'center' },
         },
         {
             header: "Quantity",

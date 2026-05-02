@@ -133,7 +133,8 @@ export const getStockTransferLogs = async (
                 createdAt: { $first: "$createdAt" },
                 updatedAt: { $first: "$updatedAt" },
                 items: { $push: "$items" },
-                status: { $first: '$status' }
+                status: { $first: '$status' },
+                transfer_no: { $first: "$transfer_no" }
             },
         });
 
@@ -272,7 +273,7 @@ export const updateStockTransferStatus = async (req: AuthRequest, res: Response,
                 );
             }
         }
-        
+
         await session.commitTransaction();
         session.endSession();
         
