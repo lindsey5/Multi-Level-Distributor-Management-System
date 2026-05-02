@@ -16,6 +16,7 @@ export interface DistributorAttributes extends Document {
     parent_distributor_id: mongoose.Types.ObjectId | null;
     distributor_name: string;
     commission_rate: number;
+    child_commission_rate: number;
     wallet_balance: number;
     withdrawal_methods: WithdrawalMethod[];
     email: string;
@@ -49,6 +50,10 @@ const DistributorSchema: Schema<DistributorAttributes> = new Schema(
             type: Number,
             required: true,
             default: 5,
+        },
+
+        child_commission_rate: {
+
         },
 
         wallet_balance: {

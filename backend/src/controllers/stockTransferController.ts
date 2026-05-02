@@ -255,22 +255,22 @@ export const updateStockTransferStatus = async (req: AuthRequest, res: Response,
                 }).session(session);
 
                 if (!existingStock) {
+                    await DistributorStock.create(
+                        [
+                            {
+                                distributor_id: stockTransfer.receiver_id,
+                                variant_id: item.variant_id,
+                                quantity: item.quantity,
+                            }
+                        ],
+                        { session }
+                    );
+                    
                     continue;
                 }
 
                 existingStock.quantity += item.quantity;
                 await existingStock.save({ session });
-
-                await DistributorStock.create(
-                    [
-                        {
-                            distributor_id: stockTransfer.receiver_id,
-                            variant_id: item.variant_id,
-                            quantity: item.quantity,
-                        }
-                    ],
-                    { session }
-                );
             }
         }
 

@@ -73,7 +73,7 @@ export const createBulkDistributorSale = async (req: AuthRequest, res: Response,
             const parent_distributor = await Distributor.findById(distributor.parent_distributor_id).session(session);
 
             if (parent_distributor) {
-                const parentRate = 0.02; // 2%
+                const parentRate = parent_distributor.child_commission_rate; // 2%
                 const parentCommission = total_amount * parentRate;
                 const newBalance = parent_distributor.wallet_balance + parentCommission;
                 parent_distributor.set({ wallet_balance: newBalance})
