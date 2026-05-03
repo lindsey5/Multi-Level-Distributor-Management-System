@@ -37,4 +37,13 @@ export const PasswordSchema = z.object({
     path: ["confirmPassword"],
   });
 
+export const ForgotPasswordSchema = z.object({
+    email: z
+        .string()
+        .min(1, "Email is required")
+        .email("Invalid email format"),
+});
+
+export type ForgotPasswordFormData = z.infer<typeof ForgotPasswordSchema>;
+
 export type PasswordFormData = z.infer<typeof PasswordSchema>;
