@@ -30,9 +30,14 @@ export default function ForgotPassword() {
             className="h-screen flex items-center justify-center"
         >
             <Card className="flex flex-col w-[95vw] md:w-full md:max-w-sm px-8 py-12">
-                <h1 className="test-2xl font-medium mb-5">
-                    Forgot Password
-                </h1>
+                <div className="flex items-center gap-4 mb-5">
+                    <div className="w-15 h-15 rounded-full p-2 bg-gray-800 flex items-center justify-center">
+                        <img src="/logo.png" alt="logo" />
+                    </div>
+                    <span className="text-lg font-medium text-gray-900">
+                        Forgot Password
+                    </span>
+                </div>
     
                 <div className="w-full h-[1px] bg-gray-400 mb-4"></div>
     

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changePassword, forgotPassword, login, refreshAccessToken } from "../controllers/authController";
+import { changePassword, forgotPassword, login, refreshAccessToken, resetPassword } from "../controllers/authController";
 import { requireAuth } from "../middlewares/authMiddleware";
 import createRateLimiter from "../utils/rate-limit";
 const router = Router();
@@ -27,6 +27,12 @@ router.post(
     '/forgot-password',
     createRateLimiter(15 * 60 * 1000, 5),  
     forgotPassword
+)
+
+router.post(
+    '/reset-password',
+    createRateLimiter(15 * 60 * 1000, 5),  
+    resetPassword
 )
 
 const authRoutes = router;

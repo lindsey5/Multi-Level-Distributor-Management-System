@@ -22,6 +22,7 @@ import SponsoredItems from "../pages/Dashboard/SponsoredItems";
 import WithdrawalMethods from "../pages/Dashboard/WithdrawalMethods";
 import WithdrawalRequests from "../pages/Dashboard/WithdrawalRequests";
 import DownlineDistributors from "../pages/Dashboard/DownlineDistributors";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 const router = createBrowserRouter([ 
     {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
     {
         path: '/forgot-password',
         Component: () => <ForgotPassword/>
+    },
+    {
+        path: '/reset-password/:token',
+        Component: () => <ResetPassword />
     },
     {
         path: '/distributor',

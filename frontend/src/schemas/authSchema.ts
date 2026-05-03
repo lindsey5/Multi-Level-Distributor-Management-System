@@ -14,7 +14,7 @@ export const LoginSchema = z.object({
 
 export type LoginFormData = z.infer<typeof LoginSchema>;
 
-export const PasswordSchema = z.object({
+export const ChangePasswordSchema = z.object({
     currentPassword: z
         .string()
         .min(1, "Current password is required"),
@@ -35,7 +35,9 @@ export const PasswordSchema = z.object({
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
-  });
+});
+
+export type ChangePasswordFormData = z.infer<typeof ChangePasswordSchema>;
 
 export const ForgotPasswordSchema = z.object({
     email: z
@@ -46,4 +48,22 @@ export const ForgotPasswordSchema = z.object({
 
 export type ForgotPasswordFormData = z.infer<typeof ForgotPasswordSchema>;
 
-export type PasswordFormData = z.infer<typeof PasswordSchema>;
+export const ResetPasswordSchema = z.object({
+    newPassword: z
+        .string()
+        .min(8, "Password must be at least 12 characters")
+        .max(100, "Password must not exceed 100 characters")
+        .regex(/[A-Z]/, "Must include at least 1 uppercase letter")
+        .regex(/[a-z]/, "Must include at least 1 lowercase letter")
+        .regex(/[0-9]/, "Must include at least 1 number")
+        .regex(/[^A-Za-z0-9]/, "Must include at least 1 special character"),
+
+    confirmPassword: z
+        .string()
+        .min(1, "Confirm password is required"),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+});
+
+export type ResetPasswordFormData = z.infer<typeof ResetPasswordSchema>;

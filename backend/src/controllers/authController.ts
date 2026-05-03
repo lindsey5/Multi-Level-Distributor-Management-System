@@ -4,6 +4,7 @@ import { generateAccessToken, generateRefreshToken, generateResetToken } from ".
 import jwt from "jsonwebtoken";
 import { AuthRequest } from "../types/types";
 import EmailService from "../services/EmailService";
+import ResetToken from "../models/ResetToken";
 
 export const login = async (req : Request, res : Response, next : NextFunction) => {
     try{
@@ -114,18 +115,66 @@ export const forgotPassword = async (req: Request, res: Response, next: NextFunc
         const distributor = await Distributor.findOne({ email });
 
         if(!distributor) return res.status(404).json({ message: 'User not found.' });
+
         const token = generateResetToken(distributor._id);
 
         const resetLink = `${process.env.ORIGIN}/reset-password/${token}`;
 
         const isSent = await EmailService.sendResetEmail(distributor.email, distributor.distributor_name, resetLink);
 
-        if(!isSent) return res.status(400).json({ message: "Error sending forgot password email" })
+        if(!isSent) return res.status(400).json({ message: "Error sending forgot password email" });
+
+        await ResetToken.create({
+            distributor_id: distributor._id,
+            resetToken: token,
+            resetTokenExpires: new Date(Date.now() + 15 * 60 * 1000)
+        })
 
         res.status(200).json({
             message: "Password reset link has been sent to your email address. Please check your inbox."
         });
     }catch(err){
         next(err);
+    }
+}
+
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const { resetToken, newPassword } = req.body;
+
+        if (!resetToken) {
+            return res.status(401).json({ message: "Reset token required" });
+        }
+
+        const decoded: any = jwt.verify(
+            resetToken,
+            process.env.JWT_RESET_SECRET || "test-jwt-reset-secret-key"
+        );
+
+        const distributor = await Distributor.findOne({ _id: decoded._id, status: 'active' });
+
+        if(!distributor){
+            return res.status(404).json({ message: "Distributor not found" });
+        }
+
+        const token = await ResetToken.findOne({
+            distributor_id: distributor._id,
+            resetToken: resetToken,
+            resetTokenExpires: { $gt: new Date() }
+        })
+
+        if(!token) {
+            return res.status(401).json({ message: "Reset Link Expired" });
+        }
+
+        await token.deleteOne();
+
+        distributor.password = newPassword;
+        await distributor.save();
+
+        res.status(200).json({ message: "Password successfully reset" })
+
+    } catch(err) {
+        return res.status(401).json({ message: "Reset Link Expired" });
     }
 }
