@@ -19,4 +19,9 @@ export const authService = {
             method: HttpMethod.PATCH,
             data: { currentPassword, newPassword }
         }),
+    forgotPassword: (email: string): Promise<{ message?: string}> =>
+        apiAxios<{ message?: string }>("auth/forgot-password", {
+            method: HttpMethod.POST,
+            data: { email},
+        }),
 };

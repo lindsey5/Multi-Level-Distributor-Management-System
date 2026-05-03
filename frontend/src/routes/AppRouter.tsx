@@ -13,6 +13,7 @@ import WalletBalance from "../pages/WalletBalanceLayout";
 import Withdraw from "../pages/Dashboard/Withdraw";
 import CommissionLogs from "../pages/Dashboard/CommissionLogs";
 import ChangePassword from "../pages/Dashboard/ChangePassword";
+import ForgotPassword from "../pages/auth/ForgotPassword";
 import ReturnHistory from "../pages/Dashboard/ReturnHistory";
 import DistributorNotificationSocketContextProvider from "../contexts/DistributorNotificationSocket";
 import StockOrder from '../pages/Dashboard/StockOrder';
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     {
         index: true,
         Component: () => <Login />
+    },
+    {
+        path: '/forgot-password',
+        Component: () => <ForgotPassword/>
     },
     {
         path: '/distributor',
