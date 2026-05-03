@@ -1,5 +1,11 @@
 import { apiAxios, HttpMethod } from "../lib/api/apiAxios";
-import type { AddWithdrawalMethodPayload, AddWithdrawalMethodResponse, UpdateDistributorPayload, UpdateDistributorResponse } from "../types/distributor.type";
+import type { 
+    GetDownlineDistributorsResponse, 
+    AddWithdrawalMethodPayload, 
+    AddWithdrawalMethodResponse, 
+    UpdateDistributorPayload, 
+    UpdateDistributorResponse 
+} from "../types/distributor.type";
 
 export const distributorService = {
     updateDistributor: (data : UpdateDistributorPayload) => (
@@ -24,4 +30,9 @@ export const distributorService = {
         apiAxios<{ message?: string; id: string}>(`distributors/withdrawal-method/${id}`, {
             method: HttpMethod.DELETE,
         }),
+
+    getDownlineDistributors: () => 
+        apiAxios<GetDownlineDistributorsResponse>('distributors/downline', {
+            method: HttpMethod.GET
+        })
 };

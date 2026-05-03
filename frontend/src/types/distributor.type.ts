@@ -46,3 +46,7 @@ export interface AddWithdrawalMethodResponse {
     message?: string;
     withdrawalMethod: WithdrawalMethod;
 }
+
+export interface GetDownlineDistributorsResponse {
+    downlineDistributors: Distributor[];
+}

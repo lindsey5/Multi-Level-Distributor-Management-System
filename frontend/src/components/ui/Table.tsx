@@ -91,9 +91,9 @@ export const TableSkeleton = ({ columns, rows = 10 }: TableSkeletonProps) => (
 type CustomTableProps<T> = {
     data: T[];
     columns: ColumnDef<T>[];         
-    totalPages: number;
-    pagination: PaginationState;
-    setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+    totalPages?: number;
+    pagination?: PaginationState;
+    setPagination?: React.Dispatch<React.SetStateAction<PaginationState>>;
     isLoading: boolean;
     showPagination: boolean;
     total?: number;
