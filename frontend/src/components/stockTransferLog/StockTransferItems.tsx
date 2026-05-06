@@ -110,12 +110,6 @@ export default function StockTransferItems ({ close, stockTransferLog, socket } 
                             Mark as Received
                         </Button>
                     )}
-
-                    {stockTransferLog?.status === 'pending' && (
-                        <Button className="py-2" onClick={() => handleUpdateStatus('approved')} disabled={updateStockTransferMutation.isPending}>
-                            Approve
-                        </Button>
-                    )}
                 </div>
             </Card>
         </Modal>
