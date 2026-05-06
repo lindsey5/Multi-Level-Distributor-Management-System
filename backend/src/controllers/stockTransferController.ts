@@ -209,7 +209,7 @@ export const updateStockTransferStatus = async (req: AuthRequest, res: Response,
         }
 
         const allowedTransitions: Record<string, string[]> = {
-            pending: ["rejected", "approved"],
+            pending: ["approved"],
             approved: [],
             processing: [],
             delivered: ["received"],
